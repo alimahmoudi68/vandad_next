@@ -1,0 +1,27 @@
+.swiper{
+  padding-bottom: 0px !important;
+}
+.swiper-pagination{ 
+  bottom : 10px !important ;
+}
+.swiper-pagination .swiper-pagination-bullet-active {
+  background: rgba(27, 45, 112, 1) !important;
+  width : 20px;
+  border-radius: 10px;
+
+}
+.dark .swiper-pagination-bullet {
+  background: #c5c7c9 !important;
+  ;
+}
+.dark .swiper-pagination-bullet-active {
+  background: rgba(27, 45, 112, 1)  !important;
+}
+.marker {
+  background-image: url('../icons/location-marker.svg');
+  background-size: cover;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
