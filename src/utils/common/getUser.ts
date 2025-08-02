@@ -2,10 +2,10 @@
 
 import { cookies } from "next/headers";
 
+import saveCookie from "@/utils/common/saveCookie";
 import myFetch from '@/services/myFetchUserServer'
 
 export async function getUser(): Promise<any> {
-
   try {
 
     const cookieStore = await cookies();
@@ -13,11 +13,12 @@ export async function getUser(): Promise<any> {
     const refreshtoken = cookieStore.get('refresh-token')?.value;
 
 
-    if (!accesstoken && !refreshtoken) {
-      return null;
-    }
+    // if (!accesstoken && !refreshtoken) {
+    //   return null;
+    // }
 
     const response = await myFetch('/users/me');
+
 
     //console.log('response', response);
 
@@ -25,7 +26,6 @@ export async function getUser(): Promise<any> {
     if (!response) {
       return null;
     }
-
  
     if (response.accessToken && response.refreshToken) {
       return {
@@ -43,9 +43,6 @@ export async function getUser(): Promise<any> {
 
     return null;
     
-
-    // اگر ساختار داده‌ها مطابق تایپ User نبود
-    return null;
 
 
   } catch (err) {

@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { removeCat } from "@/store/catsAdmin";
 import MasterModal from "@/components/modals/masterModal/MasterModal";
 import Button from "@/components/common/button/Button";
-import { removeProduct } from "@/services/dashboard/products/productsService";
+import { removeCategory } from "@/services/dashboard/blog/blogCatsService";
 
 export default function DeleteCategoryModal({ id }: { id: string }) {
   const dispatch = useDispatch();
@@ -17,11 +17,11 @@ export default function DeleteCategoryModal({ id }: { id: string }) {
     if (!loading) {
       try {
         setLoading(true);
-        const data = await removeProduct(id);
+        const data = await removeCategory(id);
         setLoading(false);
         if (data.status === "success") {
           toast.success("دسته بندی با موفقیت حذف شد");
-          dispatch(removeCat(id));
+          dispatch(removeCat(Number(id)));
           router.back();
         } else {
           toast.error(

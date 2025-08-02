@@ -50,9 +50,9 @@ export const newCategory = async (formData: {
 }
 
 
-export const removeCategory = async(id:string) =>{
+export const removeCategory = async(id:number) =>{
 
-    return await myFetchServer(`/admin/blog-cats/remove/${id}`, {
+    return await myFetchServer(`/admin/blog-cats/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -76,8 +76,6 @@ export const singleCategory = async(id:string) =>{
 export const updateCategory = async (id: string , formData: {
     title: string ,
     slug: string,
-    parent: string,
-    attributes: string[]
 }): Promise<NewCategoryResponse> => {
 
 
@@ -86,7 +84,7 @@ export const updateCategory = async (id: string , formData: {
             "Content-Type": "application/json",
         },
         body : JSON.stringify(formData),
-        method : 'POST' 
+        method : 'PUT' 
         },
     );
 }

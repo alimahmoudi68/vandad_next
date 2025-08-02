@@ -7,10 +7,9 @@ const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API as string;
 
 interface RefreshTokenResponse {
   status: string;
-  data: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  accessToken: string;
+  refreshToken: string;
+  
 }
 
 interface FetchConfig extends RequestInit {
@@ -54,13 +53,13 @@ const fetchWithRetry = async (
       refreshToken = refresh_token;
     }
 
-
     let newConfig = {
       ...config,
       headers: {
         ...(config.headers || {}),
       },
     };
+    newConfig.headers.authorization = `bearer ${accessToken}`;
     const response = await fetch(`${BASE_URL}${url}`, { ...newConfig});
 
 
@@ -84,12 +83,12 @@ const fetchWithRetry = async (
           ...config,
           headers: {
             ...(config.headers || {}),
-            token: res.data.accessToken,
+            token: res.accessToken,
             authorization  : `bearer ${accessToken}`
           },
         };
         
-        return fetchWithRetry(url , refreshedConfig , res.data.accessToken , res.data.refreshToken , true);
+        return fetchWithRetry(url , refreshedConfig , res.accessToken , res.refreshToken , true);
 
       }else{
         throw new Error(`Access Denied: ${response.status}`);

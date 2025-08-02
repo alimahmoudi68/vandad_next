@@ -3,17 +3,23 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {deleteUpload} from '@/services/dashboard/uploads/uploadsService';
+import {removeCategory} from '@/services/dashboard/blog/blogCatsService';
 
-interface ModalDeleteUploadProps {
-  item: { id: string };
-  close: () => void;
-  show: boolean;
-  done: (id: string) => void;
-  removeFromServer: boolean
+interface ICategory {
+  _id: string;
+  title: string;
+  slug: string;
+  [key: string] : any
 }
 
-const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show, done , removeFromServer}) => {
+interface ModalDeleteBlogCatProps {
+  item: ICategory;
+  close: () => void;
+  show: boolean;
+  done: (id: number) => void;
+}
+
+const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, done }) => {
   const [loading, setLoading] = useState(false);
 
   const closeHandler = async (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -21,11 +27,10 @@ const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show
   };
 
   const removeHandler = async () => {
-    if(removeFromServer){
       if (!loading) {
         try {
           setLoading(true);
-          const data  = await deleteUpload(item.id);
+          const data  = await removeCategory(item.id);
   
           if (data.status == "success") {
             done(item.id);
@@ -39,7 +44,7 @@ const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show
           toast.error("متاسفانه مشکلی رخ داده است، دقایقی بعدا مجددا تلاش کنید");
           setLoading(false);
         }
-      }
+      
     }else{
       done(item.id);
       closeHandler();
@@ -49,10 +54,10 @@ const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show
 
   return (
     <>
-      <MasterModal close={close} title={'حذف فایل'}>
+      <MasterModal close={close} title={'حذف دسته بندی بلاگ'}>
         <div className="w-full flex flex-col">
           <span className="txtConfirm my-3">
-            {`آیا از حذف فایل فیلم یا عکس با شناسه ${item.id} مطمئن هستید؟`}
+            {`آیا از حذف  ${item.title} مطمئن هستید؟`}
           </span>
           <div className="w-full flex justify-center mt-5">
             <Button loading={loading} classes="w-20 py-1 px-2 bg-primary-100 rounded-md" click={removeHandler}>
@@ -68,4 +73,4 @@ const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show
   );
 };
 
-export default ModalDeleteUpload;
+export default ModalDeleteBlogCat;

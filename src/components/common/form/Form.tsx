@@ -91,7 +91,7 @@ const Form = ({
       }
       let catId = (data as { id: string })?.id;
 
-      const signleCategoryData = await singleCategory(catId);
+      const signleCategoryData = await singleCategory(+catId);
       const attributes = signleCategoryData.category.attributes;
 
       let newFormItems = form.formItems.filter((item: FormItem) => {

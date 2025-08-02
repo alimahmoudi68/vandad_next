@@ -4,10 +4,8 @@ const BASE_URL = process.env.NEXT_PUBLIC_BACKEND_API;
 
 interface RefreshTokenResponse {
   status: string;
-  data: {
-    accessToken: string;
-    refreshToken: string;
-  };
+  accessToken: string;
+  refreshToken: string;
 }
 
 interface FetchConfig extends RequestInit {
@@ -16,9 +14,11 @@ interface FetchConfig extends RequestInit {
 
 const getRefreshToken = async (): Promise<RefreshTokenResponse>  => {
   try {
-    const response = await fetch(`${BASE_URL}/refresh-token`, {
+    const response = await fetch(`${BASE_URL}/auth/refresh-token`, {
       method: "POST",
-      credentials: "include",
+      cache: "no-store",
+      next : {revalidate : 0} ,
+      credentials: "include" ,
       headers: {
         "Content-Type": "application/json",
       },
@@ -40,8 +40,10 @@ const fetchWithRetry = async (
 
     const response = await fetch(`${BASE_URL}${url}`, { ...config});
 
+    let data = await response.json();
+    console.log('data>---' , data) 
+    
     if (response.ok){
-
       let data = await response.json();
       return data;
     }
@@ -49,15 +51,18 @@ const fetchWithRetry = async (
     if (response.status == 403) {
       let res = await getRefreshToken();
 
+      console.log('refresh token---' , res) 
+
+
       if (res.status == 'success') {
 
-        saveCookie(res.data.accessToken , res.data.refreshToken);
+        saveCookie(res.accessToken , res.refreshToken);
 
         const newConfig: FetchConfig = {
           ...config,
           headers: {
             ...(config.headers || {}),
-            token: res.data.accessToken,
+            token: res.accessToken,
           },
         };
 

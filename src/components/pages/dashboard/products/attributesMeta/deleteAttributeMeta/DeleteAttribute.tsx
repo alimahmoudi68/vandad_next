@@ -21,7 +21,7 @@ export default function DeleteAttributeModal({ id }: { id: string }) {
         setLoading(false);
         if (data.status === "success") {
           toast.success("دسته بندی با موفقیت حذف شد");
-          dispatch(removeCat(id));
+          dispatch(removeCat(Number(id)));
           router.back();
         } else {
           toast.error(

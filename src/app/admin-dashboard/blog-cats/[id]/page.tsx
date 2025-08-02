@@ -1,21 +1,15 @@
-import EditCategoryPage from "@/components/pages/dashboard/products/categories/editCategory/EditCategory";
+import EditCategoryPage from "@/components/pages/dashboard/blog/categories/editCategory/EditCategory";
 
-import {
-  categories,
-  singleCategory,
-} from "@/services/dashboard/products/categoriesService";
-import { attributes } from "@/services/dashboard/products/attributesService";
-
-import NotPermission from "@/components/common/notPermission/NotPermission";
-import getUser from "@/utils/common/getUser";
-import havePermission from "@/utils/common/havePermission";
+// import NotPermission from "@/components/common/notPermission/NotPermission";
+// import getUser from "@/utils/common/getUser";
+// import havePermission from "@/utils/common/havePermission";
 
 interface Params {
   id: string;
 }
 
 export default async function EditCategory({ params }: { params: Params }) {
-  const getUserInfo = await getUser();
+  //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
   //     ['all_permissions' , 'insert_hotel' , 'insert_selling_together' , 'insert_apartment_sale_presale' , 'insert_rent_mortgage' , 'insert_villa'])
@@ -24,17 +18,8 @@ export default async function EditCategory({ params }: { params: Params }) {
   // }
 
   let id = params.id;
-  let categoriesData = await categories();
-  let categoryData = await singleCategory(id);
-  let attributesData = await attributes();
 
   return (
-    <EditCategoryPage
-      permissions={getUserInfo?.user?.permissions}
-      categories={categoriesData.categories ?? []}
-      attributes={attributesData.attributes ?? []}
-      category={categoryData.category ?? {}}
-      id={id}
-    />
+    <EditCategoryPage id={id}/>
   );
 }

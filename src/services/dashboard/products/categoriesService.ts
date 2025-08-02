@@ -72,7 +72,7 @@ export const removeCategory = async(id:string) =>{
 }
 
 
-export const singleCategory = async(id:string) =>{
+export const singleCategory = async(id:number) =>{
 
     return await myFetchServer(`/admin/categories/${id}`, {
         headers: {
