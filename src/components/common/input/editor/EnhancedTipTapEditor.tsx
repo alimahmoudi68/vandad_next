@@ -37,6 +37,7 @@ interface EnhancedTipTapEditorProps {
 
 const EnhancedTipTapEditor: React.FC<EnhancedTipTapEditorProps> = ({
   value = '',
+  config,
   change,
   placeholder = 'محتوا را اینجا بنویسید...',
   className = '',
@@ -130,7 +131,8 @@ const EnhancedTipTapEditor: React.FC<EnhancedTipTapEditorProps> = ({
 
   return (
     <>
-    <div className={`enhanced-tiptap-editor ${errorMsg !== "" ? 'border border-red-500' : ''} ${className}`}>
+    <div className={`w-full rounded-lg enhanced-tiptap-editor ${className}`}>
+      <label className="w-full text-[0.8rem] min-[500px]:text-[1rem] text-start mb-2 block">{config.label}</label>
       {/* Toolbar */}
       <div className="border border-gray-300 rounded-t-lg p-2 bg-gray-50 flex flex-wrap gap-2">
         {/* Text Formatting */}
@@ -323,7 +325,7 @@ const EnhancedTipTapEditor: React.FC<EnhancedTipTapEditorProps> = ({
       </div>
 
       {/* Editor Content */}
-      <div className="border border-t-0 border-gray-300 rounded-b-lg">
+      <div className={`border  ${errorMsg !== "" ? 'border border-red-500' : 'border-t-0'} rounded-b-lg`}>
         <EditorContent 
           editor={editor} 
           className="prose max-w-none p-4 min-h-[300px] focus:outline-none"

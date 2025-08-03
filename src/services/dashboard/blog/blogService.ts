@@ -17,7 +17,17 @@ interface CategoriesResponse {
 interface NewCategoryResponse {
     status: 'success' | 'error';
     category?: Record<string, any>;
-    msg?: string,
+    message?: string,
+}
+
+interface INewBlog{
+    title: string,
+    slug: string,
+    keywords_meta: string,
+    description_meta: string,
+    content: string,
+    categories: number[],
+    image: number
 }
 
 export const categories = async (): Promise<CategoriesResponse> => {
@@ -31,25 +41,10 @@ export const categories = async (): Promise<CategoriesResponse> => {
     );
 }
 
-export const childCategories = async (): Promise<CategoriesResponse> => {
 
-    return await myFetchServer('/admin/categories/childs', {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        method : 'GET' 
-        },
-    );
-}
+export const newBlog = async (formData: INewBlog): Promise<NewCategoryResponse> => {
 
-
-export const newCategory = async (formData: {
-    title: string ,
-    slug: string,
-    parent: string
-}): Promise<NewCategoryResponse> => {
-
-    return await myFetchServer('/admin/categories/new', {
+    return await myFetchServer('/admin/blog', {
         headers: {
             "Content-Type": "application/json",
         },

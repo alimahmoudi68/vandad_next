@@ -1,11 +1,11 @@
 import myFetchServer from '@/services/myFetchServer'; 
 
-
 interface NewUploadResponse {
     status: 'success' | 'error';
     upload? :{
-        _id: string ,
-        original : string ,
+        id: string ,
+        title : string ,
+        location: string,
         thumb : string,
         bucket : string 
     }
@@ -19,7 +19,7 @@ interface DeleteUploadResponse {
 
 export const newUpload = async (formData: FormData): Promise<NewUploadResponse> => {
 
-    return await myFetchServer('/admin/uploads/new', {
+    return await myFetchServer('/admin/uploads', {
         body : formData,
         method : 'POST' 
         },

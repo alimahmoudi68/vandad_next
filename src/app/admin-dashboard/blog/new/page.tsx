@@ -1,4 +1,4 @@
-import NewCategoryPage from "@/components/pages/dashboard/blog/categories/newCategory/NewCategory";
+import NewBlogPage from "@/components/pages/dashboard/blog/blog/newBlog/NewBlog";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
@@ -6,8 +6,8 @@ import ErrorPage from "@/components/common/errorPage/ErrorPage";
 //import havePermission from '@/utils/common/havePermission';
 
 export const metadata = {
-  title : 'دسته بندی مقاله جدید'
-}
+    title : 'مقاله جدید'
+  }
 
 export default async function NewEstate() {
   //const getUserInfo = await getUser();
@@ -20,13 +20,13 @@ export default async function NewEstate() {
 
   
     try{
-      return (
-        <NewCategoryPage
+        return (
+        <NewBlogPage
         permissions={[]}
         />
-      );
+        );
     }catch(error){
-      return <ErrorPage message="خطایی در سرور رخ داده است" />;
+        return <ErrorPage message="خطایی در سرور رخ داده است" />;
     }
   
   

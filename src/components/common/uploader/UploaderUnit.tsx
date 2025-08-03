@@ -102,10 +102,12 @@ export default function UploaderUnit({ id,
     try {
       const response = await newUpload(formData);
 
+      //console.log(response);
+
       if (response.status == 'success') {
         uploadHandler(id, {
-          uploadedId: response.upload?._id ?? '',
-          fileName: response.upload?.original ?? '',
+          uploadedId: response.upload?.id ?? '',
+          fileName: response.upload?.location ?? '',
           bucketName: response.upload?.bucket ?? ''
         });
 
@@ -164,7 +166,7 @@ export default function UploaderUnit({ id,
       {
         uploadedId  ? 
         (
-          <ShowImg bucketName={fileUrl.bucketName} fill={true} classes="contain" fileName={fileUrl.fileName} width={200} height={200}/> 
+          <ShowImg bucketName={fileUrl.bucketName} fill={true} classes="contain object-cover" fileName={fileUrl.fileName} width={200} height={200}/> 
         )
         :
         (
