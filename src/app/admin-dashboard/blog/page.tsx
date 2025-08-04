@@ -1,4 +1,4 @@
-import CategoriesPage from "@/components/pages/dashboard/blog/categories/categories/Categories";
+import BlogPage from "@/components/pages/dashboard/blog/blog/blog/Blog";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
@@ -15,7 +15,7 @@ export default async function Categories() {
   // }
 
   return (
-    <CategoriesPage/>
+    <BlogPage/>
   );
 
 }

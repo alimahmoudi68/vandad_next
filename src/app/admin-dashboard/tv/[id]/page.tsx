@@ -1,6 +1,9 @@
-import EditBlogPage from "@/components/pages/dashboard/blog/blog/editBlog/EditBlog";
+import EditTvPage from "@/components/pages/dashboard/tv/tv/editTv/EditTv";
 
-
+export const metadata = {
+  title: "ویرایش دسته بندی ویدیو",
+  description: "",
+};
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
@@ -21,6 +24,6 @@ export default async function EditCategory({ params }: { params: Params }) {
   let id = params.id;
 
   return (
-    <EditBlogPage id={+id}/>
+    <EditTvPage id={+id}/>
   );
 }

@@ -9,7 +9,7 @@ const LayoutDashboard = async ({ children }: { children: ReactNode }) => {
   const getUserInfo = await getUser();
 
   if (!getUserInfo) {
-    //redirect("/auth/login");
+    redirect("/auth/login");
   }
 
   const user = {

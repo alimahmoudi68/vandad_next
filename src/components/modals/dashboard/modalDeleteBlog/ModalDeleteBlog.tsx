@@ -3,23 +3,37 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeCategory} from '@/services/dashboard/blog/blogCatsService';
+import {removeBlog} from '@/services/dashboard/blog/blogService';
 
-interface ICategory {
-  id: number;
-  title: string;
-  slug: string;
-  [key: string] : any
+interface IUpload {
+  bucket: string ,
+  title: string,
+  location: string
 }
 
-interface ModalDeleteBlogCatProps {
-  item: ICategory;
+interface IBlog {
+  id: number,
+  title: string,
+  slug: string,
+  content: string,
+  image: IUpload,
+  time_study: string,
+  status: string,
+  author: number,
+  categories: {id: number , title: string}[],
+  created_at: string,
+  upated_at: string,
+  likedUsersCount: number
+}
+
+interface ModalDeleteBlogProps {
+  item: IBlog;
   close: () => void;
   show: boolean;
   done: (id: number) => void;
 }
 
-const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, done }) => {
+const ModalDeleteBlog: React.FC<ModalDeleteBlogProps> = ({ item, close, done }) => {
   const [loading, setLoading] = useState(false);
 
   const closeHandler = async (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -30,7 +44,7 @@ const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, do
       if (!loading) {
         try {
           setLoading(true);
-          const data  = await removeCategory(item.id);
+          const data  = await removeBlog(item.id);
   
           if (data.status == "success") {
             done(item.id);
@@ -51,10 +65,9 @@ const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, do
     }
   };
 
-
   return (
     <>
-      <MasterModal close={close} title={'حذف دسته بندی بلاگ'}>
+      <MasterModal close={close} title={'حذف بلاگ'}>
         <div className="w-full flex flex-col">
           <span className="txtConfirm my-3">
             {`آیا از حذف  ${item.title} مطمئن هستید؟`}
@@ -71,6 +84,7 @@ const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, do
       </MasterModal>
     </>
   );
+  
 };
 
-export default ModalDeleteBlogCat;
+export default ModalDeleteBlog;

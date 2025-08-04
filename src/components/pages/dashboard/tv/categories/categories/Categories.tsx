@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import ModalRemove from '@/components/modals/dashboard/modalDeleteBlogCat/ModalDeleteBlogCat';
+import ModalRemove from '@/components/modals/dashboard/modalDeletetvCat/ModalDeleteTvCat';
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
-import { getBlogCats } from "@/services/dashboard/blog/blogCatsService";
+import { getTvCats } from "@/services/dashboard/tv/tvCatsService";
 
 interface ICategory {
   id: number;
@@ -31,7 +31,7 @@ export default function CategoriesPage() {
   useEffect(() => {
     try {
       const getData = async () => {
-        let data = await getBlogCats();
+        let data = await getTvCats();
         setLoading(false);
         if (data.status === "success") {
           setItems(data.categories || []);
@@ -79,10 +79,10 @@ export default function CategoriesPage() {
     <div className="container mx-auto p-3">
       <div className="flex items-center justify-between mb-10">
         <h1 className="text-textPrimary-100 dark:text-white text-2xl font-extrabold">
-          دسته بندی مقاله‌ها
+          دسته بندی ویدیو‌ها
         </h1>
         <Link
-          href={"/admin-dashboard/blog-cats/new"}
+          href={"/admin-dashboard/tv-cats/new"}
           className="text-center md:w-[200px] rounded-md p-2 bg-primary-100 border border-primary-100 hover:bg-transparent hover:text-primary-100 text-white-100 font-semibold"
         >
           دسته بندی جدید
@@ -131,7 +131,7 @@ export default function CategoriesPage() {
                       </div>
 
                       <div className="w-full md:w-[33.33%] flex justify-end md:justify-center">
-                        <Link href={`/admin-dashboard/blog-cats/${cat.id}`}>
+                        <Link href={`/admin-dashboard/tv-cats/${cat.id}`}>
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

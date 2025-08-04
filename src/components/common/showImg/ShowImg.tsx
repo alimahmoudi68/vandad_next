@@ -26,7 +26,12 @@ const ShowImg: React.FC<ShowImgProps> = ({
 
 
   const APIURL = process.env.NEXT_PUBLIC_S3_URL;
-  const imageUrl = `${APIURL}/${bucketName}/${fileName}`;
+  let imageUrl = '';
+  if(bucketName && fileName){
+    imageUrl = `${APIURL}/${bucketName}/${fileName}`;
+  }else{
+    imageUrl = `/images/vandad_logo.png`;
+  }
 
   return (
 

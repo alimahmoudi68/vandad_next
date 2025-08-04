@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeCategory} from '@/services/dashboard/blog/blogCatsService';
+import {removeCategory} from '@/services/dashboard/tv/tvCatsService';
 
 interface ICategory {
   id: number;
@@ -12,14 +12,14 @@ interface ICategory {
   [key: string] : any
 }
 
-interface ModalDeleteBlogCatProps {
+interface ModalDeleteTvCatProps {
   item: ICategory;
   close: () => void;
   show: boolean;
   done: (id: number) => void;
 }
 
-const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, done }) => {
+const ModalDeleteTvCat: React.FC<ModalDeleteTvCatProps> = ({ item, close, done }) => {
   const [loading, setLoading] = useState(false);
 
   const closeHandler = async (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -54,7 +54,7 @@ const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, do
 
   return (
     <>
-      <MasterModal close={close} title={'حذف دسته بندی بلاگ'}>
+      <MasterModal close={close} title={'حذف دسته بندی ویدیو'}>
         <div className="w-full flex flex-col">
           <span className="txtConfirm my-3">
             {`آیا از حذف  ${item.title} مطمئن هستید؟`}
@@ -73,4 +73,4 @@ const ModalDeleteBlogCat: React.FC<ModalDeleteBlogCatProps> = ({ item, close, do
   );
 };
 
-export default ModalDeleteBlogCat;
+export default ModalDeleteTvCat;

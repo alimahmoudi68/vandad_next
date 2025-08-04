@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import {
   singleCategory,
   updateCategory,
-} from "@/services/dashboard/blog/blogCatsService";
+} from "@/services/dashboard/tv/tvCatsService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
@@ -111,10 +111,10 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
         });
 
         if (data.status === "success") {
-          toast.success("دسته بندی مقاله با موفقیت ویرایش شد");
-          router.push("/admin-dashboard/blog-cats");
+          toast.success("دسته بندی ویدیو با موفقیت ویرایش شد");
+          router.push("/admin-dashboard/tv-cats");
         } else {
-          toast.error(data.msg || "خطایی رخ داد");
+          toast.error(data.message || "خطایی رخ داد");
         }
       }
     } catch (err) {

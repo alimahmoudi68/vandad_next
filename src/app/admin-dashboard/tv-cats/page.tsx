@@ -1,15 +1,16 @@
-import EditBlogPage from "@/components/pages/dashboard/blog/blog/editBlog/EditBlog";
-
-
+import CategoriesPage from "@/components/pages/dashboard/tv/categories/categories/Categories";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
 //import havePermission from "@/utils/common/havePermission";
 
-interface Params {
-  id: string;
-}
-export default async function EditCategory({ params }: { params: Params }) {
+export const metadata = {
+  title: "دسته بندی ویدیوها",
+  description: "",
+};
+
+export default async function Categories() {
+  
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
@@ -18,9 +19,8 @@ export default async function EditCategory({ params }: { params: Params }) {
   //     return(<NotPermission/>)
   // }
 
-  let id = params.id;
-
   return (
-    <EditBlogPage id={+id}/>
+    <CategoriesPage/>
   );
+
 }

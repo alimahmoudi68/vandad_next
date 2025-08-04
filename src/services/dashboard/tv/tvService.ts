@@ -6,25 +6,26 @@ interface IUpload {
     location: string
 }
 
-interface IBlog {
+interface ITv {
     id: number,
     title: string,
     slug: string,
     content: string,
     image: IUpload,
-    time_study: string,
     status: string,
-    author: number,
     categories: {id: number , title: string}[],
     created_at: string,
     upated_at: string,
-    likedUsersCount: number
+    time: string,
+    video_url: string,
+    keywords_meta: string,
+    description_meta: string,
 }
 
 
-interface IBlogResponse {
+interface ITvResponse {
     status: 'success' | 'error';
-    blogs?: IBlog[];
+    tvs?: ITv[];
     message?: string,
     pagination?:{
         page: number,
@@ -32,25 +33,27 @@ interface IBlogResponse {
     }
 }
 
-interface NewBlogResponse {
+interface NewTvResponse {
     status: 'success' | 'error';
-    blog?: Record<string, any>;
+    tv?: Record<string, any>;
     message?: string,
 }
 
-interface INewBlog{
+interface INewTv{
     title: string,
     slug: string,
     keywords_meta: string,
     description_meta: string,
     content: string,
     categories: number[],
-    image: number
+    image: number,
+    time: string,
+    video_url: string
 }
 
-export const getBlog = async (p: number , q: string): Promise<IBlogResponse> => {
+export const getTv = async (p: number , q: string): Promise<ITvResponse> => {
 
-    return await myFetchServer(`/admin/blog?page=${p}&limit=20&&q=${q}`, {
+    return await myFetchServer(`/admin/tv?page=${p}&limit=20&&q=${q}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -60,9 +63,9 @@ export const getBlog = async (p: number , q: string): Promise<IBlogResponse> => 
 }
 
 
-export const newBlog = async (formData: INewBlog): Promise<NewBlogResponse> => {
+export const newTv = async (formData: INewTv): Promise<NewTvResponse> => {
 
-    return await myFetchServer('/admin/blog', {
+    return await myFetchServer('/admin/tv', {
         headers: {
             "Content-Type": "application/json",
         },
@@ -73,9 +76,9 @@ export const newBlog = async (formData: INewBlog): Promise<NewBlogResponse> => {
 }
 
 
-export const removeBlog = async(id:number) =>{
+export const removeTv = async(id:number) =>{
 
-    return await myFetchServer(`/admin/blog/${id}`, {
+    return await myFetchServer(`/admin/tv/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -85,9 +88,9 @@ export const removeBlog = async(id:number) =>{
 }
 
 
-export const singleBlog = async(id:number) =>{
+export const singleTv = async(id:number) =>{
 
-    return await myFetchServer(`/admin/blog/${id}`, {
+    return await myFetchServer(`/admin/tv/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -96,10 +99,10 @@ export const singleBlog = async(id:number) =>{
 }
 
 
-export const updateBlog= async (id: number , formData: INewBlog): Promise<NewBlogResponse> => {
+export const updateTv = async (id: number , formData: INewTv): Promise<NewTvResponse> => {
 
 
-    return await myFetchServer(`/admin/blog/${id}`, {
+    return await myFetchServer(`/admin/tv/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },

@@ -38,7 +38,6 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
   const headerSideModal = useRef<HTMLDivElement | null>(null);
 
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
 
   const router = useRouter();
 
@@ -262,7 +261,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                   <i className="fa fa-caret-down mr-1"></i>
                 </div>
                 <div
-                  className={`absolute top-[44px] left-[18px] w-[180px] bg-white-100 p-3 rounded-lg dark:bg-dark-50 shadow-sm border dark:border-cyan-900 z-[9999] ${
+                  className={`absolute top-[44px] left-[18px] w-[180px] bg-white-100 p-2 rounded-lg dark:bg-bgDark-100 shadow-sm border dark:border-[#494949bc] z-[9999] ${
                     showProfileMenu ? "block animate-fade-in" : "hidden"
                   } `}
                   ref={profileMenu}
@@ -271,7 +270,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                     <li>
                       <Link
                         href="/dashboard"
-                        className="flex items-center list-none text-sm font-normal px-3 py-2 w-full hover:cursor-pointer hover:bg-backgroundInput-100 dark:hover:bg-dark-100 rounded-lg"
+                        className="flex items-center list-none text-sm font-normal px-3 py-2 w-full hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-[#494949bc] rounded-lg"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -292,7 +291,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                     </li>
                     <li
                       onClick={logoutHandler}
-                      className="flex items-center list-none text-sm font-normal px-3 py-2 w-full hover:cursor-pointer hover:bg-backgroundInput-100 dark:hover:bg-dark-100 rounded-lg"
+                      className="flex items-center list-none text-sm font-normal px-3 py-2 w-full hover:cursor-pointer hover:bg-gray-100 dark:hover:bg-[#494949bc] rounded-lg"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

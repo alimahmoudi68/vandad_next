@@ -1,14 +1,17 @@
-import EditBlogPage from "@/components/pages/dashboard/blog/blog/editBlog/EditBlog";
+import EditCategoryPage from "@/components/pages/dashboard/tv/categories/editCategory/EditCategory";
 
-
-
-//import NotPermission from "@/components/common/notPermission/NotPermission";
-//import getUser from "@/utils/common/getUser";
-//import havePermission from "@/utils/common/havePermission";
+// import NotPermission from "@/components/common/notPermission/NotPermission";
+// import getUser from "@/utils/common/getUser";
+// import havePermission from "@/utils/common/havePermission";
+export const metadata = {
+  title: "ویرایش دسته بندی ویدیو",
+  description: "",
+};
 
 interface Params {
   id: string;
 }
+
 export default async function EditCategory({ params }: { params: Params }) {
   //const getUserInfo = await getUser();
 
@@ -21,6 +24,6 @@ export default async function EditCategory({ params }: { params: Params }) {
   let id = params.id;
 
   return (
-    <EditBlogPage id={+id}/>
+    <EditCategoryPage id={id}/>
   );
 }

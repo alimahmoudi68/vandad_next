@@ -10,19 +10,19 @@ interface ICategory {
 interface CategoriesResponse {
     status: 'success' | 'error';
     categories?: ICategory[];
-    msg?: string,
+    message?: string,
 }
 
 interface NewCategoryResponse {
     status: 'success' | 'error';
     category?: Record<string, any>;
-    msg?: string,
+    message?: string,
 }
 
 
-export const getBlogCats = async (): Promise<CategoriesResponse> => {
+export const getTvCats = async (): Promise<CategoriesResponse> => {
 
-    return await myFetchServer('/admin/blog-cats', {
+    return await myFetchServer('/admin/tv-cats', {
         headers: {
             "Content-Type": "application/json",
         },
@@ -39,7 +39,7 @@ export const newCategory = async (formData: {
     parent: string
 }): Promise<NewCategoryResponse> => {
 
-    return await myFetchServer('/admin/blog-cats', {
+    return await myFetchServer('/admin/tv-cats', {
         headers: {
             "Content-Type": "application/json",
         },
@@ -52,7 +52,7 @@ export const newCategory = async (formData: {
 
 export const removeCategory = async(id:number) =>{
 
-    return await myFetchServer(`/admin/blog-cats/${id}`, {
+    return await myFetchServer(`/admin/tv-cats/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -64,7 +64,7 @@ export const removeCategory = async(id:number) =>{
 
 export const singleCategory = async(id:string) =>{
 
-    return await myFetchServer(`/admin/blog-cats/${id}`, {
+    return await myFetchServer(`/admin/tv-cats/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -79,7 +79,7 @@ export const updateCategory = async (id: string , formData: {
 }): Promise<NewCategoryResponse> => {
 
 
-    return await myFetchServer(`/admin/blog-cats/${id}`, {
+    return await myFetchServer(`/admin/tv-cats/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
