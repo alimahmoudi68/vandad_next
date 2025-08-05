@@ -1,11 +1,15 @@
-import CategoriesPage from "@/components/pages/dashboard/blog/categories/categories/Categories";
+import EditCoursePage from "@/components/pages/dashboard/course/course/editCourse/EditCourse";
+
+
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
 //import havePermission from "@/utils/common/havePermission";
 
-export default async function BlogCats() {
-  
+interface Params {
+  id: string;
+}
+export default async function EditCategory({ params }: { params: Params }) {
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
@@ -14,8 +18,9 @@ export default async function BlogCats() {
   //     return(<NotPermission/>)
   // }
 
-  return (
-    <CategoriesPage/>
-  );
+  let id = params.id;
 
+  return (
+    <EditCoursePage id={+id}/>
+  );
 }

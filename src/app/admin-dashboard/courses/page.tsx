@@ -1,10 +1,10 @@
-import CategoriesPage from "@/components/pages/dashboard/blog/categories/categories/Categories";
+import CoursesPage from "@/components/pages/dashboard/course/course/courses/courses";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
 //import havePermission from "@/utils/common/havePermission";
 
-export default async function BlogCats() {
+export default async function Courses() {
   
   //const getUserInfo = await getUser();
 
@@ -15,7 +15,7 @@ export default async function BlogCats() {
   // }
 
   return (
-    <CategoriesPage/>
+    <CoursesPage/>
   );
 
 }

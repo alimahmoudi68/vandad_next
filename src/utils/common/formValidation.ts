@@ -289,6 +289,14 @@ export const inputChange = (
             updatedForm[element] = updetedElement;
         }
     
+    }else if(updetedElement.inputType == 'simple-input-date'){   
+            const {date} = e as any;
+            updetedElement.value = date;
+            updetedElement.valid = checkValidation(date, updetedElement.validation).valid;
+            const errorMsg = checkValidation(date, updetedElement.validation ).msg;
+            updetedElement.errorMsg = typeof errorMsg === 'string' ? errorMsg : errorMsg;
+            updetedElement.used = true;
+            updatedForm[element] = updetedElement;
     }else if(updetedElement.inputType == 'simple-input-number' || updetedElement.inputType == 'simple-input-number-with-label'){
 
         let val = e.target?.value || ''; 

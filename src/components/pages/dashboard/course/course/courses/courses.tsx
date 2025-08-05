@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import ModalRemove from '@/components/modals/dashboard/modalDeleteTv/ModalDeleteTv';
+import ModalRemove from '@/components/modals/dashboard/modalDeleteCourse/ModalDeleteCourse';
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
-import { getTv } from "@/services/dashboard/tv/tvService";
+import { getCourses } from "@/services/dashboard/course/courseService";
 import ShowImg from "@/components/common/showImg/ShowImg";
 import Pagination from '@/components/common/pagination/Pagination';
 
@@ -17,43 +17,41 @@ interface IUpload {
     location: string
 }
 
-interface ITv {
+
+interface ICourse {
     id: number,
     title: string,
     slug: string,
     content: string,
     image: IUpload,
-    time: string,
-    status: string,
-    video_url: string,
     categories: {id: number , title: string}[],
     created_at: string,
     upated_at: string,
 }
 
-export default function TvPage() {
+export default function CoursesPage() {
     const router = useRouter();
 
-    const [items, setItems] = useState<ITv[]>([]);
+    const [items, setItems] = useState<ICourse[]>([]);
     const [page, setPage] = useState<number>(1);
     const [pages, setPages] = useState<number>();
     const [key, setKey] = useState<string>('');
     const [debouncedKey, setDebouncedKey] = useState('');
     const [loading, setLoading] = useState(true);
-    const [currentItem, setCurrentItem] = useState<ITv>();
+    const [currentItem, setCurrentItem] = useState<ICourse>();
     const [showModalRemove , setShowModalRemove] = useState(false);
 
-    const stateModalRemove = (state: boolean, item: ITv) => {
+    const stateModalRemove = (state: boolean, item: ICourse) => {
         setShowModalRemove(state);
         setCurrentItem(item);
     }
 
     const getData = async (p: number , q: string) => {
         setLoading(true);
-        let data = await getTv(p , q);
+        let data = await getCourses(p , q);
         setLoading(false);
         if (data.status === "success") {
-            setItems(data.tvs || []);
+            setItems(data.courses || []);
             setPage(data.pagination?.page || 1);
             setPages(data.pagination?.pages || 1);
         } else {
@@ -102,7 +100,7 @@ export default function TvPage() {
         showModalRemove && currentItem ? 
         (
             <ModalRemove
-            show={showModalRemove}
+            show={true}
             close={() => setShowModalRemove(false)}
             done={doneRemove}
             item={currentItem}
@@ -115,7 +113,7 @@ export default function TvPage() {
         }
         <div className="container mx-auto p-3">
         <h1 className="text-textPrimary-100 dark:text-white text-2xl font-extrabold mb-3">
-            ویدیوها
+            دوره‌ها
         </h1>
         <div className="flex items-center justify-between items-center mb-10">
             <input
@@ -126,10 +124,10 @@ export default function TvPage() {
             placeholder="جستجو..."
             />
             <Link
-            href={"/admin-dashboard/blog/new"}
+            href={"/admin-dashboard/courses/new"}
             className="text-center md:w-[200px] rounded-md p-2 bg-primary-100 border border-primary-100 hover:bg-transparent hover:text-primary-100 text-white-100 font-semibold"
             >
-            ویدیوی جدید
+            دوره جدید
             </Link>
         </div>
 
@@ -160,7 +158,6 @@ export default function TvPage() {
                 return (
                     <div key={index}>
                     <div className="w-full">
-                        {/* دسته‌بندی پدر */}
                         <div className="w-full rounded-md bg-white-100 dark:bg-cardDark-100 py-5 px-5 my-5 md:px-0 flex flex-wrap items-center justify-start">
                            
                             <div className="w-full md:w-[20%] flex justify-start md:justify-center items-center">
@@ -195,7 +192,7 @@ export default function TvPage() {
                             </div>
 
                             <div className="w-full md:w-[20%] flex justify-end md:justify-center">
-                                <Link href={`/admin-dashboard/tv/${item.id}`}>
+                                <Link href={`/admin-dashboard/courses/${item.id}`}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

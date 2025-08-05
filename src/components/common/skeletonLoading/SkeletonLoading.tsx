@@ -44,7 +44,7 @@ const SkeletonLoading: React.FC<SkeletonLoadingProps> = ({
                 {rowsArr.map((_, rowIndex) => (
                     <div key={rowIndex} className="w-full flex items-center justify-center gap-x-3">
                         {colsArr.map((_, colIndex) => (
-                            <div key={colIndex} className={`w-full ${itemClasses} mb-3`}>
+                            <div key={colIndex} className={`w-full ${itemClasses} mb-4`}>
                                 <Skeleton className="w-full h-full" />
                             </div>
                         ))}

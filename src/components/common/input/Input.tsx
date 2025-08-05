@@ -19,6 +19,7 @@ import File from './File';
 import SimpleInputTextDynamicInput from './SimpleInputTextDynamicInput';
 import AttributeVariant from './AttributeVariant';
 import Editor from './editor/EnhancedTipTapEditor';
+import InputDate from "./InputDate";
 
 
 import { FC } from 'react';
@@ -96,6 +97,10 @@ const Input: FC<InputProps> = (props) => {
         case 'attribute-variant':
             inputElement = <AttributeVariant config={props.config} change={props.change} value2={props.value2} value={props.value} errs={props.errs} {...props} />
             break;
+        case "simple-input-date":
+            inputElement = (<InputDate config={props.config} change={props.change} value={props.value} errorMsg={props.errorMsg} {...props}/>
+      );
+      break;  
         case 'editor':
             inputElement = <Editor config={props.config} change={props.change}  value={props.value} errorMsg={props.errs} {...props} />
             break;                                           

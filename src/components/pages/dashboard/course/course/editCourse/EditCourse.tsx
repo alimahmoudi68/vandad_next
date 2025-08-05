@@ -4,29 +4,30 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import {
-  getBlogCats,
-} from "@/services/dashboard/blog/blogCatsService";
+  getCourseCats,
+} from "@/services/dashboard/course/courseCatsService";
 import {
-  singleBlog,
-  updateBlog,
-} from "@/services/dashboard/blog/blogService";
+  singleCourse,
+  updateCourse,
+} from "@/services/dashboard/course/courseService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
+import EditCourseEpisodePage from "../editCourseEpisode/EditCourseEpisode";
 
 
-interface EditBlogPageProps {
+interface EditCoursePageProps {
   id: number;
 }
 
 interface ICategory {
-  _id: string;
+  id: string;
   title: string;
   slug: string;
   [key: string] : any
 }
 
-interface INewBlog{
+interface INewCourse{
   title: string,
   slug: string,
   keywords_meta: string,
@@ -57,7 +58,7 @@ interface IForm {
   formItems: FormItem[];
 }
 
-export default function EdiitBlogPage({ id }: EditBlogPageProps) {
+export default function EditCoursePage({ id }: EditCoursePageProps) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
@@ -65,10 +66,10 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
   const [form, setForm] = useState<IForm>();
 
   useEffect(() => {
-    const getBlog = async () => {
-      const [blogData, categoriesData] = await Promise.all([
-        singleBlog(id),
-        getBlogCats(),
+    const getCourse = async () => {
+      const [courseData, categoriesData] = await Promise.all([
+        singleCourse(id),
+        getCourseCats(),
       ]);
 
       setLoading(false);
@@ -77,7 +78,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
       // console.log('categoriesData' , categoriesData)
 
       if (
-        blogData.status === "success" &&
+        courseData.status === "success" &&
         categoriesData.status === "success"
       ) {
         setForm({
@@ -89,7 +90,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                 name: "title",
                 classes: "w-full",
               },
-              value: blogData.blog.title,
+              value: courseData.course.title,
               validation: {
                 maxLength: 50,
                 required: true,
@@ -105,7 +106,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                 name: "slug",
                 classes: "w-full",
               },
-              value: blogData.blog.slug,
+              value: courseData.course.slug,
               validation: {
                 required: true,
                 maxLength: 150,
@@ -121,7 +122,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                 name: "keywords_meta",
                 classes: "w-full",
               },
-              value: blogData.blog.keywords_meta,
+              value: courseData.course.keywords_meta,
               validation: {
                 maxLength: 150,
               },
@@ -136,7 +137,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                 name: "description_meta",
                 classes: "w-full",
               },
-              value: blogData.blog.description_meta,
+              value: courseData.course.description_meta,
               validation: {
                 maxLength: 50,
               },
@@ -156,7 +157,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                   title: item.title,
                 })),
               },
-              value: blogData.blog.categories.map((item: ICategory)=>(item.id)),
+              value: courseData.course.categories.map((item: ICategory)=>(item.id)),
               validation: {
                 required: true,
               },
@@ -171,7 +172,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
                 name: "content",
                 classes: "w-full",
               },
-              value:  blogData.blog.content,
+              value:  courseData.course.content,
               validation: {
                 required: true,
               },
@@ -190,9 +191,9 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
               },
               value: [{ 
                 id: 0, 
-                uploadedId: blogData.blog.image ? blogData.blog.image.id : null,
+                uploadedId: courseData.course.image ? courseData.course.image.id : null,
                 errorMsg: "",
-                fileUrl: blogData.blog.image ? {bucketName: blogData.blog.image.bucket, fileName: blogData.blog.image.location} : null,
+                fileUrl: courseData.course.image ? {bucketName:courseData.course.image.bucket, fileName: courseData.course.image.location} : null,
               }],
               validation: {},
               valid: false,
@@ -207,7 +208,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
 
       setLoading(false);
     };
-    getBlog();
+    getCourse();
   }, []);
 
 
@@ -240,11 +241,11 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
 
       payload.image = payload.image ? parseInt(payload.image) : 0;
 
-      const data = await updateBlog(id, payload as INewBlog);
+      const data = await updateCourse(id, payload as INewCourse);
 
       if (data.status === "success") {
-        toast.success("مقاله با موفقیت ویرایش شد");
-        router.push("/admin-dashboard/blog");
+        toast.success("دوره با موفقیت ویرایش شد");
+        router.push("/admin-dashboard/courses");
       } else {
         toast.error(data.message || "خطایی رخ داد");
       }
@@ -263,9 +264,9 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
   return (
     <div className="container mx-auto p-3">
       <h1 className="text-gray-700 dark:text-white text-2xl font-extrabold mb-10">
-        ویرایش مقاله
+        ویرایش دوره
       </h1>
-      <Card title="" classes="w-[90%] max-w-[1200px] mx-auto mb-5">
+      <Card title="" classes="-[90%] max-w-[1200px] mx-auto mb-5">
         {
           loading ? 
           (
@@ -286,6 +287,11 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
           )
         }
       </Card>
+      <Card title="" classes="-[90%] max-w-[1200px] mx-auto mb-5">
+        <EditCourseEpisodePage episodes={[]}  />
+      </Card>
+
+
     </div>
   );
 }

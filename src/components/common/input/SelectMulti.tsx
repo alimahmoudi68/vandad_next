@@ -184,7 +184,7 @@ const SelectMulti: React.FC<SelectMultiProps> = ({ config, change, value, errorM
     return (
         <div className={`${config.classes} h-full flex flex-col items-center gap-x-2`}>
           
-            <div className='w-full flex flex-col items-center gap-x-2'>
+            <div className='w-full flex flex-col items-center gap-x-2 mb-2'>
                 <label className="w-full text-[0.8rem] min-[500px]:text-[1rem] text-start mb-3">{config.label}</label>               
                 <div className={`w-full p-1 rounded-lg relative border ${errorMsg ? 'border-red-500' : 'border-gray-300'}`}>
                     <div className='w-full flex items-center justify-between px-3 py-2 cursor-pointer hover:border-red-500 z-10' onClick={()=>showHandler()} ref={elBtn}>
@@ -273,14 +273,11 @@ const SelectMulti: React.FC<SelectMultiProps> = ({ config, change, value, errorM
                 errorMsg ?
                 (
                 <div className="w-full flex gap-x-2">
-                    <div className="min-w-[100px] text-[0.8rem] min-[500px]:text-[1rem] md:min-w-[120px] min-[1200px]:w-[130px] text-center"></div>
-                    <div>
-                    
+        
                     <span className="text-sm text-red-500">
                     {errorMsg}
                     </span>
                     
-                    </div>
                 </div>
                 )
                 :

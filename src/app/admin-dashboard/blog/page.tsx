@@ -4,7 +4,7 @@ import BlogPage from "@/components/pages/dashboard/blog/blog/blog/Blog";
 //import getUser from "@/utils/common/getUser";
 //import havePermission from "@/utils/common/havePermission";
 
-export default async function Categories() {
+export default async function Blogs() {
   
   //const getUserInfo = await getUser();
 

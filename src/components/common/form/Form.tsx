@@ -322,7 +322,7 @@ const Form = ({
     <form
       onSubmit={submitHandler}
       ref={formRef}
-      className={`${classes} w-full flex items-center gap-y-3 flex-wrap`}
+      className={`${classes} w-full flex items-center gap-y-6 flex-wrap`}
     >
       {form.formItems?.map((input: FormItem, index: number) => {
         return (

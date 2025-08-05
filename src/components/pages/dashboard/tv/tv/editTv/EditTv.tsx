@@ -298,11 +298,11 @@ export default function EditTvPage({ id }: EditTvPageProps) {
       <h1 className="text-gray-700 dark:text-white text-2xl font-extrabold mb-10">
         ویرایش مقاله
       </h1>
-      <Card title="" classes="w-[90%] max-w-[600px] mx-auto mb-5">
+      <Card title="" classes="-[90%] max-w-[1200px] mx-auto mb-5">
         {
           loading ? 
           (
-            <SkeletonLoading rows={3} cols={1} itemClasses={"h-[50px]"} />
+            <SkeletonLoading rows={10} cols={1} itemClasses={"h-[60px]"} />
           )
           :
           (

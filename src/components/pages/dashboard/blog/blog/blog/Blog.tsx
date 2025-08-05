@@ -64,28 +64,25 @@ export default function BlogPage() {
         }
     };
 
-    useEffect(() => {
-        getData(1 , '');
-    }, []);
-
 
     const goPage = async (p: number) => {
         getData(p , key);
     }
 
 
-    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let q = e.target.value;
-        setKey(q);
-    
+    useEffect(() => {
         const timeoutId = setTimeout(() => {
-           setDebouncedKey(key); 
-           getData(1 , q);
-        }, 1000); 
-    
-        return () => clearTimeout(timeoutId);
-    }
+        setDebouncedKey(key);
+        getData(1, key);
+        }, 500); 
 
+        return () => clearTimeout(timeoutId); 
+    }, [key]);
+
+
+    const inputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setKey(e.target.value);
+    };
 
     const doneRemove = (id: number) => {
         let oldItems = [...items];

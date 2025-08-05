@@ -1,10 +1,15 @@
-import CategoriesPage from "@/components/pages/dashboard/blog/categories/categories/Categories";
+import CategoriesPage from "@/components/pages/dashboard/course/categories/categories/Categories";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";
 //import havePermission from "@/utils/common/havePermission";
 
-export default async function BlogCats() {
+
+export const metadata = {
+  title : 'دسته بندی دوره‌ها'
+}
+
+export default async function courseCats() {
   
   //const getUserInfo = await getUser();
 
