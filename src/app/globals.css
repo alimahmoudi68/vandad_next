@@ -205,3 +205,12 @@
   }
 }
 
+/* tiptap ProseMirror */
+.ProseMirror {
+  border: none !important;
+  padding: 10px;
+  border-radius: 5px;
+}
+.ProseMirror-focused {
+  outline: none;
+}

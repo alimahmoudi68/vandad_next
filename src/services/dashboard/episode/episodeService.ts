@@ -5,6 +5,16 @@ interface INewEpisode {
     content: string,
     price: number,
     date: string,
+    time: string,
+    courseId: number,
+}
+
+interface IUpdateEpisode {
+    title: string,
+    content: string,
+    price: number,
+    date: string,
+    time: string,
 }
 
 interface IEpisode {
@@ -13,6 +23,7 @@ interface IEpisode {
     content: string,
     price: number,
     date: string,
+    time: string,
     created_at: string,
     upated_at: string,
 }
@@ -49,7 +60,7 @@ export const removeEpisode = async(id:number) =>{
 }
 
 
-export const updateEpisode = async (id: number , formData: INewEpisode): Promise<NewEpisodeResponse> => {
+export const updateEpisode = async (id: number , formData: IUpdateEpisode): Promise<NewEpisodeResponse> => {
 
     return await myFetchServer(`/admin/episodes/${id}`, {
         headers: {

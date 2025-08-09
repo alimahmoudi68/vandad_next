@@ -1,9 +1,10 @@
 import React from "react";
+import persian from "react-date-object/calendars/persian"
+import persian_fa from "react-date-object/locales/persian_fa"
+
 import DatePicker from "react-multi-date-picker";
 import "react-multi-date-picker/styles/colors/teal.css";
 
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
 
 interface InputDateProps {
   config: {

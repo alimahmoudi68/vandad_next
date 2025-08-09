@@ -25,7 +25,7 @@ export default async function EditCategory({ params }: { params: Params }) {
 
   let id = params.id;
   let categoriesData = await categories();
-  let categoryData = await singleCategory(id);
+  let categoryData = await singleCategory(+id);
 
   return (
     <EditCategoryPage id={id}/>

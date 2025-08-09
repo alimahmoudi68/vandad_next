@@ -20,6 +20,17 @@ interface EditCoursePageProps {
   id: number;
 }
 
+interface IEpisode {
+  id: number,
+  title: string,
+  content: string,
+  date: string
+  time: string,
+  price: number,
+  created_at: string,
+  upated_at: string,
+}
+
 interface ICategory {
   id: string;
   title: string;
@@ -64,7 +75,7 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
   const [loading, setLoading] = useState(true);
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [form, setForm] = useState<IForm>();
-
+  const [episodes, setEpisodes] = useState<IEpisode[]>([]);
   useEffect(() => {
     const getCourse = async () => {
       const [courseData, categoriesData] = await Promise.all([
@@ -74,13 +85,16 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
 
       setLoading(false);
 
-      // console.log('categoryData' , categoryData)
+      console.log('courseData' , courseData)
+      console.log(typeof courseData.course.episodes[4].content);
+
       // console.log('categoriesData' , categoriesData)
 
       if (
         courseData.status === "success" &&
         categoriesData.status === "success"
       ) {
+        setEpisodes(courseData.course.episodes);
         setForm({
           formItems: [
             {
@@ -270,7 +284,7 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
         {
           loading ? 
           (
-            <SkeletonLoading rows={10} cols={1} itemClasses={"h-[60px]"} />
+            <SkeletonLoading rows={10} cols={1} itemClasses={"h-[70px]"} />
           )
           :
           (
@@ -288,7 +302,7 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
         }
       </Card>
       <Card title="" classes="-[90%] max-w-[1200px] mx-auto mb-5">
-        <EditCourseEpisodePage episodes={[]}  />
+        <EditCourseEpisodePage courseId={id} episodes={episodes}/>
       </Card>
 
 

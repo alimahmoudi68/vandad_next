@@ -8,44 +8,18 @@ export const showDateNow  = () =>{
 }
 
 
-interface ShowDateProps {
-    time: string | number | Date;
-}
-
-export const showDate = ({ time }: ShowDateProps) => {
+export const showDateFromNow = ( time: string | number | Date) => {
     return moment(time).fromNow();
 }
 
-interface ShowDateTimeProps {
-    time: string | number | Date;
-}
 
-export const showDateTime = ({ time }: ShowDateTimeProps) => {
+export const showDateTime = (time : string | number | Date) => {
     return momentj(time).format('jYYYY/jM/jD - HH:mm');
 }
 
-interface ShowAgeProps {
-    birthday: string;
-}
 
-export const showAge = ({ birthday }: ShowAgeProps): number => {
-    const miladiBirthday = momentj(`${birthday} 00:00`, 'jYYYY/jM/jD HH:mm').format('YYYY-M-D HH:mm');
-    return moment().diff(moment(`${miladiBirthday}`, 'jYYYY-M-jD HH:mm'), 'years');
-}
-
-interface ShowDateChartProps {
-    time: string | number | Date;
-}
-
-export const showDateChart = ({ time }: ShowDateChartProps) => {
-    return momentj(time).format('jYYYY-jM-jD');
+export const showDate = (time : string | number | Date) => {
+    return momentj(time).format('jYYYY/jM/jD');
 }
 
 
-interface ShowDateMonthlyChartProps {
-    time: string | number | Date;
-}
-
-export const showDateMonthlyChart = ({ time }: ShowDateMonthlyChartProps) => {
-    return momentj(time).format('jYYYY-jM');
-}

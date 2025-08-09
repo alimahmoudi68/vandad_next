@@ -3,8 +3,9 @@ import { toast } from "react-toastify";
 
 import Form from "@/components/common/form/Form";
 import MasterModal from "@/components/modals/masterModal/MasterModal";
-import { newEpisode } from "@/services/dashboard/episode/episodeService";
+import { updateEpisode } from "@/services/dashboard/episode/episodeService";
 import { convertJalaliToGregorian } from "@/utils/common/convertJalaliToGregorian";
+import { showDate } from "@/utils/common/showDate";
 
 interface IEpisode {
   id: number;
@@ -17,10 +18,10 @@ interface IEpisode {
   upated_at: string;
 }
 
-interface ModalNewEpisodeProps {
-  courseId: number;
+interface ModalEditEpisodeProps {
   close: () => void;
   done: (episode: IEpisode) => void;
+  episode: IEpisode;
 }
 
 interface FormItem {
@@ -43,10 +44,10 @@ interface IForm {
   formItems: FormItem[];
 }
 
-const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
-  courseId,
+const ModalEditEpisode: React.FC<ModalEditEpisodeProps> = ({
   close,
   done,
+  episode
 }) => {
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [form, setForm] = useState<IForm>({
@@ -58,7 +59,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
           name: "title",
           classes: "w-full",
         },
-        value: "",
+        value: episode.title,
         validation: {
           maxLength: 50,
           required: true,
@@ -74,7 +75,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
           name: "date",
           classes: "w-full",
         },
-        value: "",
+        value: showDate(episode.date),
         validation: {},
         valid: false,
         errorMsg: "",
@@ -89,8 +90,8 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
           placeholder: "",
           classes: "w-full",
         },
-        value: "",
-        value2: "",
+        value: episode.price,
+        value2: (episode.price).toLocaleString(),
         validation: {
           required: true,
         },
@@ -105,7 +106,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
           name: "time",
           classes: "w-full",
         },
-        value: "",
+        value: episode.time,
         validation: {
           maxLength: 50,
           required: true,
@@ -121,7 +122,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
           name: "content",
           classes: "w-full",
         },
-        value: "",
+        value: episode.content,
         validation: {
           required: true,
         },
@@ -157,9 +158,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
 
       payload.date = convertJalaliToGregorian(payload.date);
 
-      const data = await newEpisode({...payload,courseId});
-
-      console.log('data2222',data)
+      const data = await updateEpisode(episode.id , payload);
 
       if (data.status === "success") {
         toast.success("قسمت جدید با موفقیت ثبت شد");
@@ -185,7 +184,7 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
 
   return (
     <>
-      <MasterModal close={close} title={"قسمت جدید"} isWide={true}>
+      <MasterModal close={close} title={"ویرایش جلسه"} isWide={true}>
         <div className="w-full flex flex-col">
           <Form
             initForm={form}
@@ -199,4 +198,4 @@ const ModalNewEpisode: React.FC<ModalNewEpisodeProps> = ({
   );
 };
 
-export default ModalNewEpisode;
+export default ModalEditEpisode;

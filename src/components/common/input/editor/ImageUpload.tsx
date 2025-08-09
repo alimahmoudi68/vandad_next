@@ -1,27 +1,30 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { newUpload } from '@/services/dashboard/uploads/uploadsService';
+import React, { useState } from "react";
+import { newUpload } from "@/services/dashboard/uploads/uploadsService";
 
 interface ImageUploadProps {
   onImageUpload: (imageUrl: string) => void;
   className?: string;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = '' }) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  onImageUpload,
+  className = "",
+}) => {
   const [isUploading, setIsUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
   const handleFileUpload = async (file: File) => {
     if (!file) return;
-    if (!file.type.startsWith('image/')) {
-      alert('لطفا فقط فایل تصویر آپلود کنید');
+    if (!file.type.startsWith("image/")) {
+      alert("لطفا فقط فایل تصویر آپلود کنید");
       return;
     }
     setIsUploading(true);
     try {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       // فراخوانی سرویس آپلود
       const response = await newUpload(formData);
@@ -29,14 +32,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = ''
       // ساخت آدرس عکس
       const upload = response.upload;
       const baseUrl = process.env.NEXT_PUBLIC_S3_URL;
+
       if (upload && baseUrl) {
-        const imageUrl = `${baseUrl}/${upload.bucket}/${upload.original}`;
+        const imageUrl = `${baseUrl}/${upload.bucket}/${upload.location}`;
         onImageUpload(imageUrl);
       } else {
-        alert('خطا در دریافت آدرس تصویر');
+        alert("خطا در دریافت آدرس تصویر");
       }
     } catch (error) {
-      alert('خطا در آپلود تصویر');
+      alert("خطا در آپلود تصویر");
     }
     setIsUploading(false);
   };
@@ -44,8 +48,8 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = ''
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') setDragActive(true);
-    else if (e.type === 'dragleave') setDragActive(false);
+    if (e.type === "dragenter" || e.type === "dragover") setDragActive(true);
+    else if (e.type === "dragleave") setDragActive(false);
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -67,12 +71,18 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = ''
     <div className={`image-upload ${className}`}>
       <div
         className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-          dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'
+          dragActive
+            ? "border-blue-500 bg-blue-50"
+            : "border-gray-300 hover:border-gray-400"
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
         onDragOver={handleDrag}
         onDrop={handleDrop}
+        onClick={(e) => {
+          // فقط stopPropagation انجام می‌دهیم، preventDefault نمی‌کنیم
+          e.stopPropagation();
+        }}
       >
         {isUploading ? (
           <div className="flex flex-col items-center">
@@ -98,6 +108,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = ''
             <label
               htmlFor="image-upload-input"
               className="inline-block mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                // اجازه می‌دهیم که label کار کند
+              }}
             >
               انتخاب فایل
             </label>
@@ -108,4 +122,4 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onImageUpload, className = ''
   );
 };
 
-export default ImageUpload; 
+export default ImageUpload;

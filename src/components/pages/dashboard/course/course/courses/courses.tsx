@@ -49,6 +49,7 @@ export default function CoursesPage() {
     const getData = async (p: number , q: string) => {
         setLoading(true);
         let data = await getCourses(p , q);
+        console.log(data);
         setLoading(false);
         if (data.status === "success") {
             setItems(data.courses || []);

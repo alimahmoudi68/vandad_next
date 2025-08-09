@@ -4,9 +4,10 @@ interface MasterModalProps {
   children: React.ReactNode;
   close: () => void;
   title: string;
+  isWide? : boolean
 }
 
-const MasterModal: React.FC<MasterModalProps> = ({ children, close ,title }) => {
+const MasterModal: React.FC<MasterModalProps> = ({ children, close ,title , isWide = false }) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -23,7 +24,7 @@ const MasterModal: React.FC<MasterModalProps> = ({ children, close ,title }) => 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-bgModal-100 dark:bg-bgModalDark-200" onClick={handleBackgroundClick}>
       <div 
-        className="w-4/5 h-fit max-w-[650px] bg-white-100 dark:bg-cardDark-100 rounded-3xl p-5 shadow-lg relative"
+        className={`w-4/5 h-fit ${isWide ? 'max-w-[1200px]' : 'max-w-[650px]' } bg-white-100 dark:bg-cardDark-100 rounded-3xl p-5 shadow-lg relative`}
         style={{ maxHeight: '90vh', overflowY: 'auto', overscrollBehavior: 'contain' }}
         onClick={(e) => e.stopPropagation()} // جلوگیری از بسته شدن مودال هنگام کلیک داخل آن
       >       
