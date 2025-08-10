@@ -21,6 +21,9 @@ interface FormProps {
   submit: (form: any) => void;
   classes?: string;
   file?: boolean;
+  config?:{
+    forComment: boolean;
+  }
 }
 
 interface FormItem {
@@ -72,6 +75,7 @@ const Form = ({
   submit,
   classes,
   file,
+  config = { forComment: false }
 }: FormProps) => {
   const [form, setForm] = useState(initForm);
   const formRef = useRef<HTMLFormElement>(null);
@@ -345,7 +349,7 @@ const Form = ({
         );
       })}
 
-      <div className="w-full flex flex-wrap flex-col items-center mt-10">
+      <div className={`w-full flex flex-wrap flex-col ${config.forComment ? 'items-end' : 'items-center mt-10'}`}>
         <Button loading={loading} type="submit" classes="min-w-[150px]">
           {submitTitle}
         </Button>

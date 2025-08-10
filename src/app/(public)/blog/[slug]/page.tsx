@@ -3,6 +3,7 @@ import ErrorPage from "@/components/common/errorPage/ErrorPage";
 import { singleBlog } from "@/services/public/blog/blogService";
 import { getBlogCats } from "@/services/public/blog/blogCatsService";
 import { IBlog, IBlogCat } from "@/types/blog";
+import { IBlogComments } from "@/types/blogComment";
 
 export const metadata = {
   title: "دسته بندی",
@@ -17,6 +18,10 @@ export default async function CatSlug({
   try {
     let {slug} = await params;
 
+    let blog: IBlog = {} as IBlog;
+    let blogCats: IBlogCat[] = [];
+    let comments: IBlogComments = {} as IBlogComments; 
+
     const [blogRes, blogCatsRes] = await Promise.allSettled([
       singleBlog(slug),
       getBlogCats(),
@@ -29,8 +34,6 @@ export default async function CatSlug({
       );
     }
 
-    let blog: IBlog = {} as IBlog;
-    let blogCats: IBlogCat[] = [];
 
     if (
       blogRes.status === "fulfilled" &&
@@ -38,6 +41,7 @@ export default async function CatSlug({
      
     ) {
       blog = blogRes.value.blog;
+      comments = blogRes.value.commentData;
     }
 
     if (
@@ -48,7 +52,7 @@ export default async function CatSlug({
       blogCats = blogCatsRes.value.categories;
     }
 
-    return <SingleBlogPage blog={blog} blogCat={blogCats} />;
+    return <SingleBlogPage blog={blog} blogCat={blogCats} comments={comments}/>;
   } catch (err) {
     return <ErrorPage message="خطا در بارگذاری مقاله" statusCode={500} />;
   }

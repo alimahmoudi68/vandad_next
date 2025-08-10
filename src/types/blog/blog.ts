@@ -1,4 +1,5 @@
 import {IUpload} from "@/types/upload";
+import { IComment } from "../blogComment";
 
 export interface IBlog {
   id: number,
@@ -20,6 +21,9 @@ export interface IBlog {
       "title": string,
       "slug": string,
     }[],
+  commentData: {
+    comments: IComment[]
+  }
   created_at: string,
   upated_at: string,
   likedUsersCount: number

@@ -9,33 +9,12 @@ import Card from "@/components/common/card/Card";
 import {getBlogCats} from "@/services/dashboard/blog/blogCatsService";
 import {newBlog} from "@/services/dashboard/blog/blogService";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
-import { iteratee } from "lodash";
+import { IForm } from "@/types/form";
 
 
 interface NewBlogPageProps {
   permissions: string[];
 }
-
-interface FormItem {
-  inputType: string;
-  config: {
-    name: string;
-    label: string;
-    classes?: string;
-    [key: string]: any;
-  };
-  value: any;
-  value2?: any;
-  validation: Record<string, any>;
-  valid: boolean;
-  errorMsg: string;
-  used: boolean;
-}
-
-interface IForm {
-  formItems: FormItem[];
-}
-
 
 
 export default function NewBlogPage({
