@@ -91,7 +91,7 @@ export default function EdiitBlogPage({ id }: EditBlogPageProps) {
               },
               value: blogData.blog.title,
               validation: {
-                maxLength: 50,
+                maxLength: 300,
                 required: true,
               },
               valid: false,

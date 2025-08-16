@@ -256,7 +256,7 @@ export default function NewTvPage({
 
       if (data.status === "success") {
         toast.success("ویدیوی جدید با موفقیت ثبت شد");
-        router.push("/admin-dashboard/tv");
+        router.push("/admin-dashboard/tvs");
       } else {
         toast.error(Array.isArray(data.message) ? data.message.join("، ") : data.message || "خطایی رخ داد");
       }

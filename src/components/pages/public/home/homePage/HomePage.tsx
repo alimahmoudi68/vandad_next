@@ -3,8 +3,10 @@ import React from "react";
 
 import Slider from "@/components/pages/public/home/slider/Slider";
 import NewBlog from "@/components/pages/public/home/newBlog/NewBlog";
+import NewTvs from "@/components/pages/public/home/newTvs/NewTvs";
 import { IBlog } from "@/types/blog";
-import{ ISlider } from "@/types/slider"
+import { ITv } from "@/types/tv";
+import{ ISlider } from "@/types/slider";
 
 export const metadata = {
   title: 'ونداد | صفحه اصلی',
@@ -15,15 +17,17 @@ export const metadata = {
 type IndexPageProps = {
   slider: ISlider[];
   blog: IBlog[];
+  tvs: ITv[]
 };
 
-export default function IndexPage({ slider, blog }: IndexPageProps) {
+export default function IndexPage({ slider, blog, tvs }: IndexPageProps) {
 
   return (
     <>
       <div className="container mx-auto px-3 md:px-0 pt-[10px] md:pt-[120px]">
         <Slider sliders={slider} />
         <NewBlog blog={blog} /> 
+        <NewTvs tvs={tvs} /> 
 
         {/* <AmazingProducts products={amazingProduct} showMenu={false} /> */}
         {/* <NewProduct products={newProducts} /> */}

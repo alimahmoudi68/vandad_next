@@ -177,7 +177,10 @@ export default function NewProductPage({
             fileUrl: null,
           },
         ],
-        validation: {},
+        validation: {
+          maxSize: 50, // حداکثر 50 مگابایت
+          allowTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+        },
         valid: false,
         errorMsg: "",
         used: false,
@@ -198,7 +201,10 @@ export default function NewProductPage({
             fileUrl: null,
           },
         ],
-        validation: {},
+        validation: {
+          maxSize: 50, // حداکثر 50 مگابایت
+          allowTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
+        },
         valid: false,
         errorMsg: "",
         used: false,

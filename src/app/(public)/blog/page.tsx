@@ -8,28 +8,39 @@ export const metadata = {
   description: "",
 };
 
-
-export default async function Home() {
-
+export default async function Blog({
+  searchParams,
+}: {
+  searchParams: { cat?: string };
+}) {
   try {
+    const cat = searchParams.cat || "";
 
-      const [blogRes, blogCatsRes] = await Promise.allSettled([
-        getBlog(1, 8, ''),
-        getBlogCats()
-      ]);
+    const [blogRes, blogCatsRes] = await Promise.allSettled([
+      getBlog(1, 8, "", cat),
+      getBlogCats(),
+    ]);
 
-      let blog: IBlog[] = [];
-      let blogCats: IBlogCat[] = [];
+    let blog: IBlog[] = [];
+    let blogCats: IBlogCat[] = [];
 
-      if (blogRes.status === 'fulfilled' && blogRes.value?.status === 'success' && Array.isArray(blogRes.value.blogs)) {
-        blog = blogRes.value.blogs;
-      }
+    if (
+      blogRes.status === "fulfilled" &&
+      blogRes.value?.status === "success" &&
+      Array.isArray(blogRes.value.blogs)
+    ) {
+      blog = blogRes.value.blogs;
+    }
 
-      if (blogCatsRes.status === 'fulfilled' && blogCatsRes.value?.status === 'success' && Array.isArray(blogCatsRes.value.categories)) {
-        blogCats = blogCatsRes.value.categories;
-      }
+    if (
+      blogCatsRes.status === "fulfilled" &&
+      blogCatsRes.value?.status === "success" &&
+      Array.isArray(blogCatsRes.value.categories)
+    ) {
+      blogCats = blogCatsRes.value.categories;
+    }
 
-    return <BlogPage blog={blog} blogCat={blogCats}/>;
+    return <BlogPage blog={blog} blogCat={blogCats} />;
   } catch (err) {
     console.log("error");
   }

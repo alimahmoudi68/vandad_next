@@ -126,7 +126,7 @@ export default function TvPage() {
             placeholder="جستجو..."
             />
             <Link
-            href={"/admin-dashboard/blog/new"}
+            href={"/admin-dashboard/tvs/new"}
             className="text-center md:w-[200px] rounded-md p-2 bg-primary-100 border border-primary-100 hover:bg-transparent hover:text-primary-100 text-white-100 font-semibold"
             >
             ویدیوی جدید

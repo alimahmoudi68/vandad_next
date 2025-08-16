@@ -105,7 +105,7 @@ export default function File({config , change , value , validation}: FileProps) 
     let oldUploaders: Uploader[] = [...uploaders];
     let newUploaders: Uploader[] = [];
 
-    console.log(id)
+    //console.log(id)
 
     if (oldUploaders.length === 1) {
       newUploaders = oldUploaders.map((item) => {

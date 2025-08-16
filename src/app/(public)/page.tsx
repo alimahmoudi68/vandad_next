@@ -1,6 +1,8 @@
 import IndexPage from "@/components/pages/public/home/homePage/HomePage";
 import { getBlog } from "@/services/public/blog/blogService";
+import { getTvs } from "@/services/public/tvs/tvService";
 import { IBlog } from "@/types/blog";
+import { ITv } from "@/types/tv";
 import { ISlider } from "@/types/slider";
 
 export const metadata = {
@@ -25,9 +27,13 @@ export default async function Home() {
       },
     ];
 
-    const [blogRes] = await Promise.allSettled([getBlog(1, 8, "")]);
+    const [blogRes, tvRes] = await Promise.allSettled([
+      getBlog(1, 8, ""),
+      getTvs(1,8,"")
+    ]);
 
     let blog: IBlog[] = [];
+    let tvs: ITv[] = [];
 
     if (
       blogRes.status === "fulfilled" &&
@@ -37,7 +43,15 @@ export default async function Home() {
       blog = blogRes.value.blogs;
     }
 
-    return <IndexPage slider={sliders} blog={blog} />;
+    if (
+      tvRes.status === "fulfilled" &&
+      tvRes.value?.status === "success" &&
+      Array.isArray(tvRes.value.tvs)
+    ) {
+      tvs = tvRes.value.tvs;
+    }
+
+    return <IndexPage slider={sliders} blog={blog} tvs={tvs}/>;
   } catch (err) {
     console.log("error");
   }

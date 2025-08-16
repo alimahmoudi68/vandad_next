@@ -1,7 +1,7 @@
-import {IComment} from "./comment";
+import {IItemsCommentBlog} from "./IItemsCommentBlog";
 
 export interface IBlogComments {
-    comments: IComment[] ,
+    comments: IItemsCommentBlog[] ,
     pagination: {
         count: 1,
         page: 1,

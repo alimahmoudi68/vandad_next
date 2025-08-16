@@ -10,7 +10,7 @@ export const metadata = {
   description: "",
 };
 
-export default async function CatSlug({
+export default async function SingleTv({
   params,
 }: {
  params: Promise<{ slug: string }>;

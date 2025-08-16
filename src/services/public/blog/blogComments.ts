@@ -1,11 +1,11 @@
 import myFetchServer from '@/services/myFetchServer'; 
-import { IComment, INewComment} from '@/types/blogComment';
+import { IItemsCommentBlog, INewComment} from '@/types/blogComment';
 
 
 
 interface ICommentResponse {
     status: 'success' | 'error';
-    comments?: IComment[];
+    comments?: IItemsCommentBlog[];
     message?: string,
     pagination?:{
         page: number,
@@ -21,7 +21,7 @@ interface INewCommentResponse {
 
 
 
-export const getMoreComments = async (id: number , p: string): Promise<ICommentResponse> => {
+export const getMoreCommentsBlog = async (id: number , p: string): Promise<ICommentResponse> => {
 
     return await myFetchServer(`/admin/blog?page=${p}&limit=20`, {
         headers: {
@@ -32,7 +32,7 @@ export const getMoreComments = async (id: number , p: string): Promise<ICommentR
     );
 }
 
-export const sendComment = async (formData: INewComment): Promise<INewCommentResponse> => {
+export const sendCommentBlog = async (formData: INewComment): Promise<INewCommentResponse> => {
 
     return await myFetchServer('/blog-comments', {
         headers: {
@@ -43,13 +43,3 @@ export const sendComment = async (formData: INewComment): Promise<INewCommentRes
         },
     );
 }
-
-
-
-// export const sendCommentRes = (type , id , comment , parent) =>{
-//     return axiosApiInstance.post(`/comment` ,{
-//         blog : type == 'blog' ? id : null ,
-//         comment ,
-//         parent:parent
-//     });
-// }

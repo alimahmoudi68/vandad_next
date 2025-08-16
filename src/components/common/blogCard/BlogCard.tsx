@@ -22,7 +22,7 @@ export default function BlogCard({classes  , slug ,  image , title, categories }
   return(
     <div className={`${classes} border dark:border-dark-25 bg-white-100 dark:bg-dark-25 flex flex-col items-start rounded-md`}>
       <Link href={`/blog/${slug}`} className="w-full h-full">
-      <ShowImg alt={title} width={500} height={500} bucketName={image.bucket} fileName={image.location} classes="w-full h-auto mb-2 rounded-md"/>
+      <ShowImg alt={title} width={500} height={500} bucketName={image?.bucket} fileName={image?.location} classes="w-full h-auto mb-2 rounded-md"/>
       </Link>
       <div className="w-full p-3">
         <Link href={`/blog/${slug}`} className="w-full h-full">
@@ -31,8 +31,8 @@ export default function BlogCard({classes  , slug ,  image , title, categories }
         <div className="w-full flex items-center justify-end">
           {
             categories.map((cat: IBlogCat ,index: number)=>(
-              <Link key={index} href={`/blog/category/${cat.slug}`} className="text-secondaryText-100 text-[0.8rem] border px-2 py-1 rounded-md hover:opacity-70 duration-300">
-                {cat.title}
+              <Link key={index} href={`/blog/category/${cat.slug}`} className="text-secondaryText-100 text-[0.8rem] hover:text-primary-100 duration-300">
+                #{cat.title}
               </Link>
             ))
           }

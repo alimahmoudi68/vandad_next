@@ -34,9 +34,9 @@ interface INewBlog{
     image: number
 }
 
-export const getBlog = async (p: number , limit: number , q: string): Promise<IBlogResponse> => {
+export const getBlog = async (p: number , limit: number , q: string , cat: string): Promise<IBlogResponse> => {
 
-    return await myFetchServer(`/blog?page=${p}&limit=${limit}&&q=${q}`, {
+    return await myFetchServer(`/blog?page=${p}&limit=${limit}&&q=${q}&cat=${cat}`, {
         headers: {
             "Content-Type": "application/json",
         },

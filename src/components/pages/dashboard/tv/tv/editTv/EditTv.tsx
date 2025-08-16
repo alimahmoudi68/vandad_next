@@ -277,7 +277,7 @@ export default function EditTvPage({ id }: EditTvPageProps) {
 
       if (data.status === "success") {
         toast.success("ویدیو با موفقیت ویرایش شد");
-        router.push("/admin-dashboard/tv");
+        router.push("/admin-dashboard/tvs");
       } else {
         toast.error(data.message || "خطایی رخ داد");
       }

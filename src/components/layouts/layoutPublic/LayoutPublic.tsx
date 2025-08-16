@@ -187,8 +187,8 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
             </div>
 
             <div className="h-full flex justify-center ml-[16px]">
-              <LogoHeader path={"/"}/>
-            </div> 
+              <LogoHeader path={"/"} />
+            </div>
 
             <nav className="hidden md:flex items-center">
               <ul className="flex p-0 m-0 list-none h-[35px]">
@@ -252,12 +252,13 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                     fileName={user?.avatar}
                     bucketName={"avatar"}
                   /> */}
-                  <Image 
-                  alt='user profile'
-                  src='/images/default-avatar.webp' 
-                  className="rounded-full w-[32px] h-[32px]"
-                  width={40}
-                  height={40}/>
+                  <Image
+                    alt="user profile"
+                    src="/images/default-avatar.webp"
+                    className="rounded-full w-[32px] h-[32px]"
+                    width={40}
+                    height={40}
+                  />
                   <i className="fa fa-caret-down mr-1"></i>
                 </div>
                 <div
@@ -316,7 +317,12 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
           </div>
         </div>
       </header>
-      <main className={`container mx-auto flex-grow`}>{children}</main>
+      <main
+        className={`container mx-auto flex-grow px-3 md:px-0 pt-[10px] md:pt-[130px] pb-6`}
+        suppressHydrationWarning
+      >
+        {children}
+      </main>
       <footer className="w-full text-sm font-normal leading-6 pb-20 md:pb-5 px-3 md:px-0 text-center text-white-100">
         <div className="container mx-auto bg-[#1c1d22] shadow-footer dark:shadow-footer-dark rounded-lg">
           <div className="flex flex-wrap gap-y-7 justify-around md:justify-between py-6 px-3">

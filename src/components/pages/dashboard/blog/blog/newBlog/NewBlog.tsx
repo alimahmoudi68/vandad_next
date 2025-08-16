@@ -44,7 +44,7 @@ export default function NewBlogPage({
                 },
                 value: "",
                 validation: {
-                  maxLength: 50,
+                  maxLength: 300,
                   required: true,
                 },
                 valid: false,

@@ -36,6 +36,8 @@ export default function AttributesPage({
     dispatch(updateAttributesAdmin(initialAttributes));
   }, [initialAttributes, dispatch]);
 
+  
+
   return (
     <div className="container mx-auto p-3">
       <div className="flex items-center justify-between mb-10">

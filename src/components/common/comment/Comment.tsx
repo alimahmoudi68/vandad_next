@@ -1,51 +1,94 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import React, { useState } from "react";
 import Link from "next/link";
-import { isEmpty } from "lodash";
 import Image from "next/image";
 import { toast } from "react-toastify";
 
-import ShowImg from "@/components/common/showImg/ShowImg";
+import ModalCommentRes from "@/components/modals/public/modalCommentRes/ModalCommentRes";
 import { showNameOrPhone } from "@/utils/common/showNameOrPhone";
 import { showDate } from "@/utils/common/showDate";
-import Spinner from "@/components/common/loading/Loading";
 import Button from "@/components/common/button/Button";
 import Form from "../form/Form";
 import {
-  sendComment,
-  getMoreComments,
+  sendCommentBlog,
+  getMoreCommentsBlog,
 } from "@/services/public/blog/blogComments";
-import { IComment } from "@/types/blogComment";
-import { IBlogComments } from "@/types/blogComment";
+import {
+  sendCommentTv,
+  getMoreCommentsTv,
+} from "@/services/public/tvs/tvComments";
+
+import { IBlogComments, IItemsCommentBlog } from "@/types/blogComment";
+import { ITvComments, IItemsCommentTv } from "@/types/tvComment";
+import { ICourseComments, IItemsCommentCourse } from "@/types/courseComment";
 import { IForm } from "@/types/form";
 
-interface ICommentPorps {
-  data: IBlogComments;
-  canRes: boolean;
+// ------------------ Props Types ------------------
+interface ICommentPropsBlog {
+  type: "blog";
   blogId: number;
+  canRes: boolean;
+  data: IBlogComments;
 }
 
-const calculateLastPage = (pagination: IBlogComments["pagination"]) => {
+interface ICommentPropsCourse {
+  type: "course";
+  courseId: number;
+  canRes: boolean;
+  data: ICourseComments;
+}
+
+interface ICommentPropsTv {
+  type: "tv";
+  tvId: number;
+  canRes: boolean;
+  data: ITvComments;
+}
+
+type ICommentProps = ICommentPropsBlog | ICommentPropsCourse | ICommentPropsTv;
+
+// ------------------ Generic Comment Type ------------------
+type CommentTypeMap = {
+  blog: IItemsCommentBlog;
+  course: IItemsCommentCourse;
+  tv: IItemsCommentTv;
+};
+
+// ------------------ Helpers ------------------
+const calculateLastPage = (pagination: {
+  count: number;
+  page: number;
+  limit: number;
+}) => {
   if (!pagination || pagination.limit <= 0) return 1;
   return Math.ceil(pagination.count / pagination.limit);
 };
 
-const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
-  const [comments, setComments] = useState<IComment[]>(data.comments);
+// ------------------ Component ------------------
+function Comments<T extends ICommentProps>(props: T) {
+  const { data, canRes } = props;
+
+  type IComment = T["type"] extends "blog"
+    ? IItemsCommentBlog
+    : T["type"] extends "course"
+    ? IItemsCommentCourse
+    : IItemsCommentTv;
+
+  const [comments, setComments] = useState<IComment[]>(
+    data.comments as IComment[]
+  );
   const [pageComment, setPageComment] = useState<number>(1);
   const [lastPageComments] = useState<boolean>(
     calculateLastPage(data.pagination) === pageComment
   );
   const [allowtMoreComment, setAllowtMoreComment] = useState(true);
   const [loadingBtnComment, setLoadingBtnComment] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [showModalCommentResponse, setShowModalCommentResponse] =
-    useState<Boolean>(false);
-  const [currentComment, setCurrentComment] = useState<IComment | {}>({});
+    useState<boolean>(false);
+  const [currentComment, setCurrentComment] = useState<IComment | null>(null);
 
-  const initForm = {
+  const initForm: IForm = {
     formItems: [
       {
         inputType: "textarea",
@@ -68,30 +111,51 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
 
   const [form, setForm] = useState<IForm>(initForm);
 
-  const sendCommentHandler = async (form: FormData | Record<string, any>) => {
+  const sendCommentHandler = async (
+    formData: FormData | Record<string, any>
+  ) => {
     setLoadingBtnComment(true);
     try {
-      let payload;
+      let payload: { content: string };
 
-      if (form instanceof FormData) {
+      if (formData instanceof FormData) {
         payload = {
-          content: form.get("content") as string,
+          content: formData.get("content") as string,
         };
       } else {
         payload = {
-          content: form.content,
+          content: formData.content,
         };
       }
-      const data = await sendComment({ ...payload, parentId: null, blogId: blogId });
 
-      if (data.status === "success") {
-        toast.success("نظر شما با موفقیت ثبت شد و پس از تایید نمایش داده می شود");
-      } else {
-        toast.error(
-          Array.isArray(data.message)
-            ? data.message.join("، ")
-            : data.message || "خطایی رخ داد"
+      let dataRes;
+
+      if (props.type === "blog") {
+        dataRes = await sendCommentBlog({
+          ...payload,
+          parentId: null,
+          blogId: props.blogId,
+        });
+      } else if (props.type === "course") {
+        // dataRes = await sendComment({ ...payload, parentId: null, courseId: props.courseId });
+      } else if (props.type === "tv") {
+        dataRes = await sendCommentTv({
+          ...payload,
+          parentId: null,
+          tvId: props.tvId,
+        });
+      }
+
+      if (dataRes && dataRes.status === "success") {
+        setForm(initForm);
+        toast.success(
+          "نظر شما با موفقیت ثبت شد و پس از تایید نمایش داده می شود"
         );
+      } else if (dataRes) {
+        const msg = Array.isArray(dataRes.message)
+          ? dataRes.message.join("، ")
+          : dataRes.message || "خطایی رخ داد";
+        toast.error(msg);
       }
     } catch (err) {
       toast.error(
@@ -105,74 +169,66 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
   };
 
   const moreCommentsHandler = async () => {
-    // if (allowtMoreComment) {
-    //   setLoading(true);
-    //   setAllowtMoreComment(false);
-    //   let { data } = await getMoreComments(
-    //     props.type,
-    //     props.id,
-    //     pageComment + 1
-    //   );
-    //   if ((data.status = "success")) {
-    //     // if (data.data.comments.page == data.data.comments.pages) {
-    //     //     setLastPageComments(true);
-    //     // }
-    //     let oldComments = comments;
-    //     setComments([...oldComments, ...data.data.comments.docs]);
-    //     setPageComment(pageComment + 1);
-    //     setAllowtMoreComment(true);
-    //     setLoading(false);
-    //     if (data.data.comments.page == data.data.comments.pages) {
-    //       setLastPageComments(true);
-    //     }
-    //   } else {
-    //     toast.error("مشکلی پیش آمه")
-    //   }
-    // }
+    // TODO: فعال‌سازی بعداً
   };
 
-  const stateModalCommentResponse = (state: boolean, comment: IComment) => {
+  const stateModalCommentResponse = (
+    state: boolean,
+    comment: IComment | null
+  ) => {
     setShowModalCommentResponse(state);
     setCurrentComment(comment);
   };
 
   return (
-    <div className="w-full bg-white-100 dark:bg-dark-200 flex flex-col justify-center items-center shadow-my dark:shadow-none p-5 rounded-md text-[0.9rem] font-normal my-3">
-      <div className="w-full flex justify-start items-center mb-5">
-        <svg
-          className="w-2 h-2 fill-primary-100 mr-1"
-          viewBox="0 0 100 100"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <circle cx="50" cy="50" r="50" />
-        </svg>
+    <div className="w-full bg-white-100 dark:bg-dark-200 flex flex-col justify-center items-center shadow-my dark:shadow-none p-3 rounded-md text-[0.9rem] font-normal my-3">
+      <div className="w-full flex justify-start items-center mb-3">
         <span className="text-primary-100 text-2xl font-extrabold">نظرات</span>
       </div>
 
-      {/* <ModalCommentResponse
-        show={showModalCommentResponse}
-        close={() => stateModalCommentResponse(false, {})}
-        comment={currentComment}
-        id={props.id}
-        type={props.type}
-      /> */}
+      {showModalCommentResponse && props.type === "blog" && (
+        <ModalCommentRes
+          type="blog"
+          parentId={currentComment ? currentComment.id : 0}
+          close={() => stateModalCommentResponse(false, null)}
+          blogId={props.blogId}
+        />
+      )}
+
+      {showModalCommentResponse && props.type === "course" && (
+        <ModalCommentRes
+          type="course"
+          parentId={currentComment ? currentComment.id : 0}
+          close={() => stateModalCommentResponse(false, null)}
+          courseId={props.courseId}
+        />
+      )}
+
+      {showModalCommentResponse && props.type === "tv" && (
+        <ModalCommentRes
+          type="tv"
+          parentId={currentComment ? currentComment.id : 0}
+          close={() => stateModalCommentResponse(false, null)}
+          tvId={props.tvId}
+        />
+      )}
 
       {canRes ? (
-        <Form
-          initForm={form}
-          submit={sendCommentHandler}
-          loading={loadingBtnComment}
-          submitTitle="ثبت"
-          config={{
-            forComment: true,
-          }}
-        />
+        <div className="w-full mb-5">
+          <Form
+            initForm={form}
+            submit={sendCommentHandler}
+            loading={loadingBtnComment}
+            submitTitle="ثبت"
+            config={{ forComment: true }}
+          />
+        </div>
       ) : (
-        <div className="w-full flex flex-col items-center justify-between p-4 text-white-100 font-normal bg-amber-500 md:flex-row">
+        <div className="w-full flex flex-col items-center justify-between p-4 text-white-100 font-normal bg-amber-500 md:flex-row mb-4 rounded-md">
           <div className="flex justify-start items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
+              className="h-5 w-5 ml-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -185,47 +241,39 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
               />
             </svg>
             <span className="text-xs md:text-base">
-              'برای ثبت نظر لطفا ابتدا لاگین کنید'
+              برای ثبت نظر لطفا ابتدا لاگین کنید
             </span>
           </div>
           <div className="mt-3 md:mt-0">
-            <Link href="/auth/login" legacyBehavior>
-              <a className="text-xs md:text-base group flex items-center transition-all duration-200 hover:text-gray-600">
-                ورود
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={3}
-                  stroke="currentColor"
-                  className="ml-2 w-4 h-4"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"
-                  />
-                </svg>
-              </a>
+            <Link
+              href="/auth/login"
+              className="text-xs md:text-base group flex items-center transition-all duration-200 hover:text-gray-600"
+            >
+              ورود
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mr-2 w-5 h-5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+              </svg>
             </Link>
           </div>
         </div>
       )}
+
       {comments &&
-        comments.map((comment: IComment, index: number) => (
+        comments.map((comment, index) => (
           <div
             className="w-full rounded-xl bg-white-100 border border-gray-200 dark:border-cyan-500 p-4 my-3 dark:bg-dark-200"
             key={index}
           >
             <div className="flex justify-between">
               <div className="flex items-center">
-                {/* <ShowImg
-                  classes="rounded-full"
-                  bucketName={'test'}
-                  fileName={'test'}
-                  width={64}
-                  height={64}
-                /> */}
+                <Image
+                  alt="user profile"
+                  src="/images/default-avatar.webp"
+                  className="rounded-full w-[32px] h-[32px] ml-2"
+                  width={40}
+                  height={40}
+                />
+
                 <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-50">
                   {showNameOrPhone(
                     comment?.user?.firstName,
@@ -238,35 +286,33 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
                 </span>
               </div>
 
-              <div>
-                {canRes ? (
-                  <Button
-                    classes="bg-primary-100 py-2 px-3 text-gray-800 font-semibold"
-                    click={() => stateModalCommentResponse(true, comment)}
-                  >
-                    پاسخ
-                  </Button>
-                ) : null}
-              </div>
+              {canRes && (
+                <Button
+                  classes="bg-primary-100 py-2 px-3 text-gray-800 font-semibold"
+                  click={() => stateModalCommentResponse(true, comment)}
+                >
+                  پاسخ
+                </Button>
+              )}
             </div>
             <div className="mt-5 font-normal text-base text-slate-600 text-start">
               {comment.content}
             </div>
-            {/* -- پاسخ کامنت  */}
+
             {comment.childs &&
-              comment.childs.map((comment2: IComment, index2: number) => (
+              comment.childs.map((comment2, index2) => (
                 <div
                   className="bg-white-100 border border-gray-200 dark:border-cyan-500 dark:bg-dark-200 md:mr-[50px] rounded-xl p-4 mt-3"
                   key={index2}
                 >
                   <div className="flex items-center">
-                    {/* <ShowImg
-                    classes="rounded-full"
-                    bucketName={'test'}
-                    fileName={'test'}
-                    width={64}
-                    height={64}
-                  /> */}
+                    <Image
+                      alt="user profile"
+                      src="/images/default-avatar.webp"
+                      className="rounded-full w-[32px] h-[32px] ml-2"
+                      width={40}
+                      height={40}
+                    />
                     <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-50">
                       {showNameOrPhone(
                         comment2?.user?.firstName,
@@ -285,24 +331,20 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
               ))}
           </div>
         ))}
-      {comments.length == 0 ? (
+
+      {comments.length === 0 && (
         <div className="flex flex-col justify-center items-center mt-3">
-          {/* <Image
-            width="64"
-            height="64"
-            src={`${process.env.NEXT_PUBLIC_S3_ENDPOINT_URL}?bucket=common&object=comment.png`}
-            alt="no-comment"
-          /> */}
           <span className="text-base font-medium mt-3 text-gray-400">
             نظری پیدا نشد
           </span>
         </div>
-      ) : null}
-      {lastPageComments !== true ? (
+      )}
+
+      {lastPageComments !== true && (
         <div className="flex flex-col justify-center items-center">
           <div
             className="flex justify-center items-center p-5 hover:cursor-pointer group"
-            onClick={() => moreCommentsHandler()}
+            onClick={moreCommentsHandler}
           >
             <span className="text-zinc-600 font-normal text-base transition-all duration-150 group-hover:text-zinc-400 dark:text-white-100">
               نمایش نظرات بیشتر
@@ -322,11 +364,11 @@ const Comments = ({ data, canRes, blogId }: ICommentPorps) => {
               />
             </svg>
           </div>
-          {loading ? <span>در حال دریافت نظرات...</span> : null}
+          {loading && <span>در حال دریافت نظرات...</span>}
         </div>
-      ) : null}
+      )}
     </div>
   );
-};
+}
 
 export default Comments;

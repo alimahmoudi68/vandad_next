@@ -1,8 +1,8 @@
-export interface IComment {
+export interface IItemsCommentBlog {
     id: number,
     content: string,
     accepted: boolean,
-    childs: IComment[],
+    childs: IItemsCommentBlog[],
     user: {
         firstName: string,
         lastName: string,
