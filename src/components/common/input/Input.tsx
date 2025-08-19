@@ -20,6 +20,7 @@ import SimpleInputTextDynamicInput from './SimpleInputTextDynamicInput';
 import AttributeVariant from './AttributeVariant';
 import Editor from './editor/EnhancedTipTapEditor';
 import InputDate from "./InputDate";
+import Faq from "./Faq";
 
 
 import { FC } from 'react';
@@ -31,6 +32,9 @@ interface InputProps {
 }
 
 const Input: FC<InputProps> = (props) => {
+
+    ///console.log('props' , props);
+
 
     let inputElement = null;
 
@@ -98,12 +102,14 @@ const Input: FC<InputProps> = (props) => {
             inputElement = <AttributeVariant config={props.config} change={props.change} value2={props.value2} value={props.value} errs={props.errs} {...props} />
             break;
         case "simple-input-date":
-            inputElement = (<InputDate config={props.config} change={props.change} value={props.value} errorMsg={props.errorMsg} {...props}/>
-      );
-      break;  
+            inputElement = (<InputDate config={props.config} change={props.change} value={props.value} errorMsg={props.errorMsg} {...props}/>);
+            break;  
         case 'editor':
             inputElement = <Editor config={props.config} change={props.change}  value={props.value} errorMsg={props.errs} {...props} />
-            break;                                           
+            break;
+        case 'faq':
+            inputElement = <Faq config={props.config} change={props.change}  value={props.value}  {...props} />
+            break;                                              
         default:
             inputElement =
                 (

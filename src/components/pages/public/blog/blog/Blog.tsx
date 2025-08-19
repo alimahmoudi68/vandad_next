@@ -24,7 +24,7 @@ export default function BlogPage({ blog, blogCat }: BlogPageProps) {
         <h1 className="w-full text-primaryText-100 text-2xl font-bold mb-4">
           مقاله‌ها
         </h1>
-        <div className='w-full lg:w-[calc(75%-10px)] flex flex-wrap gap-[20px] xl:gap-[30px] 2xl:gap-[15px] order-1 lg:order-2'>
+        <div className='w-full lg:w-[calc(75%-10px)] grow flex flex-wrap gap-[20px] xl:gap-[30px] 2xl:gap-[15px] order-1 lg:order-2'>
           {
             blog.map((blog , index)=>(
               <BlogCard
@@ -38,7 +38,7 @@ export default function BlogPage({ blog, blogCat }: BlogPageProps) {
             ))
           }
         </div>
-        <div className='w-full lg:w-[calc(25%-10px)] lg:max-w-[200px] order-2 lg:order-1 bg-white-100 rounded-[10px] p-[20px]'>
+        <div className='w-full h-fit lg:w-[calc(25%-10px)] lg:max-w-[300px] order-2 lg:order-1 bg-white-100 dark:bg-cardDark-100 rounded-[10px] p-[20px]'>
           <div className="flex items-center gap-2 mb-4 relative">
             <div className="w-[8px] h-[24px] bg-primary-100 absolute right-[-20px] top-[50%] translate-y-[-50%]">
             </div>

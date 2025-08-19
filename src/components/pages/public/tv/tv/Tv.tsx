@@ -20,8 +20,11 @@ export default function TvPage({ tvs, tvCats }: TvPageProps) {
 
   return (
     <>
-      <div className="container mx-auto px-3 md:px-0 pt-[10px] md:pt-[120px] flex flex-wrap gap-x-[20px]">
-        <div className='w-full lg:w-[calc(75%-10px)] flex flex-wrap gap-[20px] xl:gap-[30px] 2xl:gap-[15px] order-1 lg:order-2'>
+      <div className="container mx-auto flex flex-wrap gap-x-[20px]">
+        <h1 className="w-full text-primaryText-100 text-2xl font-bold mb-4">
+          ویدیو‌ها
+        </h1>
+        <div className='w-full lg:w-[calc(75%-10px)] grow flex flex-wrap gap-[20px] xl:gap-[30px] 2xl:gap-[15px] order-1 lg:order-2'>
           {
             tvs.map((tv , index)=>(
               <TvCard
@@ -35,7 +38,14 @@ export default function TvPage({ tvs, tvCats }: TvPageProps) {
             ))
           }
         </div>
-        <div className='w-full h-fit lg:w-[calc(25%-10px)] max-w-[200px] order-2 lg:order-1 bg-white-100 rounded-[10px] p-[20px]'>
+        <div className='w-full h-fit lg:w-[calc(25%-10px)] lg:max-w-[300px] order-2 lg:order-1 bg-white-100 dark:bg-cardDark-100 rounded-[10px] p-[20px]'>
+          <div className="flex items-center gap-2 mb-4 relative">
+            <div className="w-[8px] h-[24px] bg-primary-100 absolute right-[-20px] top-[50%] translate-y-[-50%]">
+            </div>
+            <span className="w-full block text-primaryText-100 text-lg font-bold">
+            دسته‌بندی‌ها
+            </span>
+          </div>
           <ul className="flex flex-col gap-[10px]">
             {
               tvCats.map((cat , index)=>(

@@ -17,10 +17,10 @@ interface BlogCardProps{
 
 export default function BlogCard({classes  , slug ,  image , title, categories } : BlogCardProps){
 
-  console.log("blog card", categories);
+  //console.log("blog card", categories);
   
   return(
-    <div className={`${classes} border dark:border-dark-25 bg-white-100 dark:bg-dark-25 flex flex-col items-start rounded-md`}>
+    <div className={`${classes} border dark:border-cardDark-100 dark:border-dark-25 bg-white-100 dark:bg-cardDark-100 flex flex-col items-start rounded-md`}>
       <Link href={`/blog/${slug}`} className="w-full h-full">
       <ShowImg alt={title} width={500} height={500} bucketName={image?.bucket} fileName={image?.location} classes="w-full h-auto mb-2 rounded-md"/>
       </Link>

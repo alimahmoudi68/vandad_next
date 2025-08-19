@@ -28,7 +28,7 @@ export default async function Home() {
     ];
 
     const [blogRes, tvRes] = await Promise.allSettled([
-      getBlog(1, 8, ""),
+      getBlog(1, 8, "" , ""),
       getTvs(1,8,"")
     ]);
 

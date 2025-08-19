@@ -255,7 +255,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                   <Image
                     alt="user profile"
                     src="/images/default-avatar.webp"
-                    className="rounded-full w-[32px] h-[32px]"
+                    className="rounded-full md:w-[40px] md:h-[40px] w-[32px] h-[32px]"
                     width={40}
                     height={40}
                   />

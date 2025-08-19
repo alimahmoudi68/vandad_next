@@ -298,6 +298,20 @@ const Form = ({
                         id: number;
                       }) => f.uploadedId
                     ); // فقط uploadedId برمی‌گردونه
+                } else if(form.formItems[item].inputType === "faq"){
+                  newForm[form.formItems[item].config.name] = form.formItems[
+                    item
+                  ].value
+                    .map(
+                      (f: {
+                        question: string;
+                        answer: string;
+                      }) => ({
+                        question: f.question ,
+                        answer: f.answer
+                      })
+                    );
+                
                 } else if (
                   form.formItems[item].inputType === "attribute-variant"
                 ) {

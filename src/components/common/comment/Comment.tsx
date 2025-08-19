@@ -55,7 +55,7 @@ type CommentTypeMap = {
 };
 
 // ------------------ Helpers ------------------
-const calculateLastPage = (pagination: {
+const calculateLastTotalPages = (pagination: {
   count: number;
   page: number;
   limit: number;
@@ -68,6 +68,8 @@ const calculateLastPage = (pagination: {
 function Comments<T extends ICommentProps>(props: T) {
   const { data, canRes } = props;
 
+  console.log('a' , calculateLastTotalPages(data.pagination))
+
   type IComment = T["type"] extends "blog"
     ? IItemsCommentBlog
     : T["type"] extends "course"
@@ -78,10 +80,13 @@ function Comments<T extends ICommentProps>(props: T) {
     data.comments as IComment[]
   );
   const [pageComment, setPageComment] = useState<number>(1);
-  const [lastPageComments] = useState<boolean>(
-    calculateLastPage(data.pagination) === pageComment
-  );
-  const [allowtMoreComment, setAllowtMoreComment] = useState(true);
+  const [lastPageComments] = useState<boolean>(() => {
+    const lastTotalPages = calculateLastTotalPages(data.pagination);
+    if (lastTotalPages === 0) {
+      return true;
+    }
+    return lastTotalPages === pageComment;
+  });
   const [loadingBtnComment, setLoadingBtnComment] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showModalCommentResponse, setShowModalCommentResponse] =
@@ -181,7 +186,7 @@ function Comments<T extends ICommentProps>(props: T) {
   };
 
   return (
-    <div className="w-full bg-white-100 dark:bg-dark-200 flex flex-col justify-center items-center shadow-my dark:shadow-none p-3 rounded-md text-[0.9rem] font-normal my-3">
+    <div className="w-full bg-white-100 dark:bg-cardDark-100 flex flex-col justify-center items-center shadow-my dark:shadow-none p-3 rounded-md text-[0.9rem] font-normal my-3">
       <div className="w-full flex justify-start items-center mb-3">
         <span className="text-primary-100 text-2xl font-extrabold">نظرات</span>
       </div>
@@ -261,7 +266,7 @@ function Comments<T extends ICommentProps>(props: T) {
       {comments &&
         comments.map((comment, index) => (
           <div
-            className="w-full rounded-xl bg-white-100 border border-gray-200 dark:border-cyan-500 p-4 my-3 dark:bg-dark-200"
+            className="w-full rounded-xl bg-white-100 border border-gray-200 dark:border-bgDark-100 p-4 my-3 dark:bg-bgDark-100"
             key={index}
           >
             <div className="flex justify-between">
@@ -274,14 +279,14 @@ function Comments<T extends ICommentProps>(props: T) {
                   height={40}
                 />
 
-                <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-50">
+                <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-100">
                   {showNameOrPhone(
                     comment?.user?.firstName,
                     comment?.user?.phone
                   )}
                 </span>
                 <span className="mx-1">-</span>
-                <span className="font-normal text-xs text-slate-400 dark:text-white-50">
+                <span className="font-normal text-xs text-slate-400 dark:text-white-100">
                   {showDate(comment.createdAt)}
                 </span>
               </div>
@@ -295,14 +300,14 @@ function Comments<T extends ICommentProps>(props: T) {
                 </Button>
               )}
             </div>
-            <div className="mt-5 font-normal text-base text-slate-600 text-start">
+            <div className="mt-5 font-normal text-base text-slate-600 dark:text-white-100 text-start">
               {comment.content}
             </div>
 
             {comment.childs &&
               comment.childs.map((comment2, index2) => (
                 <div
-                  className="bg-white-100 border border-gray-200 dark:border-cyan-500 dark:bg-dark-200 md:mr-[50px] rounded-xl p-4 mt-3"
+                  className="border border-gray-200 dark:border-cardDark-100  md:mr-[50px] rounded-xl p-4 mt-3"
                   key={index2}
                 >
                   <div className="flex items-center">
@@ -313,18 +318,18 @@ function Comments<T extends ICommentProps>(props: T) {
                       width={40}
                       height={40}
                     />
-                    <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-50">
+                    <span className="ml-3 font-normal text-sm text-slate-500 dark:text-white-100">
                       {showNameOrPhone(
                         comment2?.user?.firstName,
                         comment2?.user?.phone
                       )}
                     </span>
                     <span className="mx-1">-</span>
-                    <span className="font-normal text-xs text-slate-400 dark:text-white-50">
+                    <span className="font-normal text-xs text-slate-400 dark:text-white-100">
                       {showDate(comment2.createdAt)}
                     </span>
                   </div>
-                  <div className="mt-5 font-normal text-base text-slate-600 text-start">
+                  <div className="mt-5 font-normal text-base text-slate-600 dark:text-white-100 text-start">
                     {comment2.content}
                   </div>
                 </div>
@@ -334,35 +339,21 @@ function Comments<T extends ICommentProps>(props: T) {
 
       {comments.length === 0 && (
         <div className="flex flex-col justify-center items-center mt-3">
-          <span className="text-base font-medium mt-3 text-gray-400">
-            نظری پیدا نشد
+          <span className="text-base font-medium mt-3 text-primaryTextLight-400 dark:text-white-100">
+            نظری پیدا نشد ):
           </span>
         </div>
       )}
 
-      {lastPageComments !== true && (
+      {!lastPageComments && (
         <div className="flex flex-col justify-center items-center">
           <div
             className="flex justify-center items-center p-5 hover:cursor-pointer group"
             onClick={moreCommentsHandler}
           >
-            <span className="text-zinc-600 font-normal text-base transition-all duration-150 group-hover:text-zinc-400 dark:text-white-100">
+            <span className="text-zinc-600 font-normal text-base group-hover:text-zinc-400 dark:text-white-100">
               نمایش نظرات بیشتر
             </span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1 transition-all duration-150 stroke-zinc-600 group-hover:stroke-zinc-400 dark:stroke-white-100"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
           </div>
           {loading && <span>در حال دریافت نظرات...</span>}
         </div>

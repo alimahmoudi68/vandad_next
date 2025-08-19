@@ -13,7 +13,7 @@ const Textarea: React.FC<TextareaProps> = ({ config, change, value, errorMsg }) 
 
     return(
         <div className={`${config.classes} flex flex-wrap`}>
-            <div className={`w-full flex flex-col items-center gap-x-2`}>
+            <div className={`w-full flex flex-col items-center gap-x-2 mb-2`}>
                 <label className="w-full text-[0.8rem] min-[500px]:text-[1rem] text-start mb-3">{config.label}</label>               
                 <textarea
                 rows={5}
@@ -21,7 +21,7 @@ const Textarea: React.FC<TextareaProps> = ({ config, change, value, errorMsg }) 
                 name="exchangeDescription"
                 value={value}
                 onChange={change}
-                className={`w-full p-2 py-4 rounded-lg outline-none bg-white focus:border-primary-100 border ${errorMsg !== '' ? 'border-red-500' : 'border-gray-300'} border-gray-300`}
+                className={`w-full p-4 rounded-lg outline-none bg-white-100 dark:bg-bgDark-100 dark:border-bgDark-100 focus:border-primary-100 border ${errorMsg !== '' ? 'border-red-500' : 'border-gray-300'} border-gray-300`}
                 />    
             </div>
             {

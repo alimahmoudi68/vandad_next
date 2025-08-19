@@ -76,8 +76,15 @@ type checkValidationT = {
 }
 
 
+type IFAQ = {
+    type?: string;
+    indexItem?: number;
+    fieldName?: string;
+    event?: React.ChangeEvent<HTMLInputElement>;
+}
+
 export const inputChange = (
-    e: EventData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+    e: EventData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>  | IFAQ,
     element: number,
     formItems: FormElement[]
   ): { formItems: FormElement[] } => {
@@ -150,7 +157,7 @@ export const inputChange = (
     }if(updetedElement.inputType == 'input-price'){
 
         let event, data;
-        if ('event' in e) {
+        if ('event' in e && 'data' in e) {
             ({ event, data } = e);
         }
         let type = data?.type;
@@ -276,6 +283,7 @@ export const inputChange = (
     
     }else if(updetedElement.inputType == 'simple-input-number-float' || updetedElement.inputType == 'simple-input-number-float-with-label'){
         
+        if (!('target' in e)) return { formItems: updatedForm };
         let value = e.target?.value || ''; 
         let re = new RegExp(/^\d+(\.\d+)?\.?$/gi);
         let regexResult = re.test(value);
@@ -299,6 +307,7 @@ export const inputChange = (
             updatedForm[element] = updetedElement;
     }else if(updetedElement.inputType == 'simple-input-number' || updetedElement.inputType == 'simple-input-number-with-label'){
 
+        if (!('target' in e)) return { formItems: updatedForm };
         let val = e.target?.value || ''; 
         let value = convertPersianToEnglishNumbers(val) ; 
         let re = new RegExp(/^\d+$/gi);
@@ -328,6 +337,7 @@ export const inputChange = (
     }else if( updetedElement.inputType == 'simple-input-price-with-label' ){
 
 
+        if (!('target' in e)) return { formItems: updatedForm };
         let val = e.target?.value || ''; 
         let value = convertPersianToEnglishNumbers(val).replaceAll(',', ''); 
         let re = new RegExp(/^\d+$/gi);
@@ -388,18 +398,65 @@ export const inputChange = (
         }
     
     }else if (updetedElement.inputType == 'simple-input-text-dynamic-multi'){
-        if (e.target) {
-            updetedElement.value = e.target.value;
+        if ('target' in e && e.target) {
+            const targetValue = e.target?.value || '';
+            updetedElement.value = targetValue;
             updetedElement.valid = checkValidation(updetedElement.value , updetedElement.validation , updetedElement.config.isDepend , updetedElement.config.isDependField , updetedElement.config.isDependValue , formItems ).valid;
             const errorMsg = checkValidation(updetedElement.value, updetedElement.validation , updetedElement.config.isDepend , updetedElement.config.isDependField , updetedElement.config.isDependValue , formItems).msg;
             updetedElement.errorMsg = errorMsg;
             updetedElement.used = true;
             updatedForm[element] = updetedElement;
         }
+    }else if(updetedElement.inputType == 'faq'){
+
+        if('type' in e && e.type == 'addFaq'){
+            let oldValue = [...updetedElement.value];
+            oldValue.push({
+                question: "",
+                answer: "",
+                errs: {
+                    question: "",
+                    answer: "",
+                },
+            });
+            updetedElement.value = oldValue;
+            updatedForm[element] = updetedElement;
+        }else if('type' in e && e.type == 'removeFaq'){
+            let oldValue = [...updetedElement.value];
+            const removeIndex = ('indexItem' in e && typeof e.indexItem === 'number') ? e.indexItem : -1;
+            if (removeIndex > -1) {
+                oldValue.splice(removeIndex, 1);
+                updetedElement.value = oldValue;
+                updatedForm[element] = updetedElement;
+            }
+      
+        }else{
+            if ('event' in e && 'indexItem' in e && 'fieldName' in e) {
+                const newValue = e.event?.target?.value ?? '';
+                const idx = typeof e.indexItem === 'number' ? e.indexItem : -1;
+                const field = typeof e.fieldName === 'string' ? e.fieldName : '';
+                if (idx > -1 && field) {
+                    const oldValue = Array.isArray(updetedElement.value) ? [...updetedElement.value] : [];
+                    const currentItem = oldValue[idx] || {};
+                    oldValue[idx] = { ...currentItem, [field]: newValue };
+
+                    //let validation = checkValidation(newValue , {required : true} ).valid;
+                    let errorMsg = checkValidation(newValue,  {required : true} ).msg;
+
+                    oldValue[idx].errs[field] = errorMsg;
+
+
+                    updetedElement.value = oldValue;
+                    updetedElement.used = true;
+                    updatedForm[element] = updetedElement;
+                }
+            }
+        }
+
     }else{
 
-        if (e.target) {
-            updetedElement.value = e.target.value;
+        if ('target' in e && e.target) {
+            updetedElement.value = e.target?.value || '';
             updetedElement.valid = checkValidation(updetedElement.value , updetedElement.validation ).valid;
             const errorMsg = checkValidation(updetedElement.value, updetedElement.validation).msg;
             updetedElement.errorMsg = errorMsg;
@@ -487,6 +544,12 @@ export const validationByClick = (formItems: FormElement[]): { formItems: FormEl
             let mainValid = validationPrice && validationStock && validationSku;
             item.valid = mainValid;
             
+        }else if(item.inputType == 'faq'){
+            let mainValid = true;
+            item.value.forEach((item: any) => {
+                mainValid = mainValid && checkValidation(item.question, {required: true}).valid && checkValidation(item.answer, {required: true}).valid;
+            });
+            item.valid = mainValid;
         }else{
             item.valid = checkValidation(item.value, item.validation ,  item.config.isDepend , item.config.isDependField , item.config.isDependValue , formItems).valid;
             const errorMsg = checkValidation(item.value, item.validation ,  item.config.isDepend , item.config.isDependField , item.config.isDependValue , formItems).msg;

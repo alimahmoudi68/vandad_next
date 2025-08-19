@@ -22,9 +22,11 @@ type IndexPageProps = {
 
 export default function IndexPage({ slider, blog, tvs }: IndexPageProps) {
 
+  //console.log('blog' , blog)
+
   return (
     <>
-      <div className="container mx-auto px-3 md:px-0 pt-[10px] md:pt-[120px]">
+      <div className="container mx-auto">
         <Slider sliders={slider} />
         <NewBlog blog={blog} /> 
         <NewTvs tvs={tvs} /> 

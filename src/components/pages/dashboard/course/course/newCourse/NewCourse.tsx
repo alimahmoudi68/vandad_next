@@ -152,6 +152,28 @@ export default function NewCoursePage({
                 used: false,
               },
               {
+                inputType: "faq",
+                config: {
+                  label: "سوالات متداول",
+                  name: "faq",
+                  classes: "w-full",
+                },
+                value: [
+                  {
+                    question: "",
+                    answer: "",
+                    errs: {
+                      question: "",
+                      answer: "",
+                    },
+                  },
+                ],
+                validation: {},
+                valid: false,
+                errorMsg: "",
+                used: false,
+              },
+              {
                 inputType: "file",
                 config: {
                   label: "عکس شاخص",
