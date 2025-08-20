@@ -10,12 +10,18 @@ export const metadata = {
 };
 
 
-export default async function Tvs() {
+export default async function Tvs({
+  searchParams,
+}: {
+  searchParams: { cat?: string };
+}) {
+
+  const cat = searchParams.cat || "";
 
   try {
 
       const [tvRes, tvCatsRes] = await Promise.allSettled([
-        getTvs(1, 8, ''),
+        getTvs(1, 8, '' , cat),
         getTvCats()
       ]);
 

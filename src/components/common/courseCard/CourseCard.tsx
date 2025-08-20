@@ -1,7 +1,5 @@
-import {useState , useEffect} from "react";
 import ShowImg from "@/components/common/showImg/ShowImg";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import { IBlogCat } from "@/types/blog";
 
 interface TvCardProps{

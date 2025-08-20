@@ -195,7 +195,7 @@ export default function TvPage() {
                             </div>
 
                             <div className="w-full md:w-[20%] flex justify-end md:justify-center">
-                                <Link href={`/admin-dashboard/tv/${item.id}`}>
+                                <Link href={`/admin-dashboard/tvs/${item.id}`}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"

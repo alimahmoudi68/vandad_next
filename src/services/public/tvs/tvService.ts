@@ -14,9 +14,9 @@ interface ITvResponse {
 
 
 
-export const getTvs = async (p: number , limit: number , q: string): Promise<ITvResponse> => {
+export const getTvs = async (p: number , limit: number , q: string, cat: string): Promise<ITvResponse> => {
 
-    return await myFetchServer(`/tvs?page=${p}&limit=${limit}&&q=${q}`, {
+    return await myFetchServer(`/tvs?page=${p}&limit=${limit}&&q=${q}&cat=${cat}`, {
         headers: {
             "Content-Type": "application/json",
         },

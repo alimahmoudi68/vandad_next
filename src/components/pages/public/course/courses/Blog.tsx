@@ -2,38 +2,37 @@
 import React from "react";
 import Link from "next/link";
 
-import { ITv , ITvCat } from "@/types/tv";
-import TvCard from "@/components/common/tvCard/TvCard";
+import { ICourse, ICourseCat } from "@/types/courses";
+import CourseCard from "@/components/common/courseCard/CourseCard";
 
 export const metadata = {
-  title: 'ونداد | مقالات',
+  title: 'ونداد | دوره‌ها',
   description: '',
 }
 
-type TvPageProps = {
-  tvs: ITv[];
-  tvCats: ITvCat[];
+type CoursesPageProps = {
+  courses: ICourse[];
+  courseCat: ICourseCat[];
 };
 
-
-export default function TvPage({ tvs, tvCats }: TvPageProps) {
+export default function CoursesPage({ courses, courseCat }: CoursesPageProps) {
 
   return (
     <>
       <div className="container mx-auto flex flex-wrap gap-x-[20px]">
         <h1 className="w-full text-primaryText-100 text-2xl font-bold mb-4">
-          ویدیو‌ها
+          دوره‌ها
         </h1>
         <div className='w-full lg:w-[calc(75%-10px)] grow flex flex-wrap gap-[20px] xl:gap-[30px] 2xl:gap-[15px] order-1 lg:order-2'>
           {
-            tvs.map((tv , index)=>(
-              <TvCard
+            courses.map((course , index)=>(
+              <CourseCard
                 key={index}
                 classes="w-full sm:w-[calc(50%-10px)] xl:w-[calc(33.33%-10px)] 2xl:w-[calc(25%-20px)]"
-                title={tv.title}
-                image={tv.image}
-                slug={tv.slug}
-                categories={tv.categories}
+                title={course.title}
+                image={course.image}
+                slug={course.slug}
+                categories={course.categories}
               />
             ))
           }
@@ -46,11 +45,12 @@ export default function TvPage({ tvs, tvCats }: TvPageProps) {
             دسته‌بندی‌ها
             </span>
           </div>
+    
           <ul className="flex flex-col gap-[10px]">
             {
-              tvCats.map((cat , index)=>(
+              courseCat.map((cat , index)=>(
               <li key={index}>
-                <Link href={`/tvs?cat=${cat.slug}`} className='hover:text-primary-100 duration-200'>
+                <Link href={`/courses?cat=${cat.slug}`} className='hover:text-primary-100 duration-200'>
                   {cat.title}
                 </Link>
               </li>

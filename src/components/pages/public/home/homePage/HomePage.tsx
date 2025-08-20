@@ -4,8 +4,10 @@ import React from "react";
 import Slider from "@/components/pages/public/home/slider/Slider";
 import NewBlog from "@/components/pages/public/home/newBlog/NewBlog";
 import NewTvs from "@/components/pages/public/home/newTvs/NewTvs";
+import NewCourses from "@/components/pages/public/home/newCourses/NewCourses";
 import { IBlog } from "@/types/blog";
 import { ITv } from "@/types/tv";
+import { ICourse } from "@/types/courses";
 import{ ISlider } from "@/types/slider";
 
 export const metadata = {
@@ -17,12 +19,13 @@ export const metadata = {
 type IndexPageProps = {
   slider: ISlider[];
   blog: IBlog[];
-  tvs: ITv[]
+  tvs: ITv[];
+  courses: ICourse[]
 };
 
-export default function IndexPage({ slider, blog, tvs }: IndexPageProps) {
+export default function IndexPage({ slider, blog, tvs, courses }: IndexPageProps) {
 
-  //console.log('blog' , blog)
+  console.log('courses' , courses)
 
   return (
     <>
@@ -30,6 +33,7 @@ export default function IndexPage({ slider, blog, tvs }: IndexPageProps) {
         <Slider sliders={slider} />
         <NewBlog blog={blog} /> 
         <NewTvs tvs={tvs} /> 
+        <NewCourses courses={courses} /> 
 
         {/* <AmazingProducts products={amazingProduct} showMenu={false} /> */}
         {/* <NewProduct products={newProducts} /> */}

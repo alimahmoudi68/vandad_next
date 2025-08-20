@@ -12,7 +12,7 @@ export const metadata = {
 interface Params {
   id: string;
 }
-export default async function EditCategory({ params }: { params: Params }) {
+export default async function EditTv({ params }: { params: Params }) {
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,

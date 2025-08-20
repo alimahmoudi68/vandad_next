@@ -1,14 +1,14 @@
-import BlogPage from "@/components/pages/public/blog/blog/Blog";
-import { getBlog } from "@/services/public/blog/blogService";
-import { getBlogCats } from "@/services/public/blog/blogCatsService";
-import { IBlog, IBlogCat } from "@/types/blog";
+import CoursesPage from "@/components/pages/public/course/courses/Blog";
+import { getCourses } from "@/services/public/courses/courseService";
+import { getCourseCats } from "@/services/public/courses/courseCatsService";
+import { ICourse, ICourseCat } from "@/types/courses";
 
 export const metadata = {
   title: "فروشگاه فاب |‌  خانه",
   description: "",
 };
 
-export default async function Blog({
+export default async function Courses({
   searchParams,
 }: {
   searchParams: { cat?: string };
@@ -16,31 +16,31 @@ export default async function Blog({
   try {
     const cat = searchParams.cat || "";
 
-    const [blogRes, blogCatsRes] = await Promise.allSettled([
-      getBlog(1, 8, "", cat),
-      getBlogCats(),
+    const [courseRes, corseCatsRes] = await Promise.allSettled([
+      getCourses(1, 8, "", cat),
+      getCourseCats(),
     ]);
 
-    let blog: IBlog[] = [];
-    let blogCats: IBlogCat[] = [];
+    let courses: ICourse[] = [];
+    let courseCats: ICourseCat[] = [];
 
     if (
-      blogRes.status === "fulfilled" &&
-      blogRes.value?.status === "success" &&
-      Array.isArray(blogRes.value.blogs)
+      courseRes.status === "fulfilled" &&
+      courseRes.value?.status === "success" &&
+      Array.isArray(courseRes.value.courses)
     ) {
-      blog = blogRes.value.blogs;
+      courses = courseRes.value.courses;
     }
 
     if (
-      blogCatsRes.status === "fulfilled" &&
-      blogCatsRes.value?.status === "success" &&
-      Array.isArray(blogCatsRes.value.categories)
+      corseCatsRes.status === "fulfilled" &&
+      corseCatsRes.value?.status === "success" &&
+      Array.isArray(corseCatsRes.value.categories)
     ) {
-      blogCats = blogCatsRes.value.categories;
+      courseCats = corseCatsRes.value.categories;
     }
 
-    return <BlogPage blog={blog} blogCat={blogCats} />;
+    return <CoursesPage courses={courses} courseCat={courseCats} />;
   } catch (err) {
     console.log("error");
   }

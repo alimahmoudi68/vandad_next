@@ -1,7 +1,7 @@
 import {IUpload} from "@/types/upload";
-import { IBlogComments } from "../blogComment";
+import { ICourseComments } from "../courseComment";
 
-export interface IBlog {
+export interface ICourse {
   id: number,
   title: string,
   keywords_meta:  string,
@@ -9,8 +9,6 @@ export interface IBlog {
   slug: string,
   content: string,
   image: IUpload,
-  time_study: string,
-  status: string,
   author: {
     firstNam: string,
     lastName: string
@@ -22,9 +20,8 @@ export interface IBlog {
       "slug": string,
     }[],
   commentData: {
-    comments: IBlogComments[]
+    comments: ICourseComments[]
   }
   created_at: string,
   upated_at: string,
-  likedUsersCount: number
 }

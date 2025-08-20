@@ -85,8 +85,8 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
 
       setLoading(false);
 
-      console.log('courseData' , courseData)
-      console.log(typeof courseData.course.episodes[4].content);
+      //console.log('courseData' , courseData)
+      //console.log(typeof courseData.course.episodes[4].content);
 
       // console.log('categoriesData' , categoriesData)
 

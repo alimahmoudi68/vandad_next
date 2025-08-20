@@ -1,8 +1,10 @@
 import IndexPage from "@/components/pages/public/home/homePage/HomePage";
 import { getBlog } from "@/services/public/blog/blogService";
 import { getTvs } from "@/services/public/tvs/tvService";
+import { getCourses } from "@/services/public/courses/courseService";
 import { IBlog } from "@/types/blog";
 import { ITv } from "@/types/tv";
+import { ICourse } from "@/types/courses";
 import { ISlider } from "@/types/slider";
 
 export const metadata = {
@@ -27,13 +29,15 @@ export default async function Home() {
       },
     ];
 
-    const [blogRes, tvRes] = await Promise.allSettled([
+    const [blogRes, tvRes, coursesRes] = await Promise.allSettled([
       getBlog(1, 8, "" , ""),
-      getTvs(1,8,"")
+      getTvs(1,8,"",""),
+      getCourses(1,8,"","")
     ]);
 
     let blog: IBlog[] = [];
     let tvs: ITv[] = [];
+    let courses: ICourse[] = [];
 
     if (
       blogRes.status === "fulfilled" &&
@@ -51,7 +55,16 @@ export default async function Home() {
       tvs = tvRes.value.tvs;
     }
 
-    return <IndexPage slider={sliders} blog={blog} tvs={tvs}/>;
+
+    if (
+      coursesRes.status === "fulfilled" &&
+      coursesRes.value?.status === "success" &&
+      Array.isArray(coursesRes.value.courses)
+    ) {
+      courses = coursesRes.value.courses;
+    }
+
+    return <IndexPage slider={sliders} blog={blog} tvs={tvs} courses={courses}/>;
   } catch (err) {
     console.log("error");
   }
