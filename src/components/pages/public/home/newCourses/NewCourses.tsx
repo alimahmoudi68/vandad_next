@@ -12,9 +12,9 @@ interface NewCoursesProps {
 
 const NewCourses: React.FC<NewCoursesProps> = ({ courses }) => {
   return (
-    <div className="mb-10">
-      <div className="w-full flex justify-between">
-        <div className="flex text-primaryText-100 font-bold text-[1.2rem] text-center mb-3">
+    <div className="w-full mb-10 md:mb-20">
+      <div className="w-full flex justify-between items-center mb-2 md:mb-4">
+        <div className="flex text-primaryText-100 font-bold text-[1.2rem] md:text-[1.5rem] text-center mb-3">
           دوره‌های
           <span className="text-primary-100 mr-1 block">جدید</span>
         </div>
@@ -27,7 +27,7 @@ const NewCourses: React.FC<NewCoursesProps> = ({ courses }) => {
       </div>
       <div className="w-full">
         <Swiper
-          modules={[]} // در صورت نیاز ماژول‌ها را اضافه کنید
+          modules={[]}
           spaceBetween={10}
           slidesPerView={1.2}
           breakpoints={{

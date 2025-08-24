@@ -1,16 +1,16 @@
-import SingleBlogPage from "@/components/pages/public/blog/singleBlog/SingleBlog";
+import SingleCoursePage from "@/components/pages/public/course/singleCourse/SingleCourse";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
-import { singleBlog } from "@/services/public/blog/blogService";
-import { getBlogCats } from "@/services/public/blog/blogCatsService";
-import { IBlog, IBlogCat } from "@/types/blog";
-import { IBlogComments } from "@/types/blogComment";
+import { singleCourse } from "@/services/public/courses/courseService";
+import { getCourseCats } from "@/services/public/courses/courseCatsService";
+import { ICourse, ICourseCat } from "@/types/courses";
+import { ICourseComments } from "@/types/courseComment";
 
 export const metadata = {
   title: "دسته بندی",
   description: "",
 };
 
-export default async function SingleTv({
+export default async function SingleCourse({
   params,
 }: {
  params: Promise<{ slug: string }>;
@@ -18,17 +18,17 @@ export default async function SingleTv({
   try {
     let {slug} = await params;
 
-    let blog: IBlog = {} as IBlog;
-    let blogCats: IBlogCat[] = [];
-    let comments: IBlogComments = {} as IBlogComments; 
+    let course: ICourse = {} as ICourse;
+    let courseCats: ICourseCat[] = [];
+    let comments: ICourseComments = {} as ICourseComments; 
 
-    const [blogRes, blogCatsRes] = await Promise.allSettled([
-      singleBlog(slug),
-      getBlogCats(),
+    const [courseRes, courseCatsRes] = await Promise.allSettled([
+      singleCourse(slug),
+      getCourseCats(),
     ]);
 
 
-    if(blogRes.status === "fulfilled" && blogRes.value.status == 404){
+    if(courseRes.status === "fulfilled" && courseRes.value.status == 404){
       return(
       <ErrorPage message="" statusCode={404}/>
       );
@@ -36,23 +36,23 @@ export default async function SingleTv({
 
 
     if (
-      blogRes.status === "fulfilled" &&
-      blogRes.value?.status === "success"
+      courseRes.status === "fulfilled" &&
+      courseRes.value?.status === "success"
      
     ) {
-      blog = blogRes.value.blog;
-      comments = blogRes.value.commentData;
+      course = courseRes.value.course;
+      comments = courseRes.value.commentData;
     }
 
     if (
-      blogCatsRes.status === "fulfilled" &&
-      blogCatsRes.value?.status === "success" &&
-      Array.isArray(blogCatsRes.value.categories)
+      courseCatsRes.status === "fulfilled" &&
+      courseCatsRes.value?.status === "success" &&
+      Array.isArray(courseCatsRes.value.categories)
     ) {
-      blogCats = blogCatsRes.value.categories;
+      courseCats = courseCatsRes.value.categories;
     }
 
-    return <SingleBlogPage blog={blog} blogCat={blogCats} comments={comments}/>;
+    return <SingleCoursePage course={course} courseCat={courseCats} comments={comments}/>;
   } catch (err) {
     return <ErrorPage message="خطا در بارگذاری مقاله" statusCode={500} />;
   }

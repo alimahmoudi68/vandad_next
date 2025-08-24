@@ -1,5 +1,6 @@
 import {IUpload} from "@/types/upload";
 import { ICourseComments } from "../courseComment";
+import { IEpisode } from "../episodes";
 
 export interface ICourse {
   id: number,
@@ -22,6 +23,7 @@ export interface ICourse {
   commentData: {
     comments: ICourseComments[]
   }
+  episodes : IEpisode[],
   created_at: string,
   upated_at: string,
 }

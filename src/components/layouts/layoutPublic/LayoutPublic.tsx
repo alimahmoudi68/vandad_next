@@ -105,7 +105,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
   return (
     <>
       <header
-        className={`hidden fixed z-30 h-full w-full overflow-auto bg-slate-900 bg-opacity-50`}
+        className={`hidden fixed z-30 h-full w-full overflow-auto bg-bgModal-100 dark:bg-bgModalDark-100`}
         ref={headerSideModal}
         onClick={(e) => CheckHideHeaderSideHandler(e)}
       >

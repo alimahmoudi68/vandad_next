@@ -11,10 +11,11 @@ export const metadata = {
 export default async function Courses({
   searchParams,
 }: {
-  searchParams: { cat?: string };
+  searchParams: Promise<{ cat?: string }>;
 }) {
   try {
-    const cat = searchParams.cat || "";
+    const params = await searchParams;
+    const cat = params.cat || "";
 
     const [courseRes, corseCatsRes] = await Promise.allSettled([
       getCourses(1, 8, "", cat),

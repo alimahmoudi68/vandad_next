@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-toastify";
 
+import Card2 from "@/components/common/card/Card2";
 import ModalCommentRes from "@/components/modals/public/modalCommentRes/ModalCommentRes";
 import { showNameOrPhone } from "@/utils/common/showNameOrPhone";
 import { showDate } from "@/utils/common/showDate";
@@ -186,10 +187,7 @@ function Comments<T extends ICommentProps>(props: T) {
   };
 
   return (
-    <div className="w-full bg-white-100 dark:bg-cardDark-100 flex flex-col justify-center items-center shadow-my dark:shadow-none p-3 rounded-md text-[0.9rem] font-normal my-3">
-      <div className="w-full flex justify-start items-center mb-3">
-        <span className="text-primary-100 text-2xl font-extrabold">نظرات</span>
-      </div>
+     <Card2 title="نظرات" classes="w-full">     
 
       {showModalCommentResponse && props.type === "blog" && (
         <ModalCommentRes
@@ -358,7 +356,7 @@ function Comments<T extends ICommentProps>(props: T) {
           {loading && <span>در حال دریافت نظرات...</span>}
         </div>
       )}
-    </div>
+    </Card2>
   );
 }
 

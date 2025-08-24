@@ -1,3 +1,14 @@
+
+export async function GET() {
+  try {
+    console.log("da");
+
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 // import { cookies } from "next/headers";
 // import { NextRequest, NextResponse } from "next/server";
 

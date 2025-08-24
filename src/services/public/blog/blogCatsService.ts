@@ -18,7 +18,7 @@ interface CategoriesResponse {
 
 export const getBlogCats = async (): Promise<CategoriesResponse> => {
 
-    return await myFetchServer('/admin/blog-cats', {
+    return await myFetchServer('/blog-cats', {
         headers: {
             "Content-Type": "application/json",
         },

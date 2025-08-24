@@ -9,6 +9,7 @@ import { IBlog } from "@/types/blog";
 import { ITv } from "@/types/tv";
 import { ICourse } from "@/types/courses";
 import{ ISlider } from "@/types/slider";
+import TopTitr from "./TopTitr";
 
 export const metadata = {
   title: 'ونداد | صفحه اصلی',
@@ -30,7 +31,8 @@ export default function IndexPage({ slider, blog, tvs, courses }: IndexPageProps
   return (
     <>
       <div className="container mx-auto">
-        <Slider sliders={slider} />
+        <TopTitr/>
+        {/* <Slider sliders={slider} /> */}
         <NewBlog blog={blog} /> 
         <NewTvs tvs={tvs} /> 
         <NewCourses courses={courses} /> 

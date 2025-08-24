@@ -17,6 +17,8 @@ type CoursesPageProps = {
 
 export default function CoursesPage({ courses, courseCat }: CoursesPageProps) {
 
+  //console.log('course car', courseCat)
+
   return (
     <>
       <div className="container mx-auto flex flex-wrap gap-x-[20px]">
