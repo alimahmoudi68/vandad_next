@@ -45,7 +45,8 @@ interface INewCourse{
   description_meta: string,
   content: string,
   categories: number[],
-  image: number
+  image: number,
+  faqs: {question: string, answer: string}[]
 }
 
 
@@ -195,6 +196,28 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
               used: false,
             },
             {
+              inputType: "faqs",
+              config: {
+                label: "سوالات متداول",
+                name: "faqs",
+                classes: "w-full",
+              },
+              value: courseData.course.faqs.map((item:{question: string , answer: string})=>{
+                return{
+                  question: item.question,
+                  answer: item.answer,
+                  errs: {
+                    question: "",
+                    answer: "",
+                  },
+                }
+              }),
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
               inputType: "file",
               config: {
                 label: "عکس شاخص",
@@ -239,7 +262,8 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
           description_meta: form.get("description_meta") as string,
           content: form.get("content") as string,
           categories: form.getAll("categories") as string[],
-          image: form.get("image") as string
+          image: form.get("image") as string,
+          faqs : form.get("faqs") as string 
         };
       } else {
         payload = {
@@ -249,7 +273,8 @@ export default function EditCoursePage({ id }: EditCoursePageProps) {
           description_meta: form.description_meta,
           content: form.content,
           categories: form.categories,
-          image: form.image
+          image: form.image,
+          faqs: form.faqs
         };
       }
 

@@ -13,6 +13,7 @@ import ModalCourseVideo from "@/components/modals/public/modalCourseVideo/ModalC
 import EpispdeCard from "@/components/pages/public/course/singleCourse/EpispdeCard";
 import Card2 from "@/components/common/card/Card2";
 import ExpandableText from "@/components/common/expandableText/ExpandableText";
+import FAQAccordion from "@/components/common/faq/Faq";
 
 
 
@@ -142,20 +143,8 @@ export default function SingleCoursePage({
             </div>
           </Card2>
           <Card2 title="سوالات متداول" classes="w-full">
-              <div className="w-full flex flex-col gap-y-3">
-              {
-                course.episodes.map((episode , index)=>(
-                  <EpispdeCard 
-                  key = {index}
-                  number={index+1}
-                  title={episode.title}
-                  time={episode.time}
-                  date={episode.date}
-                  content={episode.content}
-                  price={episode.price}
-                  />
-                ))
-              }
+            <div className="w-full flex flex-col gap-y-3">
+            <FAQAccordion items={course.faqs} classes="w-full"/>
             </div>
           </Card2>
           {

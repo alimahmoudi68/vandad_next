@@ -41,7 +41,8 @@ interface INewCourse{
     description_meta: string,
     content: string,
     categories: number[],
-    image: number
+    image: number,
+    faqs : {question: string,  answer: string}[]
 }
 
 export const getCourses = async (p: number , q: string): Promise<ICoursesResponse> => {
@@ -57,6 +58,8 @@ export const getCourses = async (p: number , q: string): Promise<ICoursesRespons
 
 
 export const newCourse = async (formData: INewCourse): Promise<NewCourseResponse> => {
+
+    console.log("formData > new course" , formData)
 
     return await myFetchServer('/admin/courses', {
         headers: {
@@ -93,7 +96,6 @@ export const singleCourse = async(id:number) =>{
 
 
 export const updateCourse = async (id: number , formData: INewCourse): Promise<NewCourseResponse> => {
-
 
     return await myFetchServer(`/admin/courses/${id}`, {
         headers: {

@@ -152,10 +152,10 @@ export default function NewCoursePage({
                 used: false,
               },
               {
-                inputType: "faq",
+                inputType: "faqs",
                 config: {
                   label: "سوالات متداول",
-                  name: "faq",
+                  name: "faqs",
                   classes: "w-full",
                 },
                 value: [
@@ -223,7 +223,8 @@ export default function NewCoursePage({
           description_meta: form.get("description_meta") as string,
           content: form.get("content") as string,
           categories: form.getAll("categories") as string[],
-          image: form.get("image") as string
+          image: form.get("image") as string,
+          faqs: form.get("faqs") as string,
         };
       } else {
         payload = {
@@ -233,13 +234,13 @@ export default function NewCoursePage({
           description_meta: form.description_meta,
           content: form.content,
           categories: form.categories,
-          image: form.image
+          image: form.image,
+          faqs: form.faqs,
         };
       }
   
       payload.image = payload.image ? parseInt(payload.image) : 0;
       const data = await newCourse(payload);
-
 
       if (data.status === "success") {
         toast.success("دوره جدید با موفقیت ثبت شد");

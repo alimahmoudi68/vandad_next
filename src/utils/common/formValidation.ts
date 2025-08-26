@@ -407,7 +407,7 @@ export const inputChange = (
             updetedElement.used = true;
             updatedForm[element] = updetedElement;
         }
-    }else if(updetedElement.inputType == 'faq'){
+    }else if(updetedElement.inputType == 'faqs'){
 
         if('type' in e && e.type == 'addFaq'){
             let oldValue = [...updetedElement.value];
@@ -544,7 +544,7 @@ export const validationByClick = (formItems: FormElement[]): { formItems: FormEl
             let mainValid = validationPrice && validationStock && validationSku;
             item.valid = mainValid;
             
-        }else if(item.inputType == 'faq'){
+        }else if(item.inputType == 'faqs'){
             let mainValid = true;
             item.value.forEach((item: any) => {
                 mainValid = mainValid && checkValidation(item.question, {required: true}).valid && checkValidation(item.answer, {required: true}).valid;

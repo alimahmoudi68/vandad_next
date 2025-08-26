@@ -97,7 +97,7 @@ const fetchWithRetry = async (
     }
 
     //let data = await response.json();
-    return response;
+    return response.json();
 
 
   } catch (error) {

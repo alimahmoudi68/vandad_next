@@ -107,7 +107,7 @@ const Input: FC<InputProps> = (props) => {
         case 'editor':
             inputElement = <Editor config={props.config} change={props.change}  value={props.value} errorMsg={props.errs} {...props} />
             break;
-        case 'faq':
+        case 'faqs':
             inputElement = <Faq config={props.config} change={props.change}  value={props.value}  {...props} />
             break;                                              
         default:

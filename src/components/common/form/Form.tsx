@@ -298,7 +298,7 @@ const Form = ({
                         id: number;
                       }) => f.uploadedId
                     ); // فقط uploadedId برمی‌گردونه
-                } else if(form.formItems[item].inputType === "faq"){
+                } else if(form.formItems[item].inputType === "faqs"){
                   newForm[form.formItems[item].config.name] = form.formItems[
                     item
                   ].value

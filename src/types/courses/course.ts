@@ -24,6 +24,7 @@ export interface ICourse {
     comments: ICourseComments[]
   }
   episodes : IEpisode[],
+  faqs: {question: string, answer: string}[]
   created_at: string,
   upated_at: string,
 }
