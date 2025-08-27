@@ -1,7 +1,7 @@
 import myFetchServer from '@/services/myFetchServer'; 
 
 interface ICategory {
-    _id: string;
+    id: number;
     title: string;
     slug: string;
     [key: string] : any
@@ -49,7 +49,7 @@ export const newCategory = async (formData: {
     parent: string
 }): Promise<NewCategoryResponse> => {
 
-    return await myFetchServer('/admin/categories/new', {
+    return await myFetchServer('/admin/categories', {
         headers: {
             "Content-Type": "application/json",
         },
@@ -60,9 +60,9 @@ export const newCategory = async (formData: {
 }
 
 
-export const removeCategory = async(id:string) =>{
+export const removeCategory = async(id:number) =>{
 
-    return await myFetchServer(`/admin/categories/remove/${id}`, {
+    return await myFetchServer(`/admin/categories/${id}`, {
         headers: {
             "Content-Type": "application/json",
         },
@@ -83,11 +83,10 @@ export const singleCategory = async(id:number) =>{
 }
 
 
-export const updateCategory = async (id: string , formData: {
+export const updateCategory = async (id: number , formData: {
     title: string ,
     slug: string,
     parent: string,
-    attributes: string[]
 }): Promise<NewCategoryResponse> => {
 
 
@@ -96,22 +95,9 @@ export const updateCategory = async (id: string , formData: {
             "Content-Type": "application/json",
         },
         body : JSON.stringify(formData),
-        method : 'POST' 
+        method : 'PUT' 
         },
     );
 }
 
 
-export const newCategoryAttribute = async ( id: string , formData: {
-    attributes: any,
-}): Promise<NewCategoryResponse> => {
-
-    return await myFetchServer(`/admin/categories/add-attribute/${id}`, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body : JSON.stringify(formData),
-        method : 'POST' 
-        },
-    );
-}

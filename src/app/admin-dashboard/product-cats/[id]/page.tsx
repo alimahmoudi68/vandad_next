@@ -1,14 +1,14 @@
 import EditCategoryPage from "@/components/pages/dashboard/products/categories/editCategory/EditCategory";
 
-import {
-  categories,
-  singleCategory,
-} from "@/services/dashboard/products/categoriesService";
-import { attributes } from "@/services/dashboard/products/attributesService";
+// import {
+//   categories,
+//   singleCategory,
+// } from "@/services/dashboard/products/categoriesService";
 
-import NotPermission from "@/components/common/notPermission/NotPermission";
-import getUser from "@/utils/common/getUser";
-import havePermission from "@/utils/common/havePermission";
+
+// import NotPermission from "@/components/common/notPermission/NotPermission";
+// import getUser from "@/utils/common/getUser";
+// import havePermission from "@/utils/common/havePermission";
 
 interface Params {
   id: string;
@@ -24,8 +24,8 @@ export default async function EditCategory({ params }: { params: Params }) {
   // }
 
   let id = params.id;
-  let categoriesData = await categories();
-  let categoryData = await singleCategory(+id);
+  //let categoriesData = await categories();
+  //let categoryData = await singleCategory(+id);
 
   return (
     <EditCategoryPage id={id}/>

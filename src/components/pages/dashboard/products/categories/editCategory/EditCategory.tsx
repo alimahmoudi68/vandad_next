@@ -12,19 +12,6 @@ import {
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 
-interface ICategory {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
-
-interface IAttribute {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
 
 interface EditCategoryPageProps {
   id: string;
@@ -60,12 +47,12 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
   useEffect(() => {
     const getBlogCat = async () => {
       const [categoryData, categoriesData] = await Promise.all([
-        singleCategory(id),
+        singleCategory(+id),
         categories(),
       ]);
 
-      console.log('categoryData' , categoryData)
-      console.log('categoriesData' , categoriesData)
+      //console.log('categoryData' , categoryData)
+      //console.log('categoriesData' , categoriesData)
 
       if (
         categoryData.status === "success" &&
@@ -80,7 +67,7 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
                 name: "title",
                 classes: "w-full",
               },
-              value: categoryData.categories.title,
+              value: categoryData.category.title,
               validation: {
                 maxLength: 50,
                 required: true,
@@ -96,7 +83,7 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
                 name: "slug",
                 classes: "w-full",
               },
-              value: "",
+              value: categoryData.category.slug,
               validation: {
                 maxLength: 50,
                 required: true,
@@ -114,14 +101,14 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
                   { id: null, title: "بدون دسته بندی پدر" },
                   ...(Array.isArray(categoriesData.categories)
                     ? categoriesData.categories.map((item) => ({
-                        id: item._id,
+                        id: item.id,
                         title: item.title,
                       }))
                     : []),
                 ],
                 classes: "w-full",
               },
-              value: "",
+              value: categoryData.category.parent.id,
               validation: {
                 selectRequired: true,
               },
@@ -145,16 +132,15 @@ export default function EdiitCategoryPage({ id }: EditCategoryPageProps) {
     setLoadingBtn(true);
     try {
       if ("title" in form && "slug" in form) {
-        const data = await updateCategory(id, {
+        const data = await updateCategory(+id, {
           title: form.title,
           slug: form.slug,
           parent: form.parent,
-          attributes: form.attributes,
         });
 
         if (data.status === "success") {
           toast.success("دسته بندی جدید با موفقیت ویرایش شد");
-          router.push("/admin-dashboard/blog-cats");
+          router.push("/admin-dashboard/product-cats");
         } else {
           toast.error(data.msg || "خطایی رخ داد");
         }

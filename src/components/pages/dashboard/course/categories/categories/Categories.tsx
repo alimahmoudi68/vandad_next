@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 import ModalRemove from '@/components/modals/dashboard/modalDeleteCourseCat/ModalDeleteCourseCat';
@@ -16,7 +15,6 @@ interface ICategory {
 }
 
 export default function CategoriesPage() {
-  const router = useRouter();
 
   const [items, setItems] = useState<ICategory[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,7 +24,7 @@ export default function CategoriesPage() {
   const stateModalRemove = (state: boolean, item: ICategory) => {
     setShowModalRemove(state);
     setCurrentItem(item);
-}
+  }
 
   useEffect(() => {
     try {
@@ -52,7 +50,7 @@ export default function CategoriesPage() {
     let oldItems = [...items];
     let newItems = oldItems.filter(item=>item.id !== id);
     setItems(newItems);
-}
+  }
 
 
   return (

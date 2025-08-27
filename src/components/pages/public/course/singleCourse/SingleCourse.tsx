@@ -120,7 +120,7 @@ export default function SingleCoursePage({
             previewChars={400}
             moreLabel="نمایش بیشتر"
             lessLabel="مخفی کردن" // اگر نخواهید «کمتر» داشته باشید => null
-            className="text-gray-800"
+            className="text-gray-800 dark:text-white-100"
             />
          
           </div>
