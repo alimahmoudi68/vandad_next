@@ -44,7 +44,7 @@ export default function NewCategoryPage() {
         const data = await categories();
         setLoading(false);
 
-        console.log('d' , data.categories)
+        //console.log('d' , data.categories)
 
         if (data.status === "success") {
           setForm({

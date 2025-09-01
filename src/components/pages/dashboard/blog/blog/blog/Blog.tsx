@@ -34,7 +34,6 @@ interface IBlog {
 }
 
 export default function BlogPage() {
-    const router = useRouter();
 
     const [items, setItems] = useState<IBlog[]>([]);
     const [page, setPage] = useState<number>(1);

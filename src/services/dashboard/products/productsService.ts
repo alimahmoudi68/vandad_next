@@ -1,33 +1,24 @@
 import myFetchServer from '@/services/myFetchServer'; 
+import { IProduct } from '@/types/products';
 
 import type {
   INewProductApi,
   NewProductResponse,
-} from "@/types/dashboard/products";
+} from "@/types/products";
 
-interface IProduct {
-  _id: string;
-  title: string;
-  slug: string;
-  price: number;
-  [key: string]: any;
-}
 
 interface ProductsResponse {
   status: "success" | "error";
-  products?: {
-    data: IProduct[];
-  };
-  pagination: {
-    currentPage: number;
-    totalPages: number;
-    totalProducts: number;
+  products? :IProduct[];
+  pagination?: {
+    page: number,
+    pages: number
   };
   msg?: string;
 }
 
-export const products = async (): Promise<ProductsResponse> => {
-  return await myFetchServer("/admin/products", {
+export const products = async (p: number , q: string): Promise<ProductsResponse> => {
+  return await myFetchServer(`/admin/products?page=${p}&limit=20&&q=${q}`, {
     headers: {
       "Content-Type": "application/json",
     },
@@ -38,7 +29,7 @@ export const products = async (): Promise<ProductsResponse> => {
 export const newProduct = async (
   productData: INewProductApi
 ): Promise<NewProductResponse> => {
-  return await myFetchServer("/admin/products/new", {
+  return await myFetchServer("/admin/products", {
     headers: {
       "Content-Type": "application/json",
     },
@@ -69,8 +60,8 @@ export const singleProduct = async (id: string) => {
   });
 };
 
-export const removeProduct = async (id: string) => {
-  return await myFetchServer(`/admin/products/remove/${id}`, {
+export const removeProduct = async (id: number) => {
+  return await myFetchServer(`/admin/products/${id}`, {
     headers: {
       "Content-Type": "application/json",
     },

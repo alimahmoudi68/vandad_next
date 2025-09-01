@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { newCategory } from "@/services/dashboard/blog/blogCatsService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 import {getBlogCats} from "@/services/dashboard/blog/blogCatsService";
@@ -166,7 +165,7 @@ export default function NewBlogPage({
       }
     }
     getBlogCat();
-} , []);
+  } , []);
 
   const submitHandler = async (form: FormData | Record<string, any>) => {
     setLoadingBtn(true);

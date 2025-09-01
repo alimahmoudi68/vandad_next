@@ -28,7 +28,6 @@ export interface INewProductApi{
     title: string;
     slug: string;
     description: string;
-    isVariant?: boolean;
     price: number;
     discount: boolean;
     discountPrice: number;
@@ -37,10 +36,6 @@ export interface INewProductApi{
     stock: number;
     sku: string;
     categories: string[];
-    attributes: {
-        [key: string]: string;
-    };
-    variants: IProductVariant[];
 }
 
 

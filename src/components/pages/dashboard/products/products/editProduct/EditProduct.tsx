@@ -7,34 +7,15 @@ import Card from "@/components/common/card/Card";
 import { editProduct } from "@/services/dashboard/products/productsService";
 import Form from "@/components/common/form/Form";
 import { handleServerError } from "@/utils/common/handleServerError";
-import { INewProduct } from "@/types/dashboard/products";
-import filterSingleAttributes from "@/utils/common/removeVariantsAttributes";
-import extractAttributeMetaTitles from "@/utils/common/extractAttributeMetaTitles";
-import { IVariantItem } from "@/types/dashboard/products/editProduct";
-import { ICattegoryAttributeItem } from "@/types/dashboard/products/editProduct";
-import getAttributesById from "@/utils/common/getAttributesById";
+import { INewProduct } from "@/types/products";
+import { childCategories } from "@/services/dashboard/products/categoriesService";
+import { singleProduct } from "@/services/dashboard/products/productsService";
+import { IProductCat } from "@/types/products/index";
+import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
 
-interface IProduct {
-  _id: string;
-  title: string;
-  slug: string;
-  price: number;
-  discount: boolean;
-  discountPrice: number;
-  [key: string]: any;
-}
-
-interface ICategory {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
 
 interface EditProductPageProps {
-  permissions: string[];
-  categories: ICategory[];
-  product: IProduct;
+  id: string
 }
 
 interface FormItem {
@@ -58,332 +39,242 @@ interface IForm {
   formItems: FormItem[];
 }
 
-export default function EditProductPage({
-  permissions,
-  categories,
-  product,
-}: EditProductPageProps) {
-  console.log("product", product);
+export default function EditProductPage({id}: EditProductPageProps) {
 
   const router = useRouter();
 
+  const [loading, setLoading] = useState(true);
   const [loadingBtn, setLoadingBtn] = useState(false);
-  const [FormInput, setFormInput] = useState<IForm>({ formItems: [] });
+  const [form, setForm] = useState<IForm>({ formItems: [] });
 
-  const initFormInput: IForm = {
-    formItems: [
-      {
-        inputType: "simple-input-with-label",
-        config: {
-          label: "عنوان",
-          name: "title",
-          classes: "w-full",
-        },
-        value: product.title,
-        validation: {
-          required: true,
-          maxLength: 50,
-        },
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "simple-input-price-with-label",
-        config: {
-          label: "قیمت فروش",
-          name: "price",
-          type: "text",
-          placeholder: "",
-          classes: "w-full",
-          isDepend: true,
-          isDependField: "isVariant",
-          isDependValue: [false],
-        },
-        value: product.price ? product.price : "",
-        value2: product.price ? product.price.toLocaleString() : "",
-        validation: {
-          required: true,
-        },
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "checkbox",
-        config: {
-          label: "تخفیف",
-          name: "discount",
-          classes: "w-full",
-        },
-        value: product.discount,
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "simple-input-price-with-label",
-        config: {
-          label: "قیمت با تخفیف",
-          name: "discountPrice",
-          classes: "w-full",
-          isDepend: true,
-          isDependField: "discount",
-          isDependValue: [true],
-        },
-        value: product.discountPrice,
-        value2: product.discountPrice,
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "textarea",
-        config: {
-          label: "توضیحات",
-          name: "description",
-          classes: "w-full",
-        },
-        value: product.description,
-        validation: {
-          required: true,
-          maxLength: 2000,
-        },
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "simple-input-with-label",
-        config: {
-          label: "شناسه کالا",
-          name: "sku",
-          classes: "w-full",
-        },
-        value: product.sku,
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "simple-input-number-with-label",
-        config: {
-          label: "موجودی",
-          name: "stock",
-          classes: "w-full",
-        },
-        value: product.stock,
-        validation: {
-          required: true,
-        },
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "file",
-        config: {
-          label: "عکس شاخص",
-          name: "thumbnail",
-          classes: "w-full",
-          removeFromServer: false,
-          isSingle: true,
-        },
-        value: [
-          {
-            id: 0,
-            uploadedId: product.thumbnail ? product.thumbnail._id : null,
-            errorMsg: "",
-            fileUrl: product.thumbnail
-              ? {
-                  bucketName: product.thumbnail.bucket,
-                  fileName: product.thumbnail.original,
-                }
-              : null,
-          },
-        ],
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "file",
-        config: {
-          label: "گالری عکس",
-          name: "images",
-          classes: "w-full",
-          removeFromServer: false,
-        },
-        // value: [{
-        //   id: 0,
-        //   uploadedId: null,
-        //   errorMsg: "",
-        //   fileUrl: null,
-        // }],
-        value: product.images
-          ? product.images.map(
-              (item: {
-                _id: string;
-                bucket: string;
-                original: string;
-                thumb: string;
-              }) => ({
-                id: item._id,
-                uploadedId: item._id,
-                errorMsg: "",
-                fileUrl: { bucketName: item.bucket, fileName: item.original },
-              })
-            )
-          : [
-              {
-                id: 0,
-                uploadedId: null,
-                errorMsg: "",
-                fileUrl: null,
-              },
-            ],
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "select-with-label",
-        config: {
-          label: "دسته بندی",
-          name: "categories",
-          classes: "w-full",
-          options: categories.map((item: ICategory) => ({
-            id: item._id,
-            title: item.title,
-          })),
-          showAttributes: true,
-        },
-        value: [product.categories[0]._id],
-        validation: {
-          required: true,
-        },
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-      {
-        inputType: "checkbox",
-        config: {
-          label: "محصول متغیر",
-          name: "isVariant",
-          classes: "w-full",
-        },
-        value: product.isVariant,
-        validation: {},
-        valid: false,
-        errorMsg: "",
-        used: false,
-      },
-    ],
-  };
 
   useEffect(() => {
-    const newFormItemAttr = product.categories[0].attributes.map(
-      (item: ICattegoryAttributeItem) => {
-        if (item.isDynamic) {
-          return {
-            inputType: "simple-input-with-label",
-            config: {
-              label: item.title,
-              name: item.slug,
-              classes: "w-full",
-              options: [], // You can add options here if needed
-              isAttribute: true,
+    const getProduct = async () => {
+      const [productData, categoriesData] = await Promise.all([
+        singleProduct(id),
+        childCategories(),
+      ]);
+
+      setLoading(false);
+
+      console.log('productData' , productData)
+      console.log('categoriesData' , categoriesData)
+
+      if (
+        productData.status === "success" &&
+        categoriesData.status === "success"
+      ) {
+        setForm({
+          formItems: [
+            {
+              inputType: "simple-input-with-label",
+              config: {
+                label: "عنوان",
+                name: "title",
+                classes: "w-full",
+              },
+              value: productData.product.title,
+              validation: {
+                required: true,
+                maxLength: 50,
+              },
+              valid: false,
+              errorMsg: "",
+              used: false,
             },
-            value: getAttributesById(item._id, product.attributes, []),
-            validation: {
-              required: true,
+            {
+              inputType: "simple-input-price-with-label",
+              config: {
+                label: "قیمت فروش",
+                name: "price",
+                type: "text",
+                placeholder: "",
+                classes: "w-full",
+              },
+              value: productData.product.price ? productData.product.price : "",
+              value2: productData.product.price ? productData.product.price.toLocaleString() : "",
+              validation: {
+                required: true,
+              },
+              valid: false,
+              errorMsg: "",
+              used: false,
             },
-            valid: true,
-            errorMsg: "",
-            used: false,
-          };
-        } else {
-          console.log("item.title", item.title);
-          console.log(
-            ">>>",
-            getAttributesById(item._id, product.attributes, product.variants)
-          );
-          return {
-            inputType: "select-multi",
-            config: {
-              label: item.title,
-              name: item.slug,
-              classes: "w-full",
-              options:
-                item.attributeMetas?.map((item) => ({
-                  id: item._id,
+            {
+              inputType: "checkbox",
+              config: {
+                label: "تخفیف",
+                name: "discount",
+                classes: "w-full",
+              },
+              value: productData.product.discount,
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
+              inputType: "simple-input-price-with-label",
+              config: {
+                label: "قیمت با تخفیف",
+                name: "discountPrice",
+                classes: "w-full",
+                isDepend: true,
+                isDependField: "discount",
+                isDependValue: [true],
+              },
+              value: productData.product.discountPrice,
+              value2: productData.product.discountPrice,
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
+              inputType: "select-with-label",
+              config: {
+                label: "دسته بندی",
+                name: "categories",
+                classes: "w-full",
+                options: categoriesData?.categories?.map((item: IProductCat) => ({
+                  id: item.id,
                   title: item.title,
                 })) || [],
-              isAttribute: true,
+                showAttributes: true,
+              },
+              value: [productData.product.categories[0].id],
+              validation: {
+                required: true,
+              },
+              valid: false,
+              errorMsg: "",
+              used: false,
             },
-            value: getAttributesById(
-              item._id,
-              product.attributes,
-              product.variants
-            ),
-            validation: {
-              required: true,
+            {
+              inputType: "textarea",
+              config: {
+                label: "توضیحات",
+                name: "description",
+                classes: "w-full",
+              },
+              value: productData.product.description,
+              validation: {
+                required: true,
+                maxLength: 2000,
+              },
+              valid: false,
+              errorMsg: "",
+              used: false,
             },
-            valid: true,
-            errorMsg: "",
-            used: false,
-          };
-        }
+            {
+              inputType: "simple-input-with-label",
+              config: {
+                label: "شناسه کالا",
+                name: "sku",
+                classes: "w-full",
+              },
+              value: productData.product.sku,
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
+              inputType: "simple-input-number-with-label",
+              config: {
+                label: "موجودی",
+                name: "stock",
+                classes: "w-full",
+              },
+              value: productData.product.stock,
+              validation: {
+                required: true,
+              },
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
+              inputType: "file",
+              config: {
+                label: "عکس شاخص",
+                name: "thumbnail",
+                classes: "w-full",
+                removeFromServer: false,
+                isSingle: true,
+              },
+              value: [
+                {
+                  id: 0,
+                  uploadedId: productData.product.thumbnail ? productData.product.thumbnail.id : null,
+                  errorMsg: "",
+                  fileUrl: productData.product.thumbnail
+                    ? {
+                        bucketName: productData.product.thumbnail.bucket,
+                        fileName: productData.product.thumbnail.location,
+                      }
+                    : null,
+                },
+              ],
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+            {
+              inputType: "file",
+              config: {
+                label: "گالری عکس",
+                name: "images",
+                classes: "w-full",
+                removeFromServer: false,
+              },
+              // value: [{
+              //   id: 0,
+              //   uploadedId: null,
+              //   errorMsg: "",
+              //   fileUrl: null,
+              // }],
+              value: productData.product.images.length > 0
+                ? productData.product.images.map(
+                    (item: {
+                      id: number;
+                      bucket: string;
+                      location: string;
+                      thumb: string;
+                    }) => ({
+                      id: item.id,
+                      uploadedId: item.id,
+                      errorMsg: "",
+                      fileUrl: { bucketName: item.bucket, fileName: item.location },
+                    })
+                  )
+                : [
+                    {
+                      id: 0,
+                      uploadedId: null,
+                      errorMsg: "",
+                      fileUrl: null,
+                    },
+                  ],
+              validation: {},
+              valid: false,
+              errorMsg: "",
+              used: false,
+            },
+
+          ],
+        });
+      } else {
+        // اگر خطا بود، پیام خطا نمایش بده یا هندل کن
       }
-    );
 
-    const newFormItemVar = product.variants.map((variant: IVariantItem) => {
-      return {
-        inputType: "attribute-variant",
-        config: {
-          label: extractAttributeMetaTitles(variant).label,
-          name: "variants",
-          classes: "w-full",
-          isAttributeVariant: true,
-        },
-        value: {
-          attributes: extractAttributeMetaTitles(variant).attributes,
-          price: variant.price,
-          sku: variant.sku,
-          stock: variant.stock,
-        },
-        value2: {
-          price: Number(variant.price).toLocaleString(),
-          stock: Number(variant.stock).toLocaleString(),
-        },
-        validation: {
-          required: true,
-        },
-        valid: true,
-        errorMsg: "",
-        errs: {
-          price: "",
-          stock: "",
-          sku: "",
-        },
-        used: false,
-      };
-    });
-
-    setFormInput({
-      formItems: [
-        ...initFormInput.formItems,
-        ...newFormItemAttr,
-        ...newFormItemVar,
-      ],
-    });
+      setLoading(false);
+    };
+    getProduct();
   }, []);
+
+
 
   const submitHandler = async (form: INewProduct) => {
     setLoadingBtn(true);
@@ -410,7 +301,6 @@ export default function EditProductPage({
         title,
         slug,
         description,
-        isVariant,
         price,
         discount,
         discountPrice,
@@ -419,17 +309,15 @@ export default function EditProductPage({
         stock,
         sku,
         categories,
-        variants,
-        attributes: filterSingleAttributes({ attributes: rest }).attributes,
       };
 
-      console.log(payload);
+      //console.log(payload);
 
-      const data = await editProduct(product._id, payload);
+      const data = await editProduct(id, payload);
 
       if (data.status === "success") {
-        toast.success("ویژگی جدید با موفقیت ثبت شد");
-        router.push("/dashboard/products");
+        toast.success("محصول با موفقیت ویرایش شد");
+        router.push("/admin-dashboard/products");
       } else {
         handleServerError({
           ...data,
@@ -454,12 +342,21 @@ export default function EditProductPage({
         ویرایش محصول
       </h1>
       <Card title="" classes="w-[90%] max-w-[600px] mx-auto">
-        <Form
-          initForm={FormInput}
-          submit={submitHandler}
-          loading={loadingBtn}
-          submitTitle="ثبت"
-        />
+        {
+          loading ? 
+            (
+              <SkeletonLoading rows={10} cols={1} itemClasses={"h-[60px]"} />
+            )
+            :
+            (
+          <Form
+            initForm={form}
+            submit={submitHandler}
+            loading={loadingBtn}
+            submitTitle="ثبت"
+          />
+          )
+        }
       </Card>
     </div>
   );

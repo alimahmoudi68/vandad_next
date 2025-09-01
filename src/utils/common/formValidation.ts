@@ -315,14 +315,17 @@ export const inputChange = (
 
 
         if(regexResult || value == ''){
-            updetedElement.value = value ;
-            updetedElement.valid = checkValidation(updetedElement.value , updetedElement.validation ).valid;
-            const errorMsg = checkValidation(updetedElement.value, updetedElement.validation).msg;
+            // مقدار اصلی را در value ذخیره می‌کنیم (برای حفظ صفرهای ابتدایی)
+            updetedElement.value = value;
+            // مقدار عددی را در value2 ذخیره می‌کنیم
+            updetedElement.value2 = value !== '' ? Number(value) : value;
+            updetedElement.valid = checkValidation(updetedElement.value2 , updetedElement.validation ).valid;
+            const errorMsg = checkValidation(updetedElement.value2, updetedElement.validation).msg;
             updetedElement.errorMsg = errorMsg;
             updetedElement.used = true;
             updatedForm[element] = updetedElement;
         }else{
-            updetedElement.value =  updetedElement.value;
+           updetedElement.value =  updetedElement.value;
         }
 
     }else if(updetedElement.inputType == 'editor'){
