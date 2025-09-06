@@ -1,4 +1,4 @@
-import EditCategoryPage from "@/components/pages/dashboard/course/categories/editCategory/EditCategory";
+import EditCategoryPage from "@/components/pages/adminDashboard/course/categories/editCategory/EditCategory";
 
 // import NotPermission from "@/components/common/notPermission/NotPermission";
 // import getUser from "@/utils/common/getUser";

@@ -1,4 +1,4 @@
-import NewTvPage from "@/components/pages/dashboard/tv/tv/newTv/NewTv";
+import NewTvPage from "@/components/pages/adminDashboard/tv/tv/newTv/NewTv";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";

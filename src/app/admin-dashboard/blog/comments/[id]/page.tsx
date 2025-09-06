@@ -1,4 +1,4 @@
-import EditBlogCommentPage from "@/components/pages/dashboard/blog/blog/editBlogComment/EditBlogComment";
+import EditBlogCommentPage from "@/components/pages/adminDashboard/blog/blog/editBlogComment/EditBlogComment";
 
 
 

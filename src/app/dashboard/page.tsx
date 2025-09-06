@@ -1,4 +1,4 @@
-import IndexPage from "@/components/pages/dashboard/index/IndexPage";
+import IndexPage from "@/components/pages/adminDashboard/index/IndexPage";
 
 export const metadata = {
   title : 'پروفایل کاربری'

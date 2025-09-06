@@ -290,7 +290,7 @@ export const inputChange = (
 
         if(regexResult || value == ''){
             updetedElement.value = e.target?.value || '';
-            updetedElement.valid = checkValidation(updetedElement.value , updetedElement.validation ).valid;
+            updetedElement.valid = checkValidation(value , updetedElement.validation ).valid;
             const errorMsg = checkValidation(updetedElement.value, updetedElement.validation).msg;
             updetedElement.errorMsg = errorMsg;
             updetedElement.used = true;
@@ -319,8 +319,8 @@ export const inputChange = (
             updetedElement.value = value;
             // مقدار عددی را در value2 ذخیره می‌کنیم
             updetedElement.value2 = value !== '' ? Number(value) : value;
-            updetedElement.valid = checkValidation(updetedElement.value2 , updetedElement.validation ).valid;
-            const errorMsg = checkValidation(updetedElement.value2, updetedElement.validation).msg;
+            updetedElement.valid = checkValidation(updetedElement.value , updetedElement.validation ).valid;
+            const errorMsg = checkValidation(updetedElement.value, updetedElement.validation).msg;
             updetedElement.errorMsg = errorMsg;
             updetedElement.used = true;
             updatedForm[element] = updetedElement;
@@ -727,6 +727,7 @@ const checkValidation = (
     }
 
     if (rules.isMobile) {
+        console.log('v' , value)
         let re = new RegExp(/^09[0-9]{9}$/ig);
         if (!re.test(value)) {
             return {

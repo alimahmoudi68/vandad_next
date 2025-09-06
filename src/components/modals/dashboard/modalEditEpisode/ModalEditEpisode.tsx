@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 import Form from "@/components/common/form/Form";
 import MasterModal from "@/components/modals/masterModal/MasterModal";
-import { updateEpisode } from "@/services/dashboard/episode/episodeService";
+import { updateEpisode } from "@/services/adminDashboard/episode/episodeService";
 import { convertJalaliToGregorian } from "@/utils/common/convertJalaliToGregorian";
 import { showDate } from "@/utils/common/showDate";
 

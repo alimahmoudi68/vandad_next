@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeCategory} from '@/services/dashboard/course/courseCatsService';
+import {removeCategory} from '@/services/adminDashboard/course/courseCatsService';
 
 interface ICategory {
   id: number;

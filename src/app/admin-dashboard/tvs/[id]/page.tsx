@@ -1,4 +1,4 @@
-import EditTvPage from "@/components/pages/dashboard/tv/tv/editTv/EditTv";
+import EditTvPage from "@/components/pages/adminDashboard/tv/tv/editTv/EditTv";
 
 export const metadata = {
   title: "ویرایش دسته بندی ویدیو",

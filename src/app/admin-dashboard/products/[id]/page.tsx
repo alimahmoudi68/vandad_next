@@ -1,6 +1,6 @@
 //import { notFound } from "next/navigation";
 
-import EditProductPage from "@/components/pages/dashboard/products/products/editProduct/EditProduct";
+import EditProductPage from "@/components/pages/adminDashboard/products/products/editProduct/EditProduct";
 //import { childCategories } from "@/services/dashboard/products/categoriesService";
 //import { singleProduct } from "@/services/dashboard/products/productsService";
 

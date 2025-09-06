@@ -1,4 +1,4 @@
-import CommentsPage from "@/components/pages/dashboard/tv/tv/tvComments/TvComments";
+import CommentsPage from "@/components/pages/adminDashboard/tv/tv/tvComments/TvComments";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";

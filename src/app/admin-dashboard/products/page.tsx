@@ -1,4 +1,4 @@
-import ProductsPage from "@/components/pages/dashboard/products/products/productsPage/ProductsPage";
+import ProductsPage from "@/components/pages/adminDashboard/products/products/productsPage/ProductsPage";
 
 //import { products } from "@/services/dashboard/products/productsService";
 

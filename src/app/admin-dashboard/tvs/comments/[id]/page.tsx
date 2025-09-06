@@ -1,4 +1,4 @@
-import EditTvCommentPage from "@/components/pages/dashboard/tv/tv/editTvComment/EditTvComment";
+import EditTvCommentPage from "@/components/pages/adminDashboard/tv/tv/editTvComment/EditTvComment";
 
 
 

@@ -49,6 +49,7 @@ const LoginForm = () => {
           type: "text",
           placeholder: "شماره همراه خود را وارد کنید",
           classes: "w-full",
+          isOutString: true
         },
         value: "",
         validation: {

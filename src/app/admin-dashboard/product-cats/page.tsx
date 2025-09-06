@@ -1,4 +1,4 @@
-import CategoriesPage from "@/components/pages/dashboard/products/categories/categories/Categories";
+import CategoriesPage from "@/components/pages/adminDashboard/products/categories/categories/Categories";
 
 
 // import NotPermission from "@/components/common/notPermission/NotPermission";

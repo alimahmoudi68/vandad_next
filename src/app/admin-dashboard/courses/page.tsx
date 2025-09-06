@@ -1,4 +1,4 @@
-import CoursesPage from "@/components/pages/dashboard/course/course/courses/courses";
+import CoursesPage from "@/components/pages/adminDashboard/course/course/courses/courses";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { newUpload } from "@/services/dashboard/uploads/uploadsService";
+import { newUpload } from "@/services/adminDashboard/uploads/uploadsService";
 
 interface ImageUploadProps {
   onImageUpload: (imageUrl: string) => void;

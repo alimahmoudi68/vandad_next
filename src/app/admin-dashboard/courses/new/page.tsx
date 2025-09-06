@@ -1,4 +1,4 @@
-import NewCoursePage from "@/components/pages/dashboard/course/course/newCourse/NewCourse";
+import NewCoursePage from "@/components/pages/adminDashboard/course/course/newCourse/NewCourse";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";

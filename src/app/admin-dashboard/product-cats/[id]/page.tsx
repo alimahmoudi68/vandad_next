@@ -1,4 +1,4 @@
-import EditCategoryPage from "@/components/pages/dashboard/products/categories/editCategory/EditCategory";
+import EditCategoryPage from "@/components/pages/adminDashboard/products/categories/editCategory/EditCategory";
 
 // import {
 //   categories,

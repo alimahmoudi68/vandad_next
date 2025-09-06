@@ -15,19 +15,28 @@ import ShowImg from "@/components/common/showImg/ShowImg";
 import LogoHeader from "@/components/layouts/logoHeader/LogoHeader";
 import saveCookie from "@/utils/common/saveCookie";
 import { updateUser } from "@/store/auth";
+import {IUser} from "@/types/user"
 
 interface LayoutProps {
   children: React.ReactNode;
-  user: { name: string; role?: string; avatar: string } | null;
+  user: IUser | null;
   saveToken: { accessToken: string | null; refreshToken: string | null };
 }
+
+
 
 const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
   useEffect(() => {
     if (saveToken?.accessToken && saveToken?.refreshToken) {
       saveCookie(saveToken?.accessToken, saveToken?.refreshToken);
     }
+
   }, []);
+
+  console.log('user' , user)
+
+
+
 
   const dispatch = useDispatch();
   dispatch(updateUser(user));
@@ -245,20 +254,17 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                   } fixed top-0 left-0 bottom-0 right-0 bg-black-50 z-[99] `}
                 ></div>
                 <div className="h-full flex items-center">
-                  {/* <ShowImg
-                    classes="rounded-full w-[32px] h-[32px]"
+                  <div className="rounded-full w-[40px] h-[40px]">
+                  <ShowImg
+                    classes="w-full h-full rounded-full"
                     width={40}
                     height={40}
-                    fileName={user?.avatar}
-                    bucketName={"avatar"}
-                  /> */}
-                  <Image
-                    alt="user profile"
-                    src="/images/default-avatar.webp"
-                    className="rounded-full md:w-[40px] md:h-[40px] w-[32px] h-[32px]"
-                    width={40}
-                    height={40}
-                  />
+                    fileName={user?.avatar.location}
+                    bucketName={user?.avatar.bucket}
+                    fill={true}
+                  /> 
+                  </div>
+          
                   <i className="fa fa-caret-down mr-1"></i>
                 </div>
                 <div

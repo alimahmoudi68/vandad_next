@@ -1,4 +1,4 @@
-import CommentsPage from "@/components/pages/dashboard/blog/blog/blogComments/BlogComments";
+import CommentsPage from "@/components/pages/adminDashboard/blog/blog/blogComments/BlogComments";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";

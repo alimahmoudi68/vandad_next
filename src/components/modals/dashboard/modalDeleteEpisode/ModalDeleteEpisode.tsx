@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeEpisode} from '@/services/dashboard/episode/episodeService';
+import {removeEpisode} from '@/services/adminDashboard/episode/episodeService';
 
 
 interface IEpisode {

@@ -12,7 +12,7 @@ import {
 } from "@/utils/common/formValidation";
 import Input from "@/components/common/input/Input";
 import Button from "@/components/common/button/Button";
-import { singleCategory } from "@/services/dashboard/products/categoriesService";
+import { singleCategory } from "@/services/adminDashboard/products/categoriesService";
 
 interface FormProps {
   initForm: { formItems: FormItem[] };
@@ -47,6 +47,7 @@ interface FormItem {
     isAttributeSelect?: boolean;
     isAttributeVariant?: boolean;
     isSingle?: boolean;
+    isOutString?: boolean
   };
   validation: Record<string, any>;
   errorMsg?: string;
@@ -299,7 +300,11 @@ const Form = ({
                       }) => f.uploadedId
                     ); // فقط uploadedId برمی‌گردونه
                 }else if(form.formItems[item].inputType === "simple-input-number" || form.formItems[item].inputType === "simple-input-number-with-label"){
-                  newForm[form.formItems[item].config.name] = Number(form.formItems[item].value);
+                  if(form.formItems[item].config?.isOutString){
+                    newForm[form.formItems[item].config.name] = form.formItems[item].value;
+                  }else{
+                    newForm[form.formItems[item].config.name] = Number(form.formItems[item].value);
+                  }
                 }else if(form.formItems[item].inputType === "faqs"){
                   newForm[form.formItems[item].config.name] = form.formItems[
                     item

@@ -1,4 +1,4 @@
-import CategoriesPage from "@/components/pages/dashboard/course/categories/categories/Categories";
+import CategoriesPage from "@/components/pages/adminDashboard/course/categories/categories/Categories";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from "@/utils/common/getUser";

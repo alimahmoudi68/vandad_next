@@ -1,4 +1,4 @@
-import NewCategoryPage from "@/components/pages/dashboard/course/categories/newCategory/NewCategory";
+import NewCategoryPage from "@/components/pages/adminDashboard/course/categories/newCategory/NewCategory";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";

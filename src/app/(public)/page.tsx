@@ -2,9 +2,11 @@ import IndexPage from "@/components/pages/public/home/homePage/HomePage";
 import { getBlog } from "@/services/public/blog/blogService";
 import { getTvs } from "@/services/public/tvs/tvService";
 import { getCourses } from "@/services/public/courses/courseService";
+import { getProducts } from "@/services/public/products/productService";
 import { IBlog } from "@/types/blog";
 import { ITv } from "@/types/tv";
 import { ICourse } from "@/types/courses";
+import { IProduct } from "@/types/products";
 import { ISlider } from "@/types/slider";
 
 export const metadata = {
@@ -29,15 +31,17 @@ export default async function Home() {
       },
     ];
 
-    const [blogRes, tvRes, coursesRes] = await Promise.allSettled([
+    const [blogRes, tvRes, coursesRes , productsRes] = await Promise.allSettled([
       getBlog(1, 8, "" , ""),
       getTvs(1,8,"",""),
-      getCourses(1,8,"","")
+      getCourses(1,8,"",""),
+      getProducts(1,8,"",""),
     ]);
 
     let blog: IBlog[] = [];
     let tvs: ITv[] = [];
     let courses: ICourse[] = [];
+    let products: IProduct[] = [];
 
     if (
       blogRes.status === "fulfilled" &&
@@ -64,7 +68,18 @@ export default async function Home() {
       courses = coursesRes.value.courses;
     }
 
-    return <IndexPage slider={sliders} blog={blog} tvs={tvs} courses={courses}/>;
+
+    
+    if (
+      productsRes.status === "fulfilled" &&
+      productsRes.value?.status === "success" &&
+      Array.isArray(productsRes.value.products)
+    ) {
+      products = productsRes.value.products;
+    }
+
+
+    return <IndexPage slider={sliders} blog={blog} tvs={tvs} courses={courses} products={products} />;
   } catch (err) {
     console.log("error");
   }

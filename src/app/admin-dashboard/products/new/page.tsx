@@ -1,4 +1,4 @@
-import NewProductPage from "@/components/pages/dashboard/products/products/newProduct/NewProduct";
+import NewProductPage from "@/components/pages/adminDashboard/products/products/newProduct/NewProduct";
 
 //import { childCategories } from "@/services/dashboard/products/categoriesService";
 

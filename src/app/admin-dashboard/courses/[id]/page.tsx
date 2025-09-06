@@ -1,4 +1,4 @@
-import EditCoursePage from "@/components/pages/dashboard/course/course/editCourse/EditCourse";
+import EditCoursePage from "@/components/pages/adminDashboard/course/course/editCourse/EditCourse";
 
 
 

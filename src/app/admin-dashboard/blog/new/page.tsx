@@ -1,4 +1,4 @@
-import NewBlogPage from "@/components/pages/dashboard/blog/blog/newBlog/NewBlog";
+import NewBlogPage from "@/components/pages/adminDashboard/blog/blog/newBlog/NewBlog";
 import ErrorPage from "@/components/common/errorPage/ErrorPage";
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";

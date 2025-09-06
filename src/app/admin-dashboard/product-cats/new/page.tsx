@@ -1,4 +1,4 @@
-import NewCategoryPage from "@/components/pages/dashboard/products/categories/newCategory/NewCategory";
+import NewCategoryPage from "@/components/pages/adminDashboard/products/categories/newCategory/NewCategory";
 
 //import { categories } from "@/services/dashboard/products/categoriesService";
 //import {getAllAreas} from '@/services/dashboard/areas/areasService'

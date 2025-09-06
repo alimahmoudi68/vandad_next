@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeProduct} from '@/services/dashboard/products/productsService';
+import {removeProduct} from '@/services/adminDashboard/products/productsService';
 import { IProduct } from '@/types/products';
 
 

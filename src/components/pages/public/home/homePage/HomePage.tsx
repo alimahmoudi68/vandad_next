@@ -10,6 +10,8 @@ import { ITv } from "@/types/tv";
 import { ICourse } from "@/types/courses";
 import{ ISlider } from "@/types/slider";
 import TopTitr from "./TopTitr";
+import { IProduct } from "@/types/products";
+import NewProducts from "../newProducts/NewProducts";
 
 export const metadata = {
   title: 'ونداد | صفحه اصلی',
@@ -21,12 +23,14 @@ type IndexPageProps = {
   slider: ISlider[];
   blog: IBlog[];
   tvs: ITv[];
-  courses: ICourse[]
+  courses: ICourse[];
+  products: IProduct[];
 };
 
-export default function IndexPage({ slider, blog, tvs, courses }: IndexPageProps) {
+export default function IndexPage({ slider, blog, tvs, courses, products }: IndexPageProps) {
 
-  console.log('courses' , courses)
+  //console.log('courses' , courses)
+  //console.log('products' , products)
 
   return (
     <>
@@ -36,7 +40,7 @@ export default function IndexPage({ slider, blog, tvs, courses }: IndexPageProps
         <NewBlog blog={blog} /> 
         <NewTvs tvs={tvs} /> 
         <NewCourses courses={courses} /> 
-
+        <NewProducts products={products} /> 
         {/* <AmazingProducts products={amazingProduct} showMenu={false} /> */}
         {/* <NewProduct products={newProducts} /> */}
       </div>

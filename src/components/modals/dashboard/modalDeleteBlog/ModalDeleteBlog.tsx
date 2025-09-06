@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeBlog} from '@/services/dashboard/blog/blogService';
+import {removeBlog} from '@/services/adminDashboard/blog/blogService';
 
 interface IUpload {
   bucket: string ,

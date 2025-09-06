@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {removeComment} from '@/services/dashboard/tv/tvCommentsService';
+import {removeComment} from '@/services/adminDashboard/tv/tvCommentsService';
 import { IItemsCommentTv } from "@/types/tvComment";
 
 

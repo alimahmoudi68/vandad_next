@@ -9,14 +9,17 @@ const Layout = async({ children }: { children: ReactNode }) => {
 
     const getUserInfo = await getUser();
 
+    //console.log('ss' , getUserInfo)
+
 
     const user = {
-        id : getUserInfo?.user._id ,
-        name : getUserInfo?.user.name ,
-        type : getUserInfo?.user.type ,
+        id : getUserInfo?.user.id ,
+        firstName : getUserInfo?.user.firstName ,
+        lastName : getUserInfo?.user.lastName ,
+        about: getUserInfo?.user.about ,
         avatar : getUserInfo?.user.avatar ,
-        role : getUserInfo?.user?.['role.title'] ,
-        Permissions : getUserInfo?.user.permissions ,
+        //role : getUserInfo?.user?.['role.title'] ,
+        //Permissions : getUserInfo?.user.permissions ,
     }
  
     

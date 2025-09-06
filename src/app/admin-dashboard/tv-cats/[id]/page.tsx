@@ -1,4 +1,4 @@
-import EditCategoryPage from "@/components/pages/dashboard/tv/categories/editCategory/EditCategory";
+import EditCategoryPage from "@/components/pages/adminDashboard/tv/categories/editCategory/EditCategory";
 
 // import NotPermission from "@/components/common/notPermission/NotPermission";
 // import getUser from "@/utils/common/getUser";

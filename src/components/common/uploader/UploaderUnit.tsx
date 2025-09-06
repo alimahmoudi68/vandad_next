@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
-import { newUpload } from "../../../services/dashboard/uploads/uploadsService";
+import { newUpload } from "../../../services/adminDashboard/uploads/uploadsService";
 import ShowImg from "@/components/common/showImg/ShowImg";
 
 interface UploaderUnitProps {

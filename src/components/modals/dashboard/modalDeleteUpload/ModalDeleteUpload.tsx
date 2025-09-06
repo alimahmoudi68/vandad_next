@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 
 import Button from "@/components/common/button/Button";
 import MasterModal from '@/components/modals/masterModal/MasterModal';
-import {deleteUpload} from '@/services/dashboard/uploads/uploadsService';
+import {deleteUpload} from '@/services/adminDashboard/uploads/uploadsService';
 
 interface ModalDeleteUploadProps {
   item: { id: string };
