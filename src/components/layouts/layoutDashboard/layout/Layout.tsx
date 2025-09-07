@@ -6,16 +6,17 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 import Loading from "@/components/common/loading/Loading";
-// import ShowImg from '@/components/common/showImg/ShowImg';
+import ShowImg from '@/components/common/showImg/ShowImg';
 import ThemeSwitch from "@/components/layouts/themeSwich/ThemeSwitch";
 import Menus from "@/components/layouts/layoutDashboard/menus/Menus";
 import LogoHeader from "@/components/layouts/layoutDashboard/logoHeader/LogoHeader";
 import { showDateNow } from "@/utils/common/showDate";
 import { updateUser } from "@/store/auth";
+import { IUser } from "@/types/user";
 
 interface LayoutProps {
   children: React.ReactNode;
-  user: { name: string; role?: string } | null;
+  user: IUser;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children, user }) => {
@@ -151,11 +152,6 @@ const Layout: React.FC<LayoutProps> = ({ children, user }) => {
                   modalSidebarActive ? "mr-0" : "-mr-[100%]"
                 } ${showSide ? "w-[260px]" : "w-[78px]"}`}
               >
-                <div
-                  className={`${
-                    showProfileMenu ? "" : "hidden"
-                  } fixed top-0 left-0 bottom-0 right-0 bg-black-50 z-99 `}
-                ></div>
                 <div className="w-full h-[60px] flex justify-center md:justify-start items-center">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -237,9 +233,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user }) => {
                       </div>
                     </div>
                     <div className="flex items-center justify-start text-[0.8rem] md:text-[1rem] font-semibold hover:cursor-pointer hover:opacity-80 mx-2">
-                      {`خوش آمدید ${user?.name ?? ""} ${
-                        user?.role ? `(${user.role})` : ""
-                      }`}
+                      {`خوش آمدید ${user?.firstName ?? "" }`}
                     </div>
                     <div className="w-[1px] self-stretch mx-3 bg-gray-800"></div>
                     <div
@@ -256,24 +250,37 @@ const Layout: React.FC<LayoutProps> = ({ children, user }) => {
                       className="flex items-center justify-center text-color-state-600 relative hover:cursor-pointer z-9999"
                       onClick={() => showProfileMenuHandler()}
                     >
-                      <div
-                        className={`${
-                          showProfileMenu ? "" : "hidden"
-                        } fixed w-screen h-screen top-0 left-0 bottom-0 right-0 bg-black-50 z-9999 `}
-                      ></div>
+
                       <div className="h-full flex items-center z-99999">
-                        <Image
-                          alt="user profile"
-                          src="/images/default-avatar.webp"
-                          className="rounded-full w-[32px] h-[32px]"
-                          width={40}
-                          height={40}
-                        />
-                        {/* <ShowImg classes="rounded-full w-[32px] h-[32px]" width={40} height={40} bucketName={'avatars'} fileName={'default-avatar64.jpg'} />  */}
+                        <div className="rounded-full w-[40px] h-[40px]">
+                        {
+                          user.avatar? 
+                          (
+                            <ShowImg
+                            classes="w-full h-full rounded-full"
+                            width={40}
+                            height={40}
+                            fileName={user?.avatar?.location}
+                            bucketName={user?.avatar.bucket}
+                            fill={true}
+                            /> 
+                          )
+                          :
+                          (
+                            <Image
+                            className="rounded-full"
+                            alt="user profile"
+                            src={'/images/default-avatar.webp'}
+                            width={40}
+                            height={40}
+                            />
+                          )
+                        }
+                        </div>
                         <i className="fa fa-caret-down mr-1"></i>
                       </div>
                       <div
-                        className={`absolute top-[44px] left-[18px] w-[180px] bg-white-100 p-3 rounded-lg dark:bg-dark-50 shadow-sm border dark:border-cyan-900 z-9999 ${
+                        className={`absolute top-[44px] left-[18px] w-[180px] bg-white-100 p-3 rounded-lg dark:bg-dark-50 shadow-sm border dark:border-cyan-900 z-[100] ${
                           showProfileMenu ? "block animate-fade-in" : "hidden"
                         } `}
                         ref={profileMenu}

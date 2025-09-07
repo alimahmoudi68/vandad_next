@@ -8,7 +8,7 @@ import Loading from "@/components/common/loading/Loading";
 import saveCookie from "@/utils/common/saveCookie";
 import ShowImg from "@/components/common/showImg/ShowImg";
 import ThemeSwitch from "@/components/layouts/themeSwich/ThemeSwitch";
-import Menus from "@/components/layouts/layoutDashboard/menus/Menus";
+import Menus from "../menus/Menus";
 import LogoHeader from "@/components/layouts/layoutDashboard/logoHeader/LogoHeader";
 import { showDateNow } from "@/utils/common/showDate";
 import { updateUser } from "@/store/auth";

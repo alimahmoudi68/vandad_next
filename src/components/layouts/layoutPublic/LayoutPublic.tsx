@@ -37,7 +37,6 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
 
 
 
-
   const dispatch = useDispatch();
   dispatch(updateUser(user));
 
@@ -255,14 +254,29 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                 ></div>
                 <div className="h-full flex items-center">
                   <div className="rounded-full w-[40px] h-[40px]">
-                  <ShowImg
-                    classes="w-full h-full rounded-full"
-                    width={40}
-                    height={40}
-                    fileName={user?.avatar.location}
-                    bucketName={user?.avatar.bucket}
-                    fill={true}
-                  /> 
+                  {
+                    user.avatar? 
+                    (
+                      <ShowImg
+                      classes="w-full h-full rounded-full"
+                      width={40}
+                      height={40}
+                      fileName={user?.avatar?.location}
+                      bucketName={user?.avatar.bucket}
+                      fill={true}
+                      /> 
+                    )
+                    :
+                    (
+                      <Image
+                      className="rounded-full"
+                      alt="user profile"
+                      src={'/images/default-avatar.webp'}
+                      width={40}
+                      height={40}
+                      />
+                    )
+                  }
                   </div>
           
                   <i className="fa fa-caret-down mr-1"></i>

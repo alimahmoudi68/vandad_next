@@ -10,6 +10,7 @@ import {
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
+import { IEditProfileApi } from "@/types/profile";
 
 
 interface FormItem {
@@ -133,19 +134,18 @@ export default function ProfilePage() {
   }, []);
 
 
-  const submitHandler = async (form: FormData | Record<string, any>) => {
+  const submitHandler = async (form: IEditProfileApi) => {
+    console.log('submit form ' , form)
     setLoadingBtn(true);
     try {
-      if ("firstame" in form && "lastName" in form && "about" in form) {
-        const data = await editProdile({
-          firstName: form.firstName,
-          lastName: form.lastName,
-          about: form.about
-        });
+      if ("firstName" in form && "lastName" in form && "about" in form) {
+        const data = await editProdile(form);
+        
+        console.log('edit res' , data)
 
         if (data.status === "success") {
           toast.success("اطلاعات کاربری با موفقیت ویرایش شد");
-          router.push("/admin-dashboard/course-cats");
+          router.push("/admin-dashboard");
         } else {
           toast.error(data.msg || "خطایی رخ داد");
         }

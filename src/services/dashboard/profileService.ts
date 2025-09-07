@@ -20,7 +20,7 @@ export const getProfile = async (): Promise<ProfileResponse> => {
 export const editProdile = async (
   productData: IEditProfileApi
 ): Promise<ProfileResponse> => {
-  return await myFetchServer(`/users/profile}`, {
+  return await myFetchServer(`/users/profile`, {
     headers: {
       "Content-Type": "application/json",
     },

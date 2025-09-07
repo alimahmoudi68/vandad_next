@@ -196,6 +196,8 @@ export default function NewBlogPage({
       }
   
       payload.image = payload.image ? parseInt(payload.image) : 0;
+      console.log("blog payload" , payload)
+      return
       const data = await newBlog(payload);
 
 
