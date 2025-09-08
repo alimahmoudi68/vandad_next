@@ -195,11 +195,7 @@ export default function NewBlogPage({
         };
       }
   
-      payload.image = payload.image ? parseInt(payload.image) : 0;
-      console.log("blog payload" , payload)
-      return
       const data = await newBlog(payload);
-
 
       if (data.status === "success") {
         toast.success("مقاله جدید با موفقیت ثبت شد");

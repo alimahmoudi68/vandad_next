@@ -96,7 +96,6 @@ export default function ProfilePage() {
                 value: profileData.profile?.about ?? "",
                 validation: {
                   maxLength: 50,
-                  required: true,
                 },
                 valid: false,
                 errorMsg: "",
@@ -135,7 +134,6 @@ export default function ProfilePage() {
 
 
   const submitHandler = async (form: IEditProfileApi) => {
-    console.log('submit form ' , form)
     setLoadingBtn(true);
     try {
       if ("firstName" in form && "lastName" in form && "about" in form) {
@@ -145,7 +143,7 @@ export default function ProfilePage() {
 
         if (data.status === "success") {
           toast.success("اطلاعات کاربری با موفقیت ویرایش شد");
-          router.push("/admin-dashboard");
+          router.push("/dashboard");
         } else {
           toast.error(data.msg || "خطایی رخ داد");
         }

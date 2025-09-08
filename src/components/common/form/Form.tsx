@@ -280,25 +280,52 @@ const Form = ({
             for (let item in form.formItems) {
               if (!form.formItems[item].config.justShow) {
                 if (form.formItems[item].inputType === "file") {
-                  newForm[form.formItems[item].config.name] = form.formItems[
-                    item
-                  ].value
-                    .filter(
-                      (file: {
-                        errorMsg: string;
-                        uploadedId: string;
-                        fileUrl: string;
-                        id: number;
-                      }) => !!file.uploadedId
-                    ) // فقط فایل‌هایی که uploadedId دارند
-                    .map(
-                      (f: {
-                        errorMsg: string;
-                        uploadedId: string;
-                        fileUrl: string;
-                        id: number;
-                      }) => f.uploadedId
-                    ); // فقط uploadedId برمی‌گردونه
+
+                  if(form.formItems[item].config.isSingle){
+
+                    newForm[form.formItems[item].config.name] = form.formItems[
+                      item
+                    ].value
+                      .filter(
+                        (file: {
+                          errorMsg: string;
+                          uploadedId: string;
+                          fileUrl: string;
+                          id: number;
+                        }) => !!file.uploadedId
+                      ) // فقط فایل‌هایی که uploadedId دارند
+                      .map(
+                        (f: {
+                          errorMsg: string;
+                          uploadedId: string;
+                          fileUrl: string;
+                          id: number;
+                        }) => f.uploadedId
+                      )[0]; // فقط uploadedId برمی‌گردونه
+
+                  }else{
+
+                    newForm[form.formItems[item].config.name] = form.formItems[
+                      item
+                    ].value
+                      .filter(
+                        (file: {
+                          errorMsg: string;
+                          uploadedId: string;
+                          fileUrl: string;
+                          id: number;
+                        }) => !!file.uploadedId
+                      ) // فقط فایل‌هایی که uploadedId دارند
+                      .map(
+                        (f: {
+                          errorMsg: string;
+                          uploadedId: string;
+                          fileUrl: string;
+                          id: number;
+                        }) => f.uploadedId
+                      ); // فقط uploadedId برمی‌گردونه
+                  }
+
                 }else if(form.formItems[item].inputType === "simple-input-number" || form.formItems[item].inputType === "simple-input-number-with-label"){
                   if(form.formItems[item].config?.isOutString){
                     newForm[form.formItems[item].config.name] = form.formItems[item].value;
