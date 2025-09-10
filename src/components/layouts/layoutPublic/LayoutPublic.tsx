@@ -250,7 +250,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
                 <div
                   className={`${
                     showProfileMenu ? "" : "hidden"
-                  } fixed top-0 left-0 bottom-0 right-0 bg-black-50 z-[99] `}
+                  } fixed top-0 left-0 bottom-0 right-0 w-screen h-screen bg-black-70 z-[99] `}
                 ></div>
                 <div className="h-full flex items-center">
                   <div className="rounded-full w-[40px] h-[40px]">

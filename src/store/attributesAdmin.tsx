@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 interface IAttribute {
-    _id: string;
+    id: number;
     title: string;
     slug: string;
     isDynamic: boolean;
@@ -30,7 +30,7 @@ export const attributesAdminSlice = createSlice({
             state.loading = true; // در زمان بارگذاری داده‌ها، loading را true می‌کنیم
         },
         removeAttribute: (state, action) => {
-            state.attributes = state.attributes.filter(item => item._id !== action.payload);
+            state.attributes = state.attributes.filter(item => item.id !== action.payload);
         },
     },
 });
