@@ -1,6 +1,6 @@
-import AttributesPage from "@/components/pages/adminDashboard/productAttributes/attributes/Attributes";
+import AttributesPage from "@/components/pages/adminDashboard/products/productAttributes/attributes/Attributes";
 
-import {attributes} from '@/services/adminDashboard/productattributes/attributesService';
+import {attributes} from '@/services/adminDashboard/products/attributesService';
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from '@/utils/common/getUser';

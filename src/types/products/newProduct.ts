@@ -26,10 +26,9 @@ export interface INewProduct {
 
 export interface INewProductApi{
     title: string;
-    slug: string;
+    slug?: string;
     description: string;
     price: number;
-    discount: boolean;
     discountPrice: number;
     thumbnail: string | null;
     images: string[];

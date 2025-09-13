@@ -1,40 +1,11 @@
 import {convertPersianToEnglishNumbers} from '@/utils/common/convertNumber2English';
-
-
-type FormElement = {
-    inputType: string;
-    value: any;
-    value2?: any;
-    valid: boolean;
-    used: boolean;
-    config: {
-        options?: {id: string , title : string}[],
-        showAttributes?: boolean,
-        isDynamic?: boolean,
-        isDepend?: boolean,
-        isDependField?: string,
-        isDependValue?: any[],
-        name: string;
-        label: string,
-        classes?: string,
-        justShow?: boolean;
-        isAttribute?: boolean;
-        isAttributeSelect?: boolean;
-        isAttributeVariant?: boolean
-    },
-    validation: Record<string, any>;
-    errorMsg?: string
-    errs?: {
-        price: string,
-        stock: string;
-        sku: string
-    };
-}
-
+import { IFormItems} from '@/types/form';
+ 
 type uploadInfo = {
     id: string | number;
     fileUrl?: { bucketName: string; fileName: string } | null;
     uploadedId?: string | null;
+    file?: string | null;
     errorMsg?: string;
 }
 
@@ -86,8 +57,8 @@ type IFAQ = {
 export const inputChange = (
     e: EventData | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>  | IFAQ,
     element: number,
-    formItems: FormElement[]
-  ): { formItems: FormElement[] } => {
+    formItems: IFormItems[]
+  ): { formItems: IFormItems[] } => {
 
 
     let updatedForm = [...formItems];
@@ -96,8 +67,8 @@ export const inputChange = (
     if(updetedElement.inputType == 'attribute-variant'){
         let { key, value : valueInit } = e as EventData;
         
-        // console.log('key', key);
-        // console.log('value', valueInit);
+        console.log('key', key);
+        console.log('value', valueInit);
 
         if (key === 'price') {
 
@@ -117,7 +88,20 @@ export const inputChange = (
             }
             
             
-        } else if (key === 'sku') {
+        }else if (key === 'discountPrice'){
+
+            let val = valueInit ; 
+            let value = convertPersianToEnglishNumbers(val).replaceAll(',', ''); 
+            let re = new RegExp(/^\d+$/gi);
+            let regexResult = re.test(value);
+    
+    
+            if(regexResult || value == ''){
+                updetedElement.value.discountPrice = value ;
+                updetedElement.value2.discountPrice = value !== '' ? Number(value).toLocaleString() : value;
+            }
+
+        }else if (key === 'sku') {
           
             updetedElement.value.sku = valueInit ;
             if(updetedElement.errs) {
@@ -140,6 +124,41 @@ export const inputChange = (
                     updetedElement.errs.stock = checkValidation(updetedElement.value.stock,  {required : true} ).msg;
                 }
             }
+        } else if (key === 'addFile') {
+            let val = valueInit ; 
+            updetedElement.value.images = [...updetedElement.value.images , val];
+            updatedForm[element] = updetedElement;
+        }else if(key === 'removeFile'){
+            let val = valueInit ; 
+            if(updetedElement.value.images.length == 1){
+                updetedElement.value.images = [{
+                    id: 0,
+                    file: null,
+                    uploadedId: null,
+                    fileUrl: null,
+                }];
+            }else{
+                updetedElement.value.images = updetedElement.value.images.filter((item: {id: string | number , uploadedId: string | number}) => item.id !== val.id);
+            }
+            updatedForm[element] = updetedElement;
+        }else if(key === 'uploadFile'){
+            let val = valueInit ; 
+            updetedElement.value.images  = updetedElement.value.images.map((item: {id: string | number}) => {
+                if(item.id == val.id){
+                    return{
+                        ...item,
+                        uploadedId: val.uploadedId,
+                        fileUrl: {
+                            bucketName: val.fileUrl?.bucketName ?? '',
+                            fileName: val.fileUrl?.fileName ?? ''
+                        },
+                        errorMsg: val.errorMsg,
+                    }
+                }else{
+                    return item;
+                }
+            });
+            updatedForm[element] = updetedElement;
         }
 
 
@@ -368,7 +387,6 @@ export const inputChange = (
 
         } else if ('type' in e && e.type === 'removeFile') {
             const fileEvent = e as unknown as {type: string; uploadInfo: {id: string | number}};
-            console.log('fileEvent' , fileEvent)
             if(updetedElement.value.length == 1){
                 updetedElement.value = updetedElement.value = [{
                     id: 0,
@@ -377,7 +395,8 @@ export const inputChange = (
                     fileUrl: null,
                 }];
             }else{
-                updetedElement.value = updetedElement.value.filter((item: {id: string | number , uploadedId: string | number}) => item.uploadedId !== fileEvent.uploadInfo.id);
+                console.log('fileEvent' , fileEvent)
+                updetedElement.value = updetedElement.value.filter((item: {id: string | number , uploadedId: string | number}) => item.id !== Number(fileEvent.uploadInfo.id));
             }
             updatedForm[element] = updetedElement;
         } else if ('type' in e && e.type === 'uploadFile') {
@@ -472,11 +491,12 @@ export const inputChange = (
     // if a depended field is hidden then value of this field is null or empty
     let newFieldArr = updatedForm.map((field , index )=> {
 
-
         if(field.config.isDepend){
             if(isHidden(updatedForm , index)){
                 if( Array.isArray(field.value) ){
                     field.value=[];
+                }else if(field.inputType === 'checkbox'){
+                    field.value = false;
                 }else{
                     field.value="";
                 }
@@ -493,13 +513,13 @@ export const inputChange = (
         } 
     })
 
-    console.log(newFieldArr)
+    console.log('newFieldArr' , newFieldArr)
     return { formItems: newFieldArr } ;
 }
 
 
 
-export const isHidden = (formItems: FormElement[], index: number): boolean => {
+export const isHidden = (formItems: IFormItems[], index: number): boolean => {
     let currenField = formItems[index];
 
     if (!currenField.config.isDepend) {
@@ -509,8 +529,28 @@ export const isHidden = (formItems: FormElement[], index: number): boolean => {
     let dependFieldindex = formItems.findIndex(item => item.config.name === currenField.config.isDependField);
 
     let targetValues = currenField.config.isDependValue;
-    let valueOfField = formItems[dependFieldindex].value;
+    let valueOfField = formItems?.[dependFieldindex]?.value;
 
+    // Special case for variants field - show price field only when variants exist
+    if (currenField.config.isDependField === 'variants') {
+        // Check if there are any variant fields with values
+        const variantFields = formItems.filter(item => item.config.name === 'variants' && item.config.isAttributeVariant);
+        const hasVariants = variantFields.length > 0;
+        
+        // If isDependValue is empty array, hide when variants exist
+        if (targetValues && Array.isArray(targetValues) && targetValues.length === 0) {
+            return hasVariants;
+        }
+        
+        // If no isDependValue specified, hide when variants exist
+        if (!targetValues) {
+            return hasVariants;
+        }
+        
+        // For other cases, use the original logic
+        return hasVariants;
+    }
+    
     if (typeof valueOfField === 'object') {
         let mustHidden = true;
         valueOfField.map((item: any) => {
@@ -527,7 +567,7 @@ export const isHidden = (formItems: FormElement[], index: number): boolean => {
 
 
 
-export const validationByClick = (formItems: FormElement[]): { formItems: FormElement[] } => {
+export const validationByClick = (formItems: IFormItems[]): { formItems: IFormItems[] } => {
     let updatedForm = [...formItems];
 
     updatedForm.map((item, index) => {
@@ -590,13 +630,13 @@ const checkValidation = (
     isDepend?:boolean ,
     isDependField?:any , 
     isDependValue?: any, 
-    form?: FormElement[] 
+    form?: IFormItems[] 
 ): checkValidationT => {
     //console.log( "vlue ", value)
 
     if(isDepend){
         let indexDependField = form?.findIndex(item => item.config.name === isDependField) ?? -1;
-        if(form && form[indexDependField].value !== isDependValue){
+        if(form && form[indexDependField]?.value !== isDependValue){
             return {
                 valid: true,
                 msg: ""
@@ -784,7 +824,7 @@ const checkValidation = (
 }
 
 
-interface EmptyFieldFormElement extends FormElement {
+interface EmptyFieldFormElement extends IFormItems {
     file?: string;
     size?: string;
     filename?: string;

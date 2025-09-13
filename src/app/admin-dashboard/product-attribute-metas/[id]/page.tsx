@@ -1,7 +1,7 @@
-import EditAttributeMetaPage from "@/components/pages/adminDashboard/productAttributesMeta/editAttributeMeta/EditAttributeMeta";
+import EditAttributeMetaPage from "@/components/pages/adminDashboard/products/productAttributesMeta/editAttributeMeta/EditAttributeMeta";
 
-import {attributes} from '@/services/adminDashboard/productattributes/attributesService';
-import {singleAttributeMeta} from '@/services/adminDashboard/productattributesMeta/attributesMetaService';
+import {attributes} from '@/services/adminDashboard/products/attributesService';
+import {singleAttributeMeta} from '@/services/adminDashboard/products/attributesMetaService';
 
 import NotPermission from "@/components/common/notPermission/NotPermission";
 import getUser from '@/utils/common/getUser';
@@ -24,6 +24,7 @@ export default async function EditCategory({params}: { params: Params }){
     let id = params?.id;
     let attributeMetaData = await singleAttributeMeta(id);
     let attributesData = await attributes();
+
     
 
     return(

@@ -1,6 +1,6 @@
-import NewAttributeMetaPage from "@/components/pages/adminDashboard/productAttributesMeta/newAttributeMeta/NewAttributeMeta";
+import NewAttributeMetaPage from "@/components/pages/adminDashboard/products/productAttributesMeta/newAttributeMeta/NewAttributeMeta";
 
-import {attributes} from '@/services/adminDashboard/productattributes/attributesService';
+import {attributes} from '@/services/adminDashboard/products/attributesService';
 import NotPermission from "@/components/common/notPermission/NotPermission";
 import getUser from '@/utils/common/getUser';
 import havePermission from '@/utils/common/havePermission';

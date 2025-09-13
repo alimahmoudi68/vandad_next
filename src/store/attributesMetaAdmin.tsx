@@ -29,7 +29,7 @@ export const attributesMetaAdminSlice = createSlice({
             state.loading = true; 
         },
         removeAttributeMeta: (state, action) => {
-            state.attributesMeta = state.attributesMeta.filter(item => item._id !== action.payload);
+            state.attributesMeta = state.attributesMeta.filter(item => item.id !== action.payload);
         },
     },
 });

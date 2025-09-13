@@ -6,7 +6,7 @@ import type { RootState } from "@/store";
 
 import { updateAttributesMetaAdmin, setLoading } from "@/store/attributesMetaAdmin";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
-import { IAttributeMeta } from "@/types/attributeMetas"
+import { IAttributeMeta } from "@/types/products"
 
 
 
@@ -87,7 +87,7 @@ export default function AttributesMetaPage({
                     </div>
 
                     <div className="w-full md:w-[10%] flex justify-end md:justify-center">
-                    <Link href={`/dashboard/attributesMeta/${attr.id}`}>
+                    <Link href={`/admin-dashboard/product-attribute-metas/${attr.id}`}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -103,7 +103,7 @@ export default function AttributesMetaPage({
                           />
                         </svg>
                       </Link>
-                      <Link href={`/dashboard/attributesMeta/delete/${attr.id}`}>
+                      <Link href={`/admin-dashboard/product-attribute-metas/delete/${attr.id}`}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

@@ -1,33 +1,41 @@
 import EditCategoryPage from "@/components/pages/adminDashboard/products/categories/editCategory/EditCategory";
 
-// import {
-//   categories,
-//   singleCategory,
-// } from "@/services/dashboard/products/categoriesService";
+import {categories , singleCategory} from '@/services/adminDashboard/products/categoriesService';
+import {attributes} from '@/services/adminDashboard/products/attributesService';
 
 
-// import NotPermission from "@/components/common/notPermission/NotPermission";
-// import getUser from "@/utils/common/getUser";
-// import havePermission from "@/utils/common/havePermission";
+//import NotPermission from "@/components/common/notPermission/NotPermission";
+//import getUser from '@/utils/common/getUser';
+//import havePermission from '@/utils/common/havePermission';
 
 interface Params {
-  id: string;
+    id: string;
 }
 
-export default async function EditCategory({ params }: { params: Params }) {
-  //const getUserInfo = await getUser();
+export default async function EditCategory({params}: { params: Params }){
 
-  // if(!havePermission(getUserInfo?.user?.permissions ,
-  //     ['all_permissions' , 'insert_hotel' , 'insert_selling_together' , 'insert_apartment_sale_presale' , 'insert_rent_mortgage' , 'insert_villa'])
-  // ){
-  //     return(<NotPermission/>)
-  // }
+    //const getUserInfo = await getUser();
 
-  let id = params.id;
-  //let categoriesData = await categories();
-  //let categoryData = await singleCategory(+id);
+    // if(!havePermission(getUserInfo?.user?.permissions , 
+    //     ['all_permissions' , 'insert_hotel' , 'insert_selling_together' , 'insert_apartment_sale_presale' , 'insert_rent_mortgage' , 'insert_villa'])
+    // ){
+    //     return(<NotPermission/>)
+    // }
 
-  return (
-    <EditCategoryPage id={id}/>
-  );
+    let id = params.id;
+    let categoriesData = await categories();
+    let categoryData = await singleCategory(+id);
+    let attributesData = await attributes();
+
+
+    return(
+        <EditCategoryPage 
+        //permissions = {getUserInfo?.user?.permissions}
+        permissions = {[]}
+        categories = {categoriesData.categories ?? []}
+        attributes = {attributesData.attributes ?? []}
+        category={categoryData.category ?? {}}
+        id={+id}
+        />
+    )
 }

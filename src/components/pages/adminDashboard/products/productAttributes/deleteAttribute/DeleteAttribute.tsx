@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux';
-import { removeCat } from '@/store/catsAdmin';
+import { removeAttribute } from '@/store/attributesAdmin';
 import MasterModal from '@/components/modals/masterModal/MasterModal';
 import Button from "@/components/common/button/Button";
-import { removeAttribute } from '@/services/dashboard/attributes/attributesService';
+import { removeAttributeApi } from '@/services/adminDashboard/products/attributesService';
 
-export default function DeleteAttributeModal({ id }: { id: string; }) {
+export default function DeleteAttributeModal({ id }: { id: number; }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -17,11 +17,12 @@ export default function DeleteAttributeModal({ id }: { id: string; }) {
     if (!loading) {
       try {
         setLoading(true);
-        const data = await removeAttribute(id);
+        const numericId = Number(id);
+        const data = await removeAttributeApi(numericId);
         setLoading(false);
         if (data.status === "success") {
           toast.success("دسته بندی با موفقیت حذف شد");
-          dispatch(removeCat(id));
+          dispatch(removeAttribute(numericId));
           router.back();
         } else {
           toast.error("متاسفانه مشکلی رخ داده است، دقایقی بعدا مجددا تلاش کنید");

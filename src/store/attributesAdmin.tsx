@@ -1,12 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface IAttribute {
-    id: number;
-    title: string;
-    slug: string;
-    isDynamic: boolean;
-    [key: string]: any;
-}
+import { IAttribute } from "@/types/products";
+
 
 interface AttributesAdminState {
     attributes: IAttribute[];

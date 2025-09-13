@@ -28,29 +28,40 @@ interface FileProps {
 }
 
 interface Uploader {
-  id: number | string;
+  id: number;
   file: File | null;
   fileUrl: { bucketName: string; fileName: string } | null;
   uploadedId: string | null;
   errorMsg: string;
+  temp?: boolean; // فیلد جدید برای نشان دادن فایل موقت
 }
 
 export default function File({config , change , value , validation}: FileProps) {
 
   const [uploaders, setUploaders] = useState<Uploader[]>(value);
   const [showModalRemove, setShowModalRemove] = useState(false);
-  const [currentUpload , setCurrentUpload] = useState<{ id: string }>({ id: '0' });
+  const [currentUpload , setCurrentUpload] = useState<{ id: number , uploadedId: number }>({id:0 , uploadedId : 0});
 
   useEffect(()=>{
     setUploaders(value);
-  } , [value])
+  } , [value]);
+
 
   const addUploader = () => {
-    setUploaders([...uploaders, { id: new Date().getTime() , file: null , fileUrl : null , uploadedId : null , errorMsg : "" }]);
+    // همیشه اجازه اضافه کردن باکس جدید را می‌دهیم
+    const newId = new Date().getTime();
+    setUploaders(prevUploaders => [...prevUploaders, { 
+      id: newId, 
+      file: null, 
+      fileUrl: null, 
+      uploadedId: null, 
+      errorMsg: "", 
+      temp: false 
+    }]);
     change({
       type : "addFile" ,
       uploadInfo : { 
-        id: new Date().getTime(), 
+        id: newId, 
         uploadedId : null, 
         errorMsg : "" ,
         fileUrl : null
@@ -60,16 +71,20 @@ export default function File({config , change , value , validation}: FileProps) 
   
 
   const updateUploader = (id: number | string, file: File | null) => {
-    setUploaders(uploaders.map(uploader=>
-      uploader.id === id ? { ...uploader, file } : uploader
-    ));
+    setUploaders(prevUploaders => 
+      prevUploaders.map(uploader=>
+        uploader.id === id ? { ...uploader, file, temp: file ? true : false } : uploader
+      )
+    );
   };
 
 
   const updateIdUploader = (id: number | string, uploadedId: string | null, bucketName: string, fileName: string) => {
-    setUploaders(uploaders.map((uploader) =>
-      uploader.id === id ? { ...uploader, uploadedId, fileUrl: { bucketName, fileName } } : uploader
-    ));
+    setUploaders(prevUploaders => 
+      prevUploaders.map((uploader) =>
+        uploader.id === id ? { ...uploader, uploadedId, fileUrl: { bucketName, fileName }, temp: false } : uploader
+      )
+    );
   };
 
 
@@ -94,50 +109,38 @@ export default function File({config , change , value , validation}: FileProps) 
  
   const removeUploadHandler = (id: number | string)=>{
     //--- remove by id uploader , image not uploaded ---//
-    let oldUploaders = [...uploaders];
-    let newUploaders =  oldUploaders.filter(item=>item.id !== id);
-    setUploaders(newUploaders);
+    //setUploaders(prevUploaders => prevUploaders.filter(item => item.id !== id));
     change({ type: 'removeFile', uploadInfo: { id } });
   }
 
-  const removeUploadHandlerByidUploadedId = (id: string) => {
+  const removeUploadHandlerByidUploadedId = (id: number) => {
     //--- remove by id removeUploadHandlerByidUploadedId , remove uploaded image from server ---//
-    let oldUploaders: Uploader[] = [...uploaders];
-    let newUploaders: Uploader[] = [];
-
-    //console.log(id)
-
-    if (oldUploaders.length === 1) {
-      newUploaders = oldUploaders.map((item) => {
-        if (item.id === Number(id)) {
-          return {
-            ...item,
-            file: null,
-            uploadedId: null,
-            fileUrl: null,
-          };
-        } else {
-          return item;
-        }
-      });
-    } else {
-      newUploaders = oldUploaders.filter((item) => {
-        if (item.id === Number(id)) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-    }
-
-    setUploaders(newUploaders);
+    // setUploaders(prevUploaders => {
+    //   if (prevUploaders.length === 1) {
+    //     return prevUploaders.map((item) => {
+    //       if (item.id === Number(id)) {
+    //         return {
+    //           ...item,
+    //           file: null,
+    //           uploadedId: null,
+    //           fileUrl: null,
+    //           temp: false,
+    //         };
+    //       } else {
+    //         return item;
+    //       }
+    //     });
+    //   } else {
+    //     return prevUploaders.filter((item) => item.id !== Number(id));
+    //   }
+    // });
     change({ type: 'removeFile', uploadInfo: { id } });
   };
 
 
 
-  const removeUploadServerHandler = ( id : number | string) => {
-    setCurrentUpload({ id: id.toString() });
+  const removeUploadServerHandler = ( id : number  , uploadedId : number) => {
+    setCurrentUpload({ id , uploadedId });
     setShowModalRemove(true);
   }
 
@@ -160,8 +163,8 @@ export default function File({config , change , value , validation}: FileProps) 
               {config.label}
             </label>
           ) : null}
-        <div  className="flex gap-5 flex flex-wrap items-center">
-          {uploaders.map(({ id , uploadedId , file , fileUrl , errorMsg}) => (
+        <div  className="flex gap-5 flex flex-wrap justify-center items-start">
+          {uploaders.map(({ id , uploadedId , file , fileUrl , errorMsg, temp}) => (
               <UploaderUnit
                 key={id}
                 validation = {validation}
@@ -174,19 +177,24 @@ export default function File({config , change , value , validation}: FileProps) 
                 uploadHandler = {uploadHandlerHere}
                 removeUploadHandler = {removeUploadHandler}
                 removeUploadServerHandler = {removeUploadServerHandler}
+                temp={temp}
               />
           ))}
           { !config.isSingle ? 
             (
               <div
-              className="text-texPrimary-100 dark:text-white-100"
+              className="text-texPrimary-100 dark:text-white-100 my-auto transition-all duration-200 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center justify-center"
               onClick={addUploader}
               style={{
-                padding: "10px 20px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                marginTop: "10px",
+                padding: "8px 16px",
+                border: "2px solid #d1d5db",
+                borderRadius: "8px",
+                minWidth: "120px",
+                height: "auto",
+                textAlign: "center",
+                fontSize: "0.9rem",
+                fontWeight: "500",
+                backgroundColor: "transparent",
               }}
             >
               + افزودن جدید

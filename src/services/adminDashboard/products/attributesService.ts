@@ -1,11 +1,6 @@
 import myFetchServer from '@/services/myFetchServer'; 
 
-interface IAttribute {
-    _id: string;
-    title: string;
-    slug: string;
-    [key: string] : any
-}
+import { IAttribute } from "@/types/products";
 
 interface AttributesResponse {
     status: 'success' | 'error';

@@ -1,6 +1,6 @@
 import NewProductPage from "@/components/pages/adminDashboard/products/products/newProduct/NewProduct";
 
-//import { childCategories } from "@/services/dashboard/products/categoriesService";
+import { childCategories } from "@/services/adminDashboard/products/categoriesService";
 
 //import {getAllAreas} from '@/services/dashboard/areas/areasService'
 //import NotPermission from "@/components/common/notPermission/NotPermission";
@@ -16,10 +16,13 @@ export default async function NewEstate() {
   //     return(<NotPermission/>)
   // }
 
-  //let categoriesData = await childCategories();
+  let categoriesData = await childCategories();
+
+  console.log('cate' , categoriesData)
 
   return (
     <NewProductPage
+    categories={categoriesData.categories ?? []}
     />
   );
 }

@@ -1,4 +1,4 @@
-import NewAttributePage from "@/components/pages/adminDashboard/productAttributes/newAttribute/NewAttribute";
+import NewAttributePage from "@/components/pages/adminDashboard/products/productAttributes/newAttribute/NewAttribute";
 
 //import {getAllAreas} from '@/services/dashboard/areas/areasService'
 //import NotPermission from "@/components/common/notPermission/NotPermission";

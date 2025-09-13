@@ -104,6 +104,7 @@ const SelectWithLabel: React.FC<SelectWithLabelProps> = ({ config, change, value
         }  
 
 
+
         if(isSort){
 
             let noSelected = sortItem && sortItem.filter(item=>{
@@ -180,7 +181,7 @@ const SelectWithLabel: React.FC<SelectWithLabelProps> = ({ config, change, value
                                 )
                                 :
                                 (
-                                    <span className='text-gray-700 text-white-100'>
+                                    <span className='text-gray-700'>
                                         انتخاب کنید
                                     </span>
                                 )

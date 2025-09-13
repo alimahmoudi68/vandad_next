@@ -1,6 +1,6 @@
-import EditAttributePage from "@/components/pages/adminDashboard/productAttributes/editAttribute/EditAttribute";
+import EditAttributePage from "@/components/pages/adminDashboard/products/productAttributes/editAttribute/EditAttribute";
 
-import {singleAttribute} from '@/services/adminDashboard/productattributes/attributesService';
+import {singleAttribute} from '@/services/adminDashboard/products/attributesService';
 
 //import NotPermission from "@/components/common/notPermission/NotPermission";
 //import getUser from '@/utils/common/getUser';

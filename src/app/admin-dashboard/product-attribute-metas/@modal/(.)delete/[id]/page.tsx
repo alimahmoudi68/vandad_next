@@ -1,4 +1,4 @@
-import DeleteAttributeModal from "@/components/pages/dashboard/attributes/deleteAttribute/DeleteAttribute";
+import DeleteAttributeModal from "@/components/pages/adminDashboard/products/productAttributesMeta/deleteAttributeMeta/DeleteAttribute";
 
 export default async function DeleteModal({
   params,
@@ -9,6 +9,6 @@ export default async function DeleteModal({
   const id = (await params).id;
     
   return (
-    <DeleteAttributeModal id={id}/>
+    <DeleteAttributeModal id={+id}/>
   );
 }

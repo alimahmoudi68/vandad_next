@@ -2,23 +2,28 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Link from "next/link";
 
-import { updateAttributeMeta } from "@/services/dashboard/attributesMeta/attributesMetaService";
+import { updateAttribute } from "@/services/adminDashboard/products/attributesService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
+import { IAttributes } from "@/types/products";
 
-interface IAttributeMeta {
-  _id: string;
+interface IAttribute {
+  id: number;
   title: string;
   slug: string;
+  metas : 
+    {
+    id: number, 
+    title: string,
+    slug: string,
+  }[]
   [key: string]: any;
 }
 
-interface EditAttributeMetaPageProps {
+interface EditAttributePageProps {
   permissions: string[];
-  attributeMeta: IAttributeMeta;
-  attributes: IAttributeMeta[];
+  attribute: IAttribute;
   id: string;
 }
 
@@ -42,12 +47,11 @@ interface IForm {
   formItems: FormItem[];
 }
 
-export default function EdiitAttributeMetaPage({
+export default function EdiitAttributePage({
   permissions,
-  attributeMeta,
-  attributes,
+  attribute,
   id,
-}: EditAttributeMetaPageProps) {
+}: EditAttributePageProps) {
   const router = useRouter();
   const [loadingBtn, setLoadingBtn] = useState(false);
 
@@ -61,7 +65,7 @@ export default function EdiitAttributeMetaPage({
           name: "title",
           classes: "w-full",
         },
-        value: attributeMeta.title,
+        value: attribute.title,
         validation: {
           maxLength: 50,
           required: true,
@@ -77,7 +81,7 @@ export default function EdiitAttributeMetaPage({
           name: "slug",
           classes: "w-full",
         },
-        value: attributeMeta.slug,
+        value: attribute.slug,
         validation: {
           maxLength: 50,
           required: true,
@@ -87,16 +91,16 @@ export default function EdiitAttributeMetaPage({
         used: false,
       },
       {
-        inputType: "select-with-label",
+        inputType: "checkbox",
         config: {
-          label: "ویژگی",
-          name: "attribute",
-          options: attributes,
+          label: "نوع پوپا",
+          name: "isDynamic",
           classes: "w-full",
         },
-        value: attributeMeta.attribute,
+        value: attribute.isDynamic,
         validation: {
-          selectRequired: true,
+          maxLength : 50,
+          required: true
         },
         valid: false,
         errorMsg: "",
@@ -107,22 +111,18 @@ export default function EdiitAttributeMetaPage({
 
   const [FormInput] = useState<IForm>(initFormInput);
 
-  const submitHandler = async (form: FormData | Record<string, any>) => {
+  const submitHandler = async (form: IAttributes) => {
     setLoadingBtn(true);
     try {
-      if ("title" in form && "slug" in form) {
-        const data = await updateAttributeMeta(id, {
-          title: form.title,
-          slug: form.slug,
-        });
+      const data = await updateAttribute(id, form);
 
-        if (data.status === "success") {
-          toast.success("مقدار ویژگی محصول با موفقیت ویرایش شد");
-          router.push("/dashboard/attributesMeta");
-        } else {
-          toast.error(data.msg || "خطایی رخ داد");
-        }
+      if (data.status === "success") {
+        toast.success("ویژگی محصول با موفقیت ویرایش شد");
+        router.push("/admin-dashboard/product-attributes");
+      } else {
+        toast.error(data.msg || "خطایی رخ داد");
       }
+      
     } catch (err) {
       toast.error(
         err instanceof Error
@@ -137,7 +137,7 @@ export default function EdiitAttributeMetaPage({
   return (
     <div className="container mx-auto p-3">
       <h1 className="text-gray-700 dark:text-white text-2xl font-extrabold mb-10">
-        ویرایش مقدار ویژگی محصول
+        ویرایش ویژگی محصول
       </h1>
       <Card title="" classes="w-[90%] max-w-[600px] mx-auto mb-5">
         <Form
@@ -146,6 +146,19 @@ export default function EdiitAttributeMetaPage({
           loading={loadingBtn}
           submitTitle="ویرایش"
         />
+      </Card>
+      <Card title="مقادیر ویژگی" classes="w-[90%] max-w-[600px] mx-auto mb-5">
+        <div className="flex flex-col gap-2">
+          {attribute.metas.map((meta) => (
+            <div
+              key={meta.id}
+              className="flex justify-between items-center p-2 rounded-md border"
+            >
+              <span>{meta.title}</span>
+              <span>{meta.slug}</span>
+            </div>
+          ))}
+        </div>
       </Card>
     </div>
   );

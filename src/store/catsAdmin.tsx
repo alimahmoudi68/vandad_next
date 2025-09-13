@@ -1,13 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface ICategory {
-  id: number;
-  title: string;
-  slug: string;
-}
+import { IProductCat } from "@/types/products";
 
 interface CatsAdminState {
-  categories: ICategory[];
+  categories: IProductCat[];
   loading: boolean; // اضافه کردن وضعیت loading
 }
 
@@ -28,11 +24,19 @@ export const catsAdminSlice = createSlice({
       state.loading = true; // در زمان بارگذاری داده‌ها، loading را true می‌کنیم
     },
     removeCat: (state, action) => {
-      console.log("action.payload", action.payload);
-      console.log("state.categories", state.categories);
-      state.categories = state.categories.filter(
-        (cat) => cat.id !== action.payload
-      );
+      const idToRemove = action.payload as number;
+
+      const removeFromTree = (nodes: IProductCat[]): IProductCat[] => {
+        if (!nodes) return [];
+        return nodes
+          .filter((node) => node.id !== idToRemove)
+          .map((node) => ({
+            ...node,
+            children: removeFromTree(node.children ?? []),
+          }));
+      };
+
+      state.categories = removeFromTree(state.categories);
     },
   },
 });

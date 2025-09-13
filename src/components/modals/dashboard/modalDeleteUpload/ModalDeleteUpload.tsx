@@ -6,29 +6,31 @@ import MasterModal from '@/components/modals/masterModal/MasterModal';
 import {deleteUpload} from '@/services/adminDashboard/uploads/uploadsService';
 
 interface ModalDeleteUploadProps {
-  item: { id: string };
+  item: { id: number , uploadedId : number };
   close: () => void;
   show: boolean;
-  done: (id: string) => void;
+  done: (id: number) => void;
   removeFromServer: boolean
 }
 
-const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show, done , removeFromServer}) => {
+const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, done , removeFromServer}) => {
   const [loading, setLoading] = useState(false);
 
   const closeHandler = async (e?: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     close();
   };
 
+  const {id , uploadedId} = item;
+
   const removeHandler = async () => {
     if(removeFromServer){
       if (!loading) {
         try {
           setLoading(true);
-          const data  = await deleteUpload(item.id);
+          const data  = await deleteUpload(uploadedId);
   
           if (data.status == "success") {
-            done(item.id);
+            done(id);
             closeHandler();
           } else if(data.status == "error" && data.msg == 'Not Permission') {
             toast.error("شما اجازه حذف ندارید");
@@ -41,7 +43,7 @@ const ModalDeleteUpload: React.FC<ModalDeleteUploadProps> = ({ item, close, show
         }
       }
     }else{
-      done(item.id);
+      done(id);
       closeHandler();
     }
   };

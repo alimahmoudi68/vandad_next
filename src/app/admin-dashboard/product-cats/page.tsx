@@ -1,9 +1,10 @@
 import CategoriesPage from "@/components/pages/adminDashboard/products/categories/categories/Categories";
 
+import { categories } from "@/services/adminDashboard/products/categoriesService";
 
-// import NotPermission from "@/components/common/notPermission/NotPermission";
-// import getUser from "@/utils/common/getUser";
-// import havePermission from "@/utils/common/havePermission";
+//import NotPermission from "@/components/common/notPermission/NotPermission";
+//import getUser from "@/utils/common/getUser";
+//import havePermission from "@/utils/common/havePermission";
 
 export default async function Categories() {
   //const getUserInfo = await getUser();
@@ -15,8 +16,19 @@ export default async function Categories() {
   // }
 
 
+
+  let categoriesData = await categories();
+
+
+  //console.log('categoriesData' , categoriesData)
+
+
+
   return (
     <CategoriesPage
+      //permissions={getUserInfo?.user?.permissions}
+      permissions={[]}
+      categories={categoriesData.categories ?? []}
     />
   );
 }

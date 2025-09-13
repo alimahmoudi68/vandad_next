@@ -1,4 +1,4 @@
-import DeleteAttributeModal from "@/components/pages/adminDashboard/productAttributes/deleteAttribute/DeleteAttribute";
+import DeleteAttributeModal from "@/components/pages/adminDashboard/products/productAttributes/deleteAttribute/DeleteAttribute";
 
 export default async function DeleteModal({
   params,

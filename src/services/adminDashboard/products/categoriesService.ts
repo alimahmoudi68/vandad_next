@@ -1,16 +1,12 @@
 import myFetchServer from '@/services/myFetchServer'; 
 
-interface ICategory {
-    id: number;
-    title: string;
-    slug: string;
-    [key: string] : any
-}
+import { IProductCat } from "@/types/products";
+
 
 
 interface CategoriesResponse {
     status: 'success' | 'error';
-    categories?: ICategory[];
+    categories?: IProductCat[];
     msg?: string,
 }
 
@@ -23,6 +19,18 @@ interface NewCategoryResponse {
 export const categories = async (): Promise<CategoriesResponse> => {
 
     return await myFetchServer('/admin/categories', {
+        headers: {
+            "Content-Type": "application/json",
+        },
+        method : 'GET' 
+        },
+    );
+}
+
+
+export const parentCategories = async (): Promise<CategoriesResponse> => {
+
+    return await myFetchServer('/admin/categories/parents', {
         headers: {
             "Content-Type": "application/json",
         },
@@ -83,11 +91,7 @@ export const singleCategory = async(id:number) =>{
 }
 
 
-export const updateCategory = async (id: number , formData: {
-    title: string ,
-    slug: string,
-    parent: string,
-}): Promise<NewCategoryResponse> => {
+export const updateCategory = async (id: number , formData: IProductCat): Promise<NewCategoryResponse> => {
 
 
     return await myFetchServer(`/admin/categories/${id}`, {

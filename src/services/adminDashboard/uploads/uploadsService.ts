@@ -27,7 +27,7 @@ export const newUpload = async (formData: FormData): Promise<NewUploadResponse> 
 }
 
 
-export const deleteUpload = async (id: string): Promise<DeleteUploadResponse> => {
+export const deleteUpload = async (id: number): Promise<DeleteUploadResponse> => {
 
     return await myFetchServer(`/admin/uploads/${id}`, {
         headers: {

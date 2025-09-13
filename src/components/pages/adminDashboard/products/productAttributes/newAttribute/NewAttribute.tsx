@@ -3,20 +3,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
-import { newAttributeMeta } from "@/services/adminDashboard/productattributesMeta/attributesMetaService";
+import { newAttribute } from "@/services/adminDashboard/products/attributesService";
 import Form from '@/components/common/form/Form';
 import Card from "@/components/common/card/Card";
+import { handleServerError } from "@/utils/common/handleServerError";
+import { IAttributes } from "@/types/products";
 
-interface IAttribute {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
 
-interface NewAttributeMetaPageProps {
+interface NewAttributePageProps {
   permissions: string[];
-  attributes: IAttribute[];
 }
 
 interface FormItem {
@@ -39,17 +34,16 @@ interface IForm {
   formItems: FormItem[];
 }
 
-export default function NewAttributeMetaPage({ 
+export default function NewAttributePage({ 
   permissions,
-  attributes
-}: NewAttributeMetaPageProps) {
+}: NewAttributePageProps) {
   const router = useRouter();
   const [loadingBtn, setLoadingBtn] = useState(false);
 
   const initFormInput: IForm = {
     formItems: [
       {
-        inputType: "simple-input-with-label",
+        inputType:  "simple-input-with-label",
         config: {
           label: "عنوان",
           name: "title",
@@ -81,18 +75,16 @@ export default function NewAttributeMetaPage({
         used: false,
       },
       {
-        inputType: "select-with-label",
+        inputType: "checkbox",
         config: {
-          label: "ویژگی",
-          name: "attribute",
-          options: attributes.map(item=>({id: item.id , title: item.title})),
+          label: "نوع پوپا",
+          name: "isDynamic",
           classes: "w-full",
         },
-        value: "",
+        value: false,
         validation: {
-          selectRequired: true,
         },
-        valid: false,
+        valid: true,
         errorMsg: "",
         used: false,
       },
@@ -101,26 +93,25 @@ export default function NewAttributeMetaPage({
 
   const [FormInput] = useState<IForm>(initFormInput);
 
-  const submitHandler = async (form: FormData | Record<string, any>) => {
-  
+  const submitHandler = async (form: IAttributes) => {
+
     setLoadingBtn(true);
     try {
-      if ('title' in form && 'slug' in form) {
-        const data = await newAttributeMeta({
-          title: form.title,
-          slug: form.slug,
-          attribute: form.attribute
-        });
+
+      const data = await newAttribute(form);
 
       if (data.status === "success") {
-        toast.success('مقدار ویژگی جدید با موفقیت ثبت شد');
-        router.push("/admin-dashboard/product-attribute-metas");
+        toast.success('ویژگی جدید با موفقیت ثبت شد');
+        router.push("/admin-dashboard/product-attributes");
       } else {
-        toast.error(data.msg || "خطایی رخ داد");
+        handleServerError({
+          ...data,
+          msg: data.msg ?? 'خطایی رخ داده است.'
+        })
       }
-
-      }
+      
     } catch (err) {
+      console.log(err)
       toast.error(err instanceof Error ? err.message : "متاسفانه خطایی پیش آمد لطفا بعدا تلاش کنید");
     } finally {
       setLoadingBtn(false);
@@ -129,7 +120,7 @@ export default function NewAttributeMetaPage({
 
   return (
     <div className="container mx-auto p-3">
-      <h1 className="text-gray-700 dark:text-white text-2xl font-extrabold mb-10">مقدار ویژگی جدید</h1>
+      <h1 className="text-gray-700 dark:text-white text-2xl font-extrabold mb-10">ویژگی جدید</h1>
       <Card title="" classes="w-[90%] max-w-[600px] mx-auto">
         <Form initForm={FormInput} submit={submitHandler} loading={loadingBtn} submitTitle="ثبت" />
       </Card>

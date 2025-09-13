@@ -7,11 +7,11 @@ import type { RootState } from "@/store";
 
 import { updateAttributesAdmin, setLoading } from "@/store/attributesAdmin";
 import SkeletonLoading from "@/components/common/skeletonLoading/SkeletonLoading";
-import { IAttributes } from "@/types/attributes";
+import { IAttribute } from "@/types/products";
 
 
 interface AttributesPageProps {
-  attributes: IAttributes[];
+  attributes: IAttribute[];
   permissions: string[];
 }
 

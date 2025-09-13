@@ -43,7 +43,7 @@ export const newAttributeMeta = async (formData: {
 }
 
 
-export const removeAttribute = async(id:string) =>{
+export const removeAttribute = async(id:number) =>{
 
     return await myFetchServer(`/admin/attribute-metas/${id}`, {
         headers: {

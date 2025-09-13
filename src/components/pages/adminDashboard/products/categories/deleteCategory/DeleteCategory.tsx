@@ -1,14 +1,14 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 import { useDispatch } from 'react-redux';
-import { removeAttribute } from '@/store/attributesAdmin';
+import { removeCat } from '@/store/catsAdmin';
 import MasterModal from '@/components/modals/masterModal/MasterModal';
 import Button from "@/components/common/button/Button";
-import { removeAttributeApi } from '@/services/adminDashboard/productattributes/attributesService';
+import { removeCategory } from '@/services/adminDashboard/products/categoriesService';
 
-export default function DeleteAttributeModal({ id }: { id: number; }) {
+export default function DeleteCategoryModal({ id }: { id: number; }) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -17,12 +17,11 @@ export default function DeleteAttributeModal({ id }: { id: number; }) {
     if (!loading) {
       try {
         setLoading(true);
-        const numericId = Number(id);
-        const data = await removeAttributeApi(numericId);
+        const data = await removeCategory(Number(id));
         setLoading(false);
         if (data.status === "success") {
           toast.success("دسته بندی با موفقیت حذف شد");
-          dispatch(removeAttribute(numericId));
+          dispatch(removeCat(Number(id)));
           router.back();
         } else {
           toast.error("متاسفانه مشکلی رخ داده است، دقایقی بعدا مجددا تلاش کنید");
@@ -38,8 +37,8 @@ export default function DeleteAttributeModal({ id }: { id: number; }) {
   };
 
   return (
-    <MasterModal title="حذف ویژگی محصول" close={handleCancel}>
-      <span className="dark:text-white-100 text-textPrimary-100">آیا از حذف ویژگی محصول مطمئن هستید؟</span>
+    <MasterModal title="حذف دسته بندی" close={handleCancel}>
+      <span>آیا از حذف دسته بندی مطمئن هستید؟</span>
       <div className="flex justify-center gap-3 mt-4">
         <Button loading={loading} click={handleConfirm} classes="w-[100px]">بله</Button>
         <Button click={handleCancel} classes="w-[100px]">خیر</Button>

@@ -6,7 +6,7 @@ import { newUpload } from "../../../services/adminDashboard/uploads/uploadsServi
 import ShowImg from "@/components/common/showImg/ShowImg";
 
 interface UploaderUnitProps {
-  id: number | string;
+  id: number ;
   uploadedId: any;
   file: File | null;
   fileUrl: { bucketName: string; fileName: string };
@@ -16,9 +16,10 @@ interface UploaderUnitProps {
     id: number | string,
     data: { uploadedId: any; fileName: string; bucketName: string }
   ) => void;
-  removeUploadServerHandler: (idUpload: number | string) => void;
+  removeUploadServerHandler: ( id: number, idUpload: number) => void;
   validation?: { maxSize?: number; allowTypes?: string[] } | null;
   errorMsg?: string | null;
+  temp?: boolean;
 }
 
 interface RemoveUploaderHandlerEvent extends React.MouseEvent<SVGSVGElement> {
@@ -43,6 +44,7 @@ export default function UploaderUnit({
     allowTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
   },
   errorMsg = null,
+  temp = false,
 }: UploaderUnitProps) {
   const inputFile = useRef<HTMLInputElement>(null);
 
@@ -139,21 +141,20 @@ export default function UploaderUnit({
   };
 
   const removeUploaderServerHandler: RemoveUploaderServerHandler = () => {
-    removeUploadServerHandler(uploadedId);
+    removeUploadServerHandler(id, uploadedId);
   };
 
   return (
     <div className="p-[0px] max-w-[400px] relative">
       <div
         className={`relative ${
-          previewUrl ? "bg-transparent" : "bg-white-100 dark:bg-bgDark-100"
+          previewUrl ? "bg-transparent" : "bg-white-100 dark:bg-bgDark-100 h-[200px] max-w-full"
         }`}
         onClick={() =>
           !uploadedId && inputFile.current && inputFile.current.click()
         }
         style={{
-          width: "200px",
-          height: "200px",
+         
           border: errorMsg
             ? "2px dashed rgb(236, 48, 14)"
             : uploadedId
@@ -292,7 +293,7 @@ export default function UploaderUnit({
             )}
           </div>
 
-          <p className="text-[0.8rem]">نام: {file.name}</p>
+          <p className="text-[0.8rem]">نام: {file.name.length > 15 ? file.name.substring(0, 15) + '...' : file.name}</p>
           <p className="text-[0.8rem]">
             حجم: {(file.size / 1024).toFixed(2)} کیلوبایت
           </p>

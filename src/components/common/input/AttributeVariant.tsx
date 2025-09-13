@@ -2,7 +2,8 @@ import React from 'react';
 
 import SimpleInputPriceWithLabel from './SimpleInputPriceWithLabel'
 import SimpleInputNumberWithLabel from './SimpleInputNumberWithLabel';
-
+import SimpleInputWithLabel from './SimpleInputWithLabel';
+import File from './File';
 
 interface Config {
     isSort?: boolean;
@@ -12,34 +13,71 @@ interface Config {
     noSearch?: boolean
 }
 
+interface Uploader {
+    id: number ;
+    file: File | null;
+    fileUrl: { bucketName: string; fileName: string } | null;
+    uploadedId: string | null;
+    errorMsg: string;
+    temp?: boolean;
+}
+
 interface AttributeVariantProps {
     config: Config;
-    change: ({ key, value }: { key: string, value: string }) => void;
+    change: ({ key, value }: { key: string, value: string | Uploader[] | any }) => void;
     value: {
         attributes : Record<string, any> ,
         price : number ,
+        discountPrice : number ,
         sku : string ,
-        stock : number , 
+        stock : number ,
+        images?: []
     };
     value2: {
         price : number ,
+        discountPrice : number ,
         stock : number ,
-        sku : string 
+        sku : string ,
     };
     errs?: {
         price : string ,
+        discountPrice : string ,
         sku: string ,
-        stock: string
+        stock: string,
     };
 }
 
 const AttributeVariant: React.FC<AttributeVariantProps> = ({ value, value2, change, config, errs }) => {
 
-    console.log('errs?' , errs)
+    //console.log('errs?' , errs)
     // console.log('config' , config)
 
     const changeHanlder = (value: string , key: string)=>{
         change({key , value})
+    }
+
+    const fileChangeHandler = (arg: { 
+        type: string;
+        uploadInfo?: { 
+            id: string | number;
+            file?: string | null; 
+            uploadedId?: string | null; 
+            fileUrl?: { bucketName: string; fileName: string } | null;
+            errorMsg?: string;
+        };
+    }) => {
+        if (arg.type === 'addFile' && arg.uploadInfo) {
+
+            change({ key: arg.type, value: arg.uploadInfo });
+        }
+
+        if(arg.type === 'removeFile' && arg.uploadInfo){
+            change({ key: arg.type, value: arg.uploadInfo });
+        }
+
+        if(arg.type === 'uploadFile' && arg.uploadInfo){
+            change({ key: arg.type, value: arg.uploadInfo });
+        }
     }
 
     return (
@@ -50,7 +88,7 @@ const AttributeVariant: React.FC<AttributeVariantProps> = ({ value, value2, chan
                 {config.label} 
             </span>
             <SimpleInputPriceWithLabel
-                classes='w-full' 
+                classes='w-full mb-2' 
                 config = {{
                     label : 'قیمت',
                     name : 'price'
@@ -61,21 +99,32 @@ const AttributeVariant: React.FC<AttributeVariantProps> = ({ value, value2, chan
                 errorMsg = {errs?.price}
             />
 
-            <SimpleInputNumberWithLabel
-              classes='w-full' 
+            <SimpleInputPriceWithLabel
+                classes='w-full mb-2' 
+                config = {{
+                    label : 'قیمت با تخفیف',
+                    name : 'discountPrice'
+                }}
+                change = {(e)=>changeHanlder(e.target.value ,  "discountPrice")}
+                value = {String(value.discountPrice)}
+                value2 = {String(value2.discountPrice)}
+                errorMsg = {errs?.discountPrice}
+            />
+
+            <SimpleInputWithLabel
+              classes='w-full mb-2' 
               config = {{
                   label : 'شناسه کالا',
                   name : 'sku'
               }}
               change = {(e)=>changeHanlder(e.target.value ,  "sku")}
               value = {value.sku}
-              value2 = {value2.sku}
               errorMsg = {errs?.sku}
             />
 
 
             <SimpleInputNumberWithLabel
-              classes='w-full' 
+              classes='w-full mb-2' 
               config = {{
                   label : 'موجودی',
                   name : 'stock'
@@ -85,6 +134,20 @@ const AttributeVariant: React.FC<AttributeVariantProps> = ({ value, value2, chan
               value2 = {String(value2.stock)}
               errorMsg = {errs?.stock}
             /> 
+
+            <File
+              config={{
+                label: 'تصاویر محصول',
+                name: 'files',
+                classes: 'w-full',
+                isSingle: false,
+                removeFromServer: true
+              }}
+              change={fileChangeHandler}
+              validation={{}}
+              errorMsg=''
+              value={value.images || []}
+            />
  
         </div>
     
