@@ -10,7 +10,8 @@ interface FileProps {
     name: string,
     classes: string,
     isSingle: boolean,
-    removeFromServer: boolean
+    removeFromServer: boolean,
+    inSidebar: boolean,
   },
   change: (arg: { 
     type: string;
@@ -177,7 +178,7 @@ export default function File({config , change , value , validation}: FileProps) 
                 uploadHandler = {uploadHandlerHere}
                 removeUploadHandler = {removeUploadHandler}
                 removeUploadServerHandler = {removeUploadServerHandler}
-                temp={temp}
+                inSidebar={config.inSidebar}
               />
           ))}
           { !config.isSingle ? 

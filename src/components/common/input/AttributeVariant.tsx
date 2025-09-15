@@ -141,7 +141,8 @@ const AttributeVariant: React.FC<AttributeVariantProps> = ({ value, value2, chan
                 name: 'files',
                 classes: 'w-full',
                 isSingle: false,
-                removeFromServer: true
+                removeFromServer: true,
+                inSidebar: true,
               }}
               change={fileChangeHandler}
               validation={{}}

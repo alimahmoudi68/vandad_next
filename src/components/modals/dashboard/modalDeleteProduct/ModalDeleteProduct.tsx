@@ -26,6 +26,8 @@ const ModalDeleteProduct: React.FC<ModalDeleteProductProps> = ({ item, close, do
         try {
           setLoading(true);
           const data  = await removeProduct(item.id);
+
+          console.log('data ???? ' , data)
   
           if (data.status == "success") {
             done(item.id);

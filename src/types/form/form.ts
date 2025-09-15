@@ -19,6 +19,7 @@ export interface IFormItems{
     isAttributeSelect?: boolean;
     isAttributeVariant?: boolean;
     isSingle?: boolean;
+    inSidebar?: boolean;
     isOutString?: boolean
     // optional layout metadata
     area?: "main" | "sidebar";

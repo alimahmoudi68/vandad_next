@@ -328,10 +328,11 @@ const Form = ({
                       ); // فقط uploadedId برمی‌گردونه
                   }
 
-                }else if(form.formItems[item].inputType === "simple-input-number" || form.formItems[item].inputType === "simple-input-number-with-label"){
+                }else if(form.formItems[item].inputType === "simple-input-number" || form.formItems[item].inputType === "simple-input-number-with-label" || form.formItems[item].inputType === "simple-input-price-with-label"){
                   if(form.formItems[item].config?.isOutString){
                     newForm[form.formItems[item].config.name] = form.formItems[item].value;
                   }else{
+                    console.log('form.formItems[item]' , form.formItems[item])
                     newForm[form.formItems[item].config.name] = Number(form.formItems[item].value);
                   }
                 }else if(form.formItems[item].inputType === "faqs"){
@@ -353,7 +354,7 @@ const Form = ({
                 ) {
                   
                   let variantValue = form.formItems[item].value;
-                  variantValue.images.filter(
+                  let variantValueImages = variantValue.images.filter(
                     (file: {
                       errorMsg: string;
                       uploadedId: string;
@@ -369,7 +370,7 @@ const Form = ({
                       id: number;
                     }) => f.uploadedId
                   );
-                  variantArr.push(variantValue);
+                  variantArr.push({...variantValue, images: variantValueImages});
 
                 } else {
                   newForm[form.formItems[item].config.name] =

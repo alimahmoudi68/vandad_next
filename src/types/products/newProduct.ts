@@ -11,9 +11,7 @@ export interface INewProduct {
     title: string;
     slug: string;
     description: string;
-    isVariant?: boolean;
     price: number;
-    discount: boolean;
     discountPrice: number;
     thumbnail: string;
     images: string[];

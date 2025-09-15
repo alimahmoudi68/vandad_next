@@ -19,7 +19,7 @@ interface UploaderUnitProps {
   removeUploadServerHandler: ( id: number, idUpload: number) => void;
   validation?: { maxSize?: number; allowTypes?: string[] } | null;
   errorMsg?: string | null;
-  temp?: boolean;
+  inSidebar?: boolean;
 }
 
 interface RemoveUploaderHandlerEvent extends React.MouseEvent<SVGSVGElement> {
@@ -44,7 +44,7 @@ export default function UploaderUnit({
     allowTypes: ["image/jpeg", "image/jpg", "image/png", "image/webp"],
   },
   errorMsg = null,
-  temp = false,
+  inSidebar = false,
 }: UploaderUnitProps) {
   const inputFile = useRef<HTMLInputElement>(null);
 
@@ -116,8 +116,6 @@ export default function UploaderUnit({
     try {
       const response = await newUpload(formData);
 
-      console.log('res' , response);
-
       if (response.status == "success") {
         uploadHandler(id, {
           uploadedId: response.upload?.id ?? "",
@@ -145,16 +143,16 @@ export default function UploaderUnit({
   };
 
   return (
-    <div className="p-[0px] max-w-[400px] relative">
+    <div className="p-[0px] relative">
       <div
         className={`relative ${
-          previewUrl ? "bg-transparent" : "bg-white-100 dark:bg-bgDark-100 h-[200px] max-w-full"
-        }`}
+          previewUrl ? "bg-transparent" : "bg-white-100 dark:bg-bgDark-100"
+        } ${inSidebar ? 'w-[200px] h-[200px]' : 'w-[200px] h-[200px]'}
+        `}
         onClick={() =>
           !uploadedId && inputFile.current && inputFile.current.click()
         }
         style={{
-         
           border: errorMsg
             ? "2px dashed rgb(236, 48, 14)"
             : uploadedId
@@ -189,7 +187,7 @@ export default function UploaderUnit({
           <ShowImg
             bucketName={fileUrl.bucketName}
             fill={true}
-            classes="contain object-cover"
+            classes={`${inSidebar ? 'w-[200px] h-full' : ''} object-cover`}
             fileName={fileUrl.fileName}
             width={200}
             height={200}
@@ -198,6 +196,7 @@ export default function UploaderUnit({
           <>
             {previewUrl ? (
               <img
+              className="w-[100px]"
                 src={previewUrl}
                 alt="Preview"
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}

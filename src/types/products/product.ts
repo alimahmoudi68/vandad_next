@@ -1,5 +1,9 @@
 import {IProductComments} from '../productComment'
 import {IUpload} from "@/types/upload";
+import { IProductCat } from "@/types/products/index";
+import { IAttribute } from '@/types/products/index';
+import { IAttributeMeta } from '@/types/products/index';
+
 
 export interface IProduct {
     id: number,
@@ -8,20 +12,25 @@ export interface IProduct {
     description_meta: string,
     slug: string,
     price: number;
-    discount: boolean;
     discountPrice: number;
-    content: string,
     thumbnail : IUpload,
     images: IUpload[],
-    categories: 
-      {
-        "id": number,
-        "title": string,
-        "slug": string,
-      }[],
+    categories: IProductCat[],
     commentData: {
       comments: IProductComments[]
-    }
+    },
+    stock: number,
+    sku: string,
+    description: string,
     created_at: string,
     upated_at: string,
+    attributes?:{
+      attribute: IAttribute,
+      attributeMeta: IAttributeMeta
+    }
+  }
+
+  export interface IProductAttr{
+    attribute: IAttribute,
+    attributeMeta: IAttributeMeta
   }

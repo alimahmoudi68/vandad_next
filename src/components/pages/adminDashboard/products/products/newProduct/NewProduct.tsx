@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import { newProduct } from "@/services/adminDashboard/products/productsService";
 import Form from "@/components/common/form/Form";
 import { handleServerError } from "@/utils/common/handleServerError";
-import Card from "@/components/common/card/Card";
 import filterSingleAttributes from "@/utils/common/removeVariantsAttributes";
 import { IProductCat, INewProduct } from "@/types/products/index";
 
@@ -64,6 +63,7 @@ export default function NewProductPage({categories} : INewProductProps) {
     {
       inputType: "simple-input-price-with-label",
       config: {
+        isOutString: false , 
         label: "قیمت فروش",
         name: "price",
         type: "text",
@@ -89,7 +89,7 @@ export default function NewProductPage({categories} : INewProductProps) {
     {
       inputType: "simple-input-price-with-label",
       config: {
-        isOutString: true , 
+        isOutString: false , 
         label: "قیمت با تخفیف",
         name: "discountPrice",
         classes: "w-full",
@@ -158,13 +158,18 @@ export default function NewProductPage({categories} : INewProductProps) {
         label: "شناسه کالا",
         name: "sku",
         classes: "w-full",
+        isDepend: true,
+        isDependField: "variants",
+        isDependValue: [],
         area: 'main',
         sectionId: 'basic', 
         sectionTitle: 'اطلاعات پایه', 
         order: 1, 
       },
       value: "",
-      validation: {},
+      validation: {
+        required: true,
+      },
       valid: false,
       errorMsg: "",
       used: false,
@@ -172,9 +177,13 @@ export default function NewProductPage({categories} : INewProductProps) {
     {
       inputType: "simple-input-number-with-label",
       config: {
+        isOutString: false , 
         label: "موجودی",
         name: "stock",
         classes: "w-full",
+        isDepend: true,
+        isDependField: "variants",
+        isDependValue: [],
         area: 'main',
         sectionId: 'basic', 
         sectionTitle: 'اطلاعات پایه', 
@@ -254,6 +263,8 @@ export default function NewProductPage({categories} : INewProductProps) {
   const submitHandler = async (form: INewProduct) => {
     setLoadingBtn(true);
 
+    //console.log('form' , form)
+
     try {
       const {
         title,
@@ -265,6 +276,7 @@ export default function NewProductPage({categories} : INewProductProps) {
         stock,
         sku,
         categories,
+        variants ,
         ...rest
       } = form;
 
@@ -281,10 +293,10 @@ export default function NewProductPage({categories} : INewProductProps) {
         sku,
         categories,
         attributes: filterSingleAttributes({ attributes: rest }).attributes,
+        variants ,
       };
 
-      console.log(payload);
-      return
+      //console.log('payload' , payload);
 
       const data = await newProduct(payload);
 
