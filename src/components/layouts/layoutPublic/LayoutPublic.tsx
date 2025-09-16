@@ -348,13 +348,10 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
           <div className="flex flex-wrap gap-y-7 justify-around md:justify-between py-6 px-3">
             <div className="w-full md:w-[48%]">
               <span className="block font-bold text-[1.3rem] mb-2">
-                درباره آموزشگاه لیوسا
+                درباره ونداد
               </span>
               <span className="text-start">
-                آموزشگاه لیوسا یکی از پرتلاش‌ترین و بروزترین وبسایت های آموزشی
-                دوره‌های آرایشگری و زیبایی در سطح ایران است که همیشه تلاش کرده
-                تا بتواند جدیدترین و بروزترین دوره‌های آموزشی را در اختیار
-                علاقه‌مندان ایرانی قرار دهد
+              لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و
               </span>
             </div>
             <div className="w-full text-center md:w-[30%]">
@@ -364,19 +361,19 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
               <div className="flex items-center gap-x-2 mb-2">
                 <span>شماره تماس:</span>
                 <a
-                  href="tel:09158008898"
+                  href="tel:091..."
                   className="block hover:opacity-70 transition-all duration-150"
                 >
-                  09158008898
+                  09....
                 </a>
               </div>
               <div className="flex items-center gap-x-2 mb-3">
                 <span>آدرس:</span>
                 <Link
-                  href="tel:09158008898"
+                  href="tel:09..."
                   className="block hover:opacity-70 transition-all duration-150"
                 >
-                  بین سیدرضی ۱۹ و ۲۱، آموزشگاه لیوسا
+                  لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ،
                 </Link>
               </div>
               <div className="flex gap-x-4">
@@ -419,7 +416,7 @@ const LayoutPublic: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
           </div>
           <div className="py-2 bg-[#131417] px-3 flex flex-col gap-y-2 rounded-b-lg	">
             <small>
-              کلیه حقوق این سایت متعلق به سایت آموزشگاه لیوسا می‌باشد.
+              کلیه حقوق این سایت متعلق به سایت ونداد می‌باشد.
             </small>
           </div>
         </div>
