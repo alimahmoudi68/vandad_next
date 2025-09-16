@@ -13,7 +13,8 @@ import filterSingleAttributes from "@/utils/common/removeVariantsAttributes";
 import extractAttrFromAttributes from "@/utils/common/extractAttrFromAttributes";
 import extractAttrFromVariants from "@/utils/common/extractAttrFromVariants";
 import { IUpload } from "@/types/upload";
-import { IAttributeMeta, IProductAttr } from "@/types/products";
+import { IAttributeMeta, IProductVariantsApi } from "@/types/products";
+import extractAttributeMetaTitles from "@/utils/common/extractAttributeMetaTitles";
 
 
 interface EditProductPageProps {
@@ -296,100 +297,123 @@ export default function EditProductPage({id,categories,product}: EditProductPage
 
   useEffect(() => {
 
-      const newFormItemAttr = (
-        product.categories?.[0]?.attributes as unknown as IAttributeMeta[] | undefined
-      )?.map((item: IAttributeMeta) => {
-        if(item.isDynamic){
-            return{
-                inputType: "simple-input-with-label",
-                config: {
-                    label: item.title,
-                    name: item.slug,
-                    classes: "w-full",
-                    options: [], // You can add options here if needed
-                    isAttribute: true,
-                    area: 'sidebar',
-                    cardId: 'attrBox',
-                    cardTitle: 'ویژگی‌ها',
-                    order: 2,
-                },
-                value: '',
-                validation: {
-                    required: true,
-                },
-                valid: true,
+    console.log('gg')
+
+    const newFormItemAttr = (
+      product.categories?.[0]?.attributes as unknown as IAttributeMeta[] | undefined
+    )?.map((item: IAttributeMeta) => {
+      if(item.isDynamic){
+          return{
+              inputType: "simple-input-with-label",
+              config: {
+                  label: item.title,
+                  name: item.slug,
+                  classes: "w-full",
+                  options: [], // You can add options here if needed
+                  isAttribute: true,
+                  area: 'sidebar',
+                  cardId: 'attrBox',
+                  cardTitle: 'ویژگی‌ها',
+                  order: 2,
+              },
+              value: '',
+              validation: {
+                  required: true,
+              },
+              valid: true,
+              errorMsg: "",
+              used: false
+          }
+      }else{
+          return{
+              inputType: "select-multi",
+              config: {
+                  label: item.title,
+                  name: item.slug,
+                  classes: "w-full",
+                  options: item.metas?.map((meta: { id: number; title: string; slug: string }) => ({
+                      id: meta.id,
+                      title: meta.title
+                  })) || [], 
+                  isAttribute: true,
+                  area: 'sidebar',
+                  cardId: 'attrBox',
+                  cardTitle: 'ویژگی‌ها',
+                  order: 2,
+              },
+              value: [...extractAttrFromAttributes(product, item.slug) , ...extractAttrFromVariants(product, item.slug)],
+              validation: {
+                  required: true,
+              },
+              valid: true,
+              errorMsg: "",
+              used: false
+              
+          }
+      }
+    }) ?? [];
+
+
+    const newFormItemVariants = product.variants.map((variant : IProductVariantsApi)=>{
+  
+      return{
+        inputType: "attribute-variant",
+        config: {
+            label: extractAttributeMetaTitles(variant).label,
+            name: "variants",
+            classes: "w-full",
+            isAttributeVariant : true,
+            area: "sidebar" as const,
+            sectionId: 'variantBox', 
+            sectionTitle: 'متغیرهای محصول', 
+            order:2,
+        },
+        value: {
+            attributes : extractAttributeMetaTitles(variant).attributes,
+            price : variant.price ,
+            discountPrice: variant.discountPrice,
+            sku: variant.sku,
+            stock: variant.stock,
+            images: (Array.isArray(variant.images) && variant.images.length > 0)
+            ? variant.images.map((item: IUpload) => ({
+                id: item.id ?? 0,
+                uploadedId: item.id ?? null,
                 errorMsg: "",
-                used: false
-            }
-        }else{
-            return{
-                inputType: "select-multi",
-                config: {
-                    label: item.title,
-                    name: item.slug,
-                    classes: "w-full",
-                    options: item.metas?.map((meta: { id: number; title: string; slug: string }) => ({
-                        id: meta.id,
-                        title: meta.title
-                    })) || [], 
-                    isAttribute: true,
-                    area: 'sidebar',
-                    cardId: 'attrBox',
-                    cardTitle: 'ویژگی‌ها',
-                    order: 2,
+                fileUrl: { bucketName: item.bucket, fileName: item.location },
+              }))
+            : [
+                {
+                  id: 0,
+                  uploadedId: null,
+                  errorMsg: "",
+                  fileUrl: null,
                 },
-                value: [...extractAttrFromAttributes(product, item.slug) , ...extractAttrFromVariants(product, item.slug)],
-                validation: {
-                    required: true,
-                },
-                valid: true,
-                errorMsg: "",
-                used: false
-                
-            }
-        }
-      }) ?? [];
-
-
-      setForm((prev) => ({ formItems: [...prev.formItems, ...newFormItemAttr ] }));
-
-    // // const newFormItemVar = product.variants.map((variant : IVariantItem)=>{
+              ],
+        },
+        value2:{
+            price : Number(variant.price).toLocaleString() ,
+            stock: Number(variant.stock).toLocaleString() ,
+            sku: variant.sku,
+            discountPrice: Number(variant.discountPrice).toLocaleString(),
+        },
+        validation: {
+            required: true,
+        },
+        valid: true,
+        errorMsg: "",
+        errs: {
+          price: "",
+          stock: "",
+          sku: "",
+          discountPrice:""
+        },
+        used: false
+      }
+    })
   
-    // //   return{
-    // //     inputType: "attribute-variant",
-    // //     config: {
-    // //         label: extractAttributeMetaTitles(variant).label,
-    // //         name: "variants",
-    // //         classes: "w-full",
-    // //         isAttributeVariant : true,
-    // //     },
-    // //     value: {
-    // //         attributes : extractAttributeMetaTitles(variant).attributes,
-    // //         price : variant.price ,
-    // //         sku: variant.sku,
-    // //         stock: variant.stock,
-    // //     },
-    // //     value2:{
-    // //         price : Number(variant.price).toLocaleString() ,
-    // //         stock: Number(variant.stock).toLocaleString()
-    // //     },
-    // //     validation: {
-    // //         required: true,
-    // //     },
-    // //     valid: true,
-    // //     errorMsg: "",
-    // //     errs: {
-    // //         price:"" ,
-    // //         stock: "" ,
-    // //         sku: ""
-    // //     },
-    // //     used: false
-    // //   }
-    // // })
-  
-    //   //setFormInput({ formItems: [...initFormInput.formItems, ...newFormItemAttr , ...newFormItemVar] });
-  
-    // } , []);
+
+    setForm((prev) => ({ formItems: [...prev.formItems, ...newFormItemAttr, ...newFormItemVariants ] }));
+
 
   }, []);
 

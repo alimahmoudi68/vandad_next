@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 
 import Loading from "@/components/common/loading/Loading";
+import saveCookie from "@/utils/common/saveCookie";
 import ShowImg from '@/components/common/showImg/ShowImg';
 import ThemeSwitch from "@/components/layouts/themeSwich/ThemeSwitch";
 import Menus from "@/components/layouts/layoutDashboard/menus/Menus";
@@ -17,10 +18,17 @@ import { IUser } from "@/types/user";
 interface LayoutProps {
   children: React.ReactNode;
   user: IUser;
+  saveToken: { accessToken: string | null; refreshToken: string | null };
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, user }) => {
+const Layout: React.FC<LayoutProps> = ({ children, user, saveToken }) => {
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (saveToken?.accessToken && saveToken?.refreshToken) {
+      saveCookie(saveToken?.accessToken, saveToken?.refreshToken);
+    }
+  }, []);
 
   useEffect(() => {
     dispatch(updateUser(user));

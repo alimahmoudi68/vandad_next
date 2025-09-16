@@ -104,7 +104,7 @@ export default function NewBlogPage({
                   classes: "w-full",
                   options:
                   data.categories && data.categories.map(item => ({
-                    id: item.id,
+                    id: String(item.id),
                     title: item.title,
                   })),
                 },

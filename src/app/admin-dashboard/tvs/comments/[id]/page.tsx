@@ -9,7 +9,7 @@ import EditTvCommentPage from "@/components/pages/adminDashboard/tv/tv/editTvCom
 interface Params {
   id: string;
 }
-export default async function EditTvComment({ params }: { params: Params }) {
+export default async function EditTvComment({ params }: { params: Promise<Params> }) {
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
@@ -18,7 +18,7 @@ export default async function EditTvComment({ params }: { params: Params }) {
   //     return(<NotPermission/>)
   // }
 
-  let id = params.id;
+  const { id } = await params;
 
   return (
     <EditTvCommentPage id={+id}/>

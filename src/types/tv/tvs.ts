@@ -1,5 +1,5 @@
 import {IUpload} from "@/types/upload";
-import { IComment } from "../blogComment";
+import { ITvComments } from "../tvComment";
 
 export interface ITv {
   id: number,
@@ -19,7 +19,7 @@ export interface ITv {
       "slug": string,
     }[],
   commentData: {
-    comments: IComment[]
+    comments: ITvComments[]
   }
   created_at: string,
   upated_at: string,

@@ -12,8 +12,8 @@ interface Params {
   id: string;
 }
 
-export default async function NewEstate({ params }: { params: Params }) {
-  let id = params.id;
+export default async function NewEstate({ params }: { params: Promise<Params> }) {
+  const { id } = await params;
 
   //const getUserInfo = await getUser();
 

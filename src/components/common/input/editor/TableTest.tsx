@@ -40,8 +40,10 @@ const TableTest: React.FC = () => {
 
       <div className="mb-4">
         <EnhancedTipTapEditor
-          content={content}
-          onChange={setContent}
+          config={{ classes: '', label: 'محتوا', name: 'content' }}
+          value={content}
+          change={setContent}
+          errorMsg=""
           placeholder="محتوا را اینجا بنویسید..."
           showImageUpload={true}
         />

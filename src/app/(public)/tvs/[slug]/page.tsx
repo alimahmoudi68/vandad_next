@@ -3,7 +3,7 @@ import ErrorPage from "@/components/common/errorPage/ErrorPage";
 import { singleTv } from "@/services/public/tvs/tvService";
 import { getTvCats } from "@/services/public/tvs/tvCatsService";
 import { ITv, ITvCat } from "@/types/tv";
-import { IBlogComments } from "@/types/blogComment";
+import { ITvComments } from "@/types/tvComment";
 
 export const metadata = {
   title: "",
@@ -20,7 +20,7 @@ export default async function SingleTv({
 
     let tv: ITv = {} as ITv;
     let tvCats: ITvCat[] = [];
-    let comments: IBlogComments = {} as IBlogComments; 
+    let comments: ITvComments = {} as ITvComments; 
 
     const [tvRes, tvCatsRes] = await Promise.allSettled([
       singleTv(slug),

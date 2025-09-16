@@ -17,7 +17,7 @@ export default function DeleteProductModal({ id }: { id: string }) {
     if (!loading) {
       try {
         setLoading(true);
-        const data = await removeProduct(id);
+        const data = await removeProduct(Number(id));
         setLoading(false);
         if (data.status === "success") {
           toast.success("محصول با موفقیت حذف شد");

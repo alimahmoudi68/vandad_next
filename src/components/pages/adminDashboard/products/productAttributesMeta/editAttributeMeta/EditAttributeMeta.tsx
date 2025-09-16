@@ -2,23 +2,18 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import Link from "next/link";
 
 import { updateAttributeMeta } from "@/services/adminDashboard/products/attributesMetaService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
 
-interface IAttributeMeta {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
+import { IAttributeMeta } from "@/types/products";
+import { IAttribute } from "@/types/products";
 
 interface EditAttributeMetaPageProps {
   permissions: string[];
   attributeMeta: IAttributeMeta;
-  attributes: IAttributeMeta[];
+  attributes: IAttribute[];
   id: string;
 }
 
@@ -97,7 +92,7 @@ export default function EdiitAttributeMetaPage({
           options: attributes,
           classes: "w-full",
         },
-        value: attributeMeta.attribute.id,
+        value: attributeMeta.metas?.[0]?.id ?? "",
         validation: {
           selectRequired: true,
         },

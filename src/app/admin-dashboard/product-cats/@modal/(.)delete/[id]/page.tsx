@@ -1,10 +1,10 @@
 import DeleteCategoryModal from "@/components/pages/adminDashboard/products/categories/deleteCategory/DeleteCategory";
 
-export default function DeleteModal({
+export default async function DeleteModal({
   params,
 }: {
-  params: { id: number };
-}) {
-  const { id } = params;
-  return <DeleteCategoryModal id={id} />;
+  params: Promise<{ id: string }>;
+}){
+  const id = (await params).id;
+  return <DeleteCategoryModal id={+id} />;
 }

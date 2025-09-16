@@ -12,7 +12,7 @@ interface Params {
     id: string;
 }
 
-export default async function EditCategory({params}: { params: Params }){
+export default async function EditCategory({params}: { params: Promise<Params> }){
 
     //const getUserInfo = await getUser();
 
@@ -22,7 +22,7 @@ export default async function EditCategory({params}: { params: Params }){
     //     return(<NotPermission/>)
     // }
 
-    let id = params.id;
+    const { id } = await params;
     let categoriesData = await categories();
     let categoryData = await singleCategory(+id);
     let attributesData = await attributes();

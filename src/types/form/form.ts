@@ -33,6 +33,7 @@ export interface IFormItems{
     defaultOpen?: boolean;
     colSpan?: number;
     order?: number;
+    removeFromServer?: boolean
   };
   validation: Record<string, any>;
   errorMsg?: string;

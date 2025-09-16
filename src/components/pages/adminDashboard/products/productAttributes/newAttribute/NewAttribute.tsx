@@ -7,7 +7,7 @@ import { newAttribute } from "@/services/adminDashboard/products/attributesServi
 import Form from '@/components/common/form/Form';
 import Card from "@/components/common/card/Card";
 import { handleServerError } from "@/utils/common/handleServerError";
-import { IAttributes } from "@/types/products";
+import { IAttribute } from "@/types/products";
 
 
 interface NewAttributePageProps {
@@ -93,7 +93,7 @@ export default function NewAttributePage({
 
   const [FormInput] = useState<IForm>(initFormInput);
 
-  const submitHandler = async (form: IAttributes) => {
+  const submitHandler = async (form: IAttribute) => {
 
     setLoadingBtn(true);
     try {

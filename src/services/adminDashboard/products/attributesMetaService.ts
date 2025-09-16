@@ -1,6 +1,6 @@
 import myFetchServer from '@/services/myFetchServer'; 
 
-import { IAttributeMeta } from "@/types/attributeMetas";
+import { IAttributeMeta } from "@/types/products";
 
 interface AttributesMetaResponse {
     status: 'success' | 'error';

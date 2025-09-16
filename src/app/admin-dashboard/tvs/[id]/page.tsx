@@ -12,7 +12,7 @@ export const metadata = {
 interface Params {
   id: string;
 }
-export default async function EditTv({ params }: { params: Params }) {
+export default async function EditTv({ params }: { params: Promise<Params> }) {
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
@@ -21,7 +21,7 @@ export default async function EditTv({ params }: { params: Params }) {
   //     return(<NotPermission/>)
   // }
 
-  let id = params.id;
+  const { id } = await params;
 
   return (
     <EditTvPage id={+id}/>

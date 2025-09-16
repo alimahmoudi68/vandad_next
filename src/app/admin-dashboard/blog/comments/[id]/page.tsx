@@ -9,7 +9,7 @@ import EditBlogCommentPage from "@/components/pages/adminDashboard/blog/blog/edi
 interface Params {
   id: string;
 }
-export default async function EditBlogComment({ params }: { params: Params }) {
+export default async function EditBlogComment({ params }: { params: Promise<Params> }) {
   //const getUserInfo = await getUser();
 
   // if(!havePermission(getUserInfo?.user?.permissions ,
@@ -18,7 +18,7 @@ export default async function EditBlogComment({ params }: { params: Params }) {
   //     return(<NotPermission/>)
   // }
 
-  let id = params.id;
+  const { id } = await params;
 
   return (
     <EditBlogCommentPage id={+id}/>

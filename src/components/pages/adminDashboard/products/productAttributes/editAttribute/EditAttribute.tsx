@@ -6,20 +6,8 @@ import { toast } from "react-toastify";
 import { updateAttribute } from "@/services/adminDashboard/products/attributesService";
 import Form from "@/components/common/form/Form";
 import Card from "@/components/common/card/Card";
-import { IAttributes } from "@/types/products";
+import { IAttribute } from "@/types/products";
 
-interface IAttribute {
-  id: number;
-  title: string;
-  slug: string;
-  metas : 
-    {
-    id: number, 
-    title: string,
-    slug: string,
-  }[]
-  [key: string]: any;
-}
 
 interface EditAttributePageProps {
   permissions: string[];
@@ -111,7 +99,7 @@ export default function EdiitAttributePage({
 
   const [FormInput] = useState<IForm>(initFormInput);
 
-  const submitHandler = async (form: IAttributes) => {
+  const submitHandler = async (form: IAttribute) => {
     setLoadingBtn(true);
     try {
       const data = await updateAttribute(id, form);
@@ -149,7 +137,7 @@ export default function EdiitAttributePage({
       </Card>
       <Card title="مقادیر ویژگی" classes="w-[90%] max-w-[600px] mx-auto mb-5">
         <div className="flex flex-col gap-2">
-          {attribute.metas.map((meta) => (
+          {(attribute.metas ?? []).map((meta) => (
             <div
               key={meta.id}
               className="flex justify-between items-center p-2 rounded-md border"

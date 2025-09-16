@@ -7,12 +7,8 @@ import { newAttributeMeta } from "@/services/adminDashboard/products/attributesM
 import Form from '@/components/common/form/Form';
 import Card from "@/components/common/card/Card";
 
-interface IAttribute {
-  _id: string;
-  title: string;
-  slug: string;
-  [key: string]: any;
-}
+import { IAttribute } from "@/types/products";
+
 
 interface NewAttributeMetaPageProps {
   permissions: string[];

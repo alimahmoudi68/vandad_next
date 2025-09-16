@@ -14,6 +14,7 @@ import Input from "@/components/common/input/Input";
 import Button from "@/components/common/button/Button";
 import { singleCategory } from "@/services/adminDashboard/products/categoriesService";
 import { IFormItems } from '@/types/form';
+import attributeVariantCombine from "@/utils/common/attributeVariantCombine";
 
 interface FormProps {
   initForm: { formItems: IFormItems[] };
@@ -69,7 +70,7 @@ const Form = ({
       let catId = (data as { id: string })?.id;
 
       const signleCategoryData = await singleCategory(+catId);
-      console.log('signleCategoryData' , signleCategoryData)
+      //console.log('signleCategoryData' , signleCategoryData)
       const attributes = signleCategoryData.category.attributes;
 
       let newFormItems = form.formItems.filter((item: IFormItems) => {
@@ -187,6 +188,8 @@ const Form = ({
 
       //console.log("newAttributeVariantArr ?????" , newAttributeVariantArr )
 
+
+    
       let newAttributeVariantForm = newAttributeVariantArr.map((i) => {
         return {
           inputType: "attribute-variant",
@@ -237,14 +240,27 @@ const Form = ({
         };
       });
 
-      //console.log('newArrObj>>' , newArrObj[0])
+      let oldAttributeVariantForm = newForm.formItems.filter(
+        (item: IFormItems) => {
+          if (item.config.isAttributeVariant) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      );
+
+      const attributeVariantCombined = attributeVariantCombine(oldAttributeVariantForm , newAttributeVariantForm)
+
+
+      //console.log('attributeVariantCombined>>' , attributeVariantCombined)
 
       //console.log("generateVariant >>> " , generateVariant( newArrObj[0]));
 
       setForm({
         formItems: [
           ...newFormWithoutAttributeSelect,
-          ...newAttributeVariantForm,
+          ...attributeVariantCombined,
         ],
       });
     } else {

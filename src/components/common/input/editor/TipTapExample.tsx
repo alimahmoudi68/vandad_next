@@ -21,8 +21,10 @@ const TipTapExample: React.FC = () => {
 
       <div className="mb-4">
         <EnhancedTipTapEditor
-          content={editorContent}
-          onChange={setEditorContent}
+          config={{ classes: '', label: 'محتوا', name: 'content' }}
+          value={editorContent}
+          change={setEditorContent}
+          errorMsg=""
           placeholder="محتوا را اینجا بنویسید..."
           showImageUpload={true}
         />

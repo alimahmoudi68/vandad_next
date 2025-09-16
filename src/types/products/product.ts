@@ -27,10 +27,44 @@ export interface IProduct {
     attributes?:{
       attribute: IAttribute,
       attributeMeta: IAttributeMeta
-    }
+    },
+    variants: IProductVariantsApiArr
   }
 
   export interface IProductAttr{
     attribute: IAttribute,
     attributeMeta: IAttributeMeta
   }
+
+  export type IProductVariantsApi = {
+    id: number;
+    sku: string;
+    price: number;
+    stock: number;
+    discountPrice: number;
+    images: IUpload[];
+    createdAt: string;
+    updatedAt: string;
+    attributes: {
+      id: number;
+      attribute: {
+        id: number;
+        title: string;
+        slug: string;
+        isDynamic: boolean;
+      };
+      attributeMeta: {
+        id: number;
+        title: string;
+        slug: string;
+        createdAt: string;
+        updatedAt: string;
+      };
+      value: null | string;
+    }[]
+  };
+
+  export type IProductVariantsApiArr =IProductVariantsApi[]
+
+  
+  

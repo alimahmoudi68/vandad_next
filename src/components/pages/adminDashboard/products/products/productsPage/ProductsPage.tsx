@@ -128,7 +128,7 @@ export default function ProductsPage() {
                           قیمت:
                         </span>
                         <span className="text-textPrimary-100 dark:text-white-50 font-semibold mr-1">
-                          {!product.discount ? (
+                          {product.discountPrice == 0 || product.discountPrice == null ? (
                             <span className="text-textPrimary-100 dark:text-white-50 font-semibold mr-1">
                               {product.discountPrice.toLocaleString()}
                             </span>
